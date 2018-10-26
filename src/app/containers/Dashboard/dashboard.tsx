@@ -8,8 +8,9 @@ interface DashboardProps extends WithStyles<typeof dashboardStyles> {
 
 class Dashboard extends React.Component<DashboardProps> {
   render() {
+    const { classes } = this.props;
     return (
-      <div>
+      <div className={classes.root}>
 
       </div>
     );
