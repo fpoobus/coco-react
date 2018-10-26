@@ -10,7 +10,7 @@ import FaceIcon from '@material-ui/icons/Face';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Button from "@material-ui/core/es/Button/Button";
 import RootContainer from "app/components/Container/RootContainer";
-import Icon from '@material-ui/core/es/Icon/Icon';
+import {KeyboardArrowLeft, Send, SettingsBackupRestore} from "@material-ui/icons";
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
 
@@ -72,15 +72,15 @@ class CaseForm extends React.Component<DashboardProps> {
                         <Grid item xs={12}>
                             <Button variant="contained" color="primary" className={classes.button}>
                                 Register
-                                <Icon className={classes.rightIcon}>send</Icon>
+                                <Send className={classes.rightIcon}/>
                             </Button>
                             <Button variant="contained" color="secondary" className={classes.button}>
                                 Return to claimant
-                                <Icon className={classes.rightIcon}>settings_backup_restore</Icon>
+                                <SettingsBackupRestore/>
                             </Button>
                             <Button variant="contained" color="primary" className={classes.button}>
+                                <KeyboardArrowLeft/>
                                 Back
-                                <Icon className={classes.rightIcon}>keyboard_arrow_left</Icon>
                             </Button>
                         </Grid>
                     </Grid>
