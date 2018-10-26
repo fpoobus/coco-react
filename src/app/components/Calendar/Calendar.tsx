@@ -3,6 +3,7 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { calendarStyles } from 'app/components/Calendar/styles';
 import '../../../../node_modules/react-calendar/dist/Calendar.less';
 import Calendar from 'react-calendar';
+import Paper from '@material-ui/core/Paper/Paper';
 
 interface DashboardProps extends WithStyles<typeof calendarStyles> {
 
@@ -13,7 +14,9 @@ class CalendarCard extends React.Component<DashboardProps> {
     const { classes } = this.props;
     return (
       <>
-        <Calendar className={classes.root} calendarType="Arabic" />
+        <Paper>
+          <Calendar className={classes.root} calendarType="Arabic" />
+        </Paper>
       </>
     );
   }

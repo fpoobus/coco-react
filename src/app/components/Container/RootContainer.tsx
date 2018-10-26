@@ -40,6 +40,10 @@ interface RootContainerProps extends WithStyles<typeof styles> {
 
 class RootContainer extends React.Component<RootContainerProps> {
 
+  componentDidMount() {
+    document.body.style.backgroundColor = theme.palette.primary.light;
+  }
+
   render() {
     const { classes, children } = this.props;
     return (
