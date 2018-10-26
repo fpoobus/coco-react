@@ -21,5 +21,11 @@ export const caseFormStyles = (theme: Theme) => createStyles({
         chip: {
             margin: theme.spacing.unit,
         },
+        button: {
+            margin: theme.spacing.unit,
+        },
+        rightIcon: {
+            marginLeft: theme.spacing.unit,
+        },
     }
 );

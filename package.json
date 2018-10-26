@@ -60,6 +60,7 @@
     "mobx-react-router": "^4.0.5",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "react-router": "^4.3.1"
+    "react-router": "^4.3.1",
+    "typeface-roboto": "0.0.54"
   }
 }
