@@ -9,6 +9,9 @@ import createStyles from '@material-ui/core/styles/createStyles';
 export const styles = (theme: Theme) => createStyles({
   root: {
     marginBottom: '64px'
+  },
+  bar: {
+    backgroundColor: theme.palette.primary.dark
   }
 });
 
@@ -21,7 +24,7 @@ class Header extends React.Component<HeaderProps> {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar className={classes.bar} position="static">
           <Toolbar>
 
           </Toolbar>
