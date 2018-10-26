@@ -6,6 +6,7 @@ import { IndexPage } from 'app/pages/IndexPage';
 import Dashboard from 'app/containers/Dashboard/dashboard';
 import CaseForm from 'app/containers/CaseForm/caseForm';
 
+import Login from 'app/containers/Login/Login';
 
 // render react DOM
 export const App = hot(module)(({ history }) => (
@@ -14,6 +15,7 @@ export const App = hot(module)(({ history }) => (
       <Switch>
         <Route exact path="/" component={IndexPage} />
         <Route path="/testing" component={Dashboard} />
+        <Route path="/login" component={Login} />
         <Route path="/case" component={CaseForm} />
       </Switch>
     </Router>
