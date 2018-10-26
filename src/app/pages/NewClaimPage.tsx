@@ -18,6 +18,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Documents from "app/components/NewClaim/Step3/Documents/Documents";
 import Payment from "app/components/NewClaim/Step4/Payment/Payment";
 import Summary from "app/components/NewClaim/Step5/Summary/Summary";
+import Paper from "@material-ui/core/Paper";
 
 export interface NewClaimPageProps extends RouteComponentProps<any> {
     newClaimStore: NewClaimStore
@@ -34,6 +35,11 @@ const centerAlign = {
 };
 
 
+let padding = {
+    padding: "20px",
+    margin: "10px"
+}
+
 @inject('routerStore', 'newClaimStore')
 @observer
 export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
@@ -47,14 +53,36 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
         return this.props.newClaimStore.step === 0 &&
             <>
 
-                <Grid item xs={6}>
-                    <button onClick={this.props.newClaimStore.setOpenSectionNatural}>New Claim As A Natural Entity
-                    </button>
+                <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                        <Grid container justify="center">
+                            <Grid item>
+
+                                <Paper style={padding} elevation={5}>
+
+                                    <Button variant="contained"
+                                            color="primary" onClick={this.props.newClaimStore.setOpenSectionNatural}>New Claim As A
+                                        Natural Entity
+                                    </Button>
+                                </Paper>
+
+                            </Grid>
+
+                            <Grid item>
+
+                                <Paper style={padding}  elevation={5}>
+
+                                    <Button variant="contained"
+                                            color="primary" onClick={this.props.newClaimStore.setOpenSectionLegal}>New Claim As A Legal
+                                        Entity
+                                    </Button>
+                                </Paper>
+
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                    <button onClick={this.props.newClaimStore.setOpenSectionLegal}>New Claim As A Legal Entity
-                    </button>
-                </Grid>
+
 
                 <Claimant newClaimStore={this.props.newClaimStore}/>
             </>
@@ -101,7 +129,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
                 <div style={centerAlign}>
                     <Grid justify="space-between" container spacing={24}>
-                        <Grid item xs={8}>
+                        <Grid justify="center" item xs={8}>
 
 
                             <Card>

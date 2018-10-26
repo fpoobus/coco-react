@@ -26,6 +26,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
       <TextField
         label="First Name"
+        fullWidth
         value={newClaim.naturalPerson.first_name}
         onChange={this.handleChange('first_name')}
         margin="normal"
@@ -33,6 +34,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
       <TextField
         label="Middle Names"
+        fullWidth
         value={newClaim.naturalPerson.middle_names}
         onChange={this.handleChange('middle_names')}
         margin="normal"
@@ -40,6 +42,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
       <TextField
         label="Last Name"
+        fullWidth
         value={newClaim.naturalPerson.last_name}
         onChange={this.handleChange('last_name')}
         margin="normal"
@@ -47,6 +50,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
       <TextField
         label="Date of Birth"
+        fullWidth
         type="date"
         value={newClaim.naturalPerson.date_of_birth}
         onChange={this.handleChange('date_of_birth')}
@@ -58,6 +62,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
       <TextField
         label="Date of Birth"
+        fullWidth
         value={newClaim.naturalPerson.address}
         onChange={this.handleChange('address')}
         margin="normal"
@@ -96,7 +101,8 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
   claimantInfo() {
     return <>
-      {this.props.newClaimStore.isLegalSection ? this.legalEntityFields() : this.naturalEntityFields()}
+        {this.props.newClaimStore.isNaturalSection && this.naturalEntityFields() }
+      {this.props.newClaimStore.isLegalSection && this.legalEntityFields() }
     </>;
   }
 
