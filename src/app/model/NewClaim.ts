@@ -10,6 +10,7 @@ export default class NewClaim {
         this.claim = new Claim();
         this.naturalPerson = new NaturalPerson();
         this.legalPerson = new LegalPerson();
+        this.fee = new Fee();
     }
 }
 
