@@ -10,7 +10,9 @@ import FaceIcon from '@material-ui/icons/Face';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Button from "@material-ui/core/es/Button/Button";
 import RootContainer from "app/components/Container/RootContainer";
-import {KeyboardArrowLeft, Send, SettingsBackupRestore} from "@material-ui/icons";
+import Send from "@material-ui/icons/Send";
+import SettingsBackupRestore from "@material-ui/icons/SettingsBackupRestore";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
 
@@ -36,25 +38,31 @@ class CaseForm extends React.Component<DashboardProps> {
         return (
             <RootContainer>
                 <Grid container spacing={24}>
-                    <Grid item xs={12}>
-                        <Typography>New case </Typography>
-                        <Chip
-                            avatar={<Avatar><FaceIcon/></Avatar>}
-                            label="John Doe (Cars Ltd)"
-                            onClick={this.handleChange}
-                            className={classes.chip}
-                        />
-                        VS
-                        <Chip
-                            avatar={<Avatar><FaceIcon/></Avatar>}
-                            label="Elon Musk (Tesla Ltd)"
-                            onClick={this.handleChange}
-                            className={classes.chip}
-                        />
-                        <Button variant="contained" color="primary" className={classes.button}>
-                            PRINT
-                        </Button>
+                    <Grid container direction="row" alignItems="center">
+                        <Grid item xs={10}>
+                            <Typography variant="h4" gutterBottom> New case </Typography>
+                            <Chip
+                                avatar={<Avatar><FaceIcon/></Avatar>}
+                                label="John Doe (Cars Ltd)"
+                                onClick={this.handleChange}
+                                className={classes.chip}
+                            />
+                            VS
+                            <Chip
+                                avatar={<Avatar><FaceIcon/></Avatar>}
+                                label="Elon Musk (Tesla Ltd)"
+                                onClick={this.handleChange}
+                                className={classes.chip}
+                            />
+
+                        </Grid>
+                        <Grid item xs={2} justify="flex-end">
+                            <Button variant="contained" color="primary" className={classes.button}>
+                                PRINT
+                            </Button>
+                        </Grid>
                     </Grid>
+
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <form className={classes.container} noValidate autoComplete="off">
