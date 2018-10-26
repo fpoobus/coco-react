@@ -22,7 +22,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
     }
 
     toClaims = () => {
-        this.props.history.push('/claim/123');
+        this.props.history.push('/');
     }
 
     renderSummary() {
