@@ -1,12 +1,11 @@
 import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar/AppBar';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
-import { Theme, WithStyles, IconButton, Typography, MenuItem } from '@material-ui/core';
+import { Theme, WithStyles, Typography, MenuItem } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import AccountBalance from '@material-ui/icons/AccountBalance';
 import FaceIcon from '@material-ui/icons/Face';
-import Menu from '@material-ui/core/Menu';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
