@@ -4,10 +4,10 @@ import { Route, Router, Switch } from 'react-router';
 import { Root } from 'app/containers/Root';
 import Dashboard from 'app/containers/Dashboard/dashboard';
 import { NewClaimPage } from 'app/pages/NewClaimPage';
-import CaseForm from 'app/pages/CaseForm/CaseForm';
-import CaseForm from 'app/containers/CaseForm/caseForm';
 
 import Login from 'app/containers/Login/Login';
+import CaseForm from "app/pages/CaseForm/CaseForm";
+import {IndexPage} from "app/pages/IndexPage";
 
 // render react DOM
 export const App = hot(module)(({ history }) => (
