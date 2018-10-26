@@ -8,7 +8,7 @@ import { App } from 'app';
 
 // enable MobX strict mode
 configure({
-  enforceActions: true
+  enforceActions: 'observed'
 });
 
 // prepare MobX stores

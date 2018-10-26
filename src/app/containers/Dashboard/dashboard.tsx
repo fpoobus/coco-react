@@ -13,7 +13,7 @@ class Dashboard extends React.Component<DashboardProps> {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Grid className={classes.container} container>
+        <Grid className={classes.container} container spacing={16}>
           <Grid item xs={6}>
             <ClaimsSubmitter />
           </Grid>
