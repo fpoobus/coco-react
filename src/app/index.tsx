@@ -10,7 +10,7 @@ export const App = hot(module)(({ history }) => (
   <Root>
     <Router history={history}>
       <Switch>
-        <Route path="/" component={IndexPage} />
+        <Route exact path="/" component={IndexPage} />
         <Route path="/testing" component={Dashboard} />
       </Switch>
     </Router>
