@@ -7,6 +7,10 @@ export class Root extends React.Component<any, any> {
     }
   }
 
+  componentDidMount() {
+      document.body.style.backgroundColor = "#efefef";
+  }
+
   render() {
     return (
       <div className="container">
