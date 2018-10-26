@@ -1,13 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { useStrict } from 'mobx';
+import { configure } from 'mobx';
 import { Provider } from 'mobx-react';
 import { createBrowserHistory } from 'history';
 import { createStores } from 'app/stores/createStore';
 import { App } from 'app';
 
 // enable MobX strict mode
-useStrict(true);
+configure({
+  enforceActions: true
+});
 
 // prepare MobX stores
 const history = createBrowserHistory();

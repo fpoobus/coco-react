@@ -5,6 +5,7 @@ import { Root } from 'app/containers/Root';
 import { IndexPage } from 'app/pages/IndexPage';
 import Dashboard from 'app/containers/Dashboard/dashboard';
 
+
 // render react DOM
 export const App = hot(module)(({ history }) => (
   <Root>

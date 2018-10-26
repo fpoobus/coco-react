@@ -39,7 +39,7 @@ module.exports = {
         test: /\.tsx?$/,
         use: isProduction
           ? 'ts-loader'
-          : ['babel-loader?plugins=react-hot-loader/babel', 'ts-loader']
+          : ['babel-loader', 'ts-loader']
       },
       //sass
       { test: /\.(scss|sass)$/, loader: 'style-loader!css-loader!sass-loader' },
