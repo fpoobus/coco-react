@@ -76,7 +76,7 @@ class Header extends React.Component<HeaderProps> {
   }}>>
             <Tab label="Dashboard"  />
             <Tab label="Claims" />
-            <Tab label="Cases" />
+
           </Tabs>
           <MenuItem className={classes.typoContainer}>
           <Typography className={classes.typo}>LOG OUT</Typography>
