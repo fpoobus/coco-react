@@ -24,9 +24,9 @@ class ClientCases extends React.Component<ClientCasesProps> {
   renderTableBody = () => {
     const mockDataList = [mockData, mockData, mockData];
     return (
-      mockDataList.map(mockData => {
+      mockDataList.map((mockData, idx) => {
         return <>
-          <TableRow>
+          <TableRow key={`$dataRow${idx}`}>
             <TableCell>{mockData.status}</TableCell>
             <TableCell>{mockData.evidence}</TableCell>
             <TableCell>{mockData.details1}</TableCell>
@@ -44,7 +44,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
           <Table>
             <TableHead>
               {['Status', 'Evidence', 'Details', 'Details', '']
-                .map(title => <TableCell>{title}</TableCell>)}
+                .map((title, idx) => <TableCell key={`title${idx}`}>{title}</TableCell>)}
             </TableHead>
             <TableBody>
               {this.renderTableBody()}

@@ -7,6 +7,6 @@ export const claimsSubmitterStyles = (theme: Theme) => createStyles({
     justifyContent: 'center'
   },
   card: {
-    minHeight: '25vh'
+    minHeight: 300
   }
 });
