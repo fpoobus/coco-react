@@ -9,6 +9,7 @@ import Tabs from "@material-ui/core/Tabs/Tabs";
 import Tab from "@material-ui/core/Tab/Tab";
 import LoginSmartId from "app/components/LoginSmartId/LoginSmartId";
 import UserStore from "app/stores/UserStore";
+import {inject} from "mobx-react";
 
 
 function TabContainer(props) {
@@ -23,7 +24,8 @@ interface LoginProps extends WithStyles<typeof loginStyles> {
     userStore: UserStore;
 }
 
-class Dashboard extends React.Component<LoginProps> {
+@inject('routerStore', 'userStore')
+class Login extends React.Component<LoginProps> {
     state = {
         value: 0,
     };
@@ -53,7 +55,7 @@ class Dashboard extends React.Component<LoginProps> {
                     </Paper>
                     <Paper className={classes.paper} elevation={1}>
                         {value === 0 && <TabContainer><LoginPassword classes = {classes} userStore={userStore} /></TabContainer>}
-                        {value === 1 && <TabContainer><LoginSmartId classes = {classes} /></TabContainer>}
+                        {value === 1 && <TabContainer><LoginSmartId classes = {classes} userStore={userStore} /></TabContainer>}
                     </Paper>
                 </main>
             </React.Fragment>
@@ -61,4 +63,4 @@ class Dashboard extends React.Component<LoginProps> {
     }
 }
 
-export default withStyles(loginStyles)(Dashboard);
+export default withStyles(loginStyles)(Login);

@@ -1,14 +1,43 @@
-import { observable } from 'mobx';
+import {observable} from 'mobx';
 import axios from 'axios';
+import User from "app/models/User";
 
 class UserStore {
 
-    @observable user: User;
-    @observable personalCode: string;
-    @observable isAuthenticated: boolean;
+    constructor() {
+        let user = new User();
+        if (localStorage.getItem("firstName")) {
+            user.firstName = localStorage.getItem("firstName");
+            user.lastName = localStorage.getItem("lastName");
+            user.personalCode = localStorage.getItem("personalCode");
+            user.password = localStorage.getItem("password");
+        }
+    }
 
-    public doLogIn = async (params: {personalCode: string, password: string}) => {
-        axios.post(`https://jsonplaceholder.typicode.com/users`, { params })
+    @observable
+    public user: User;
+
+    @observable
+    public personalCode: string;
+
+    @observable
+    public isAuthenticated: boolean;
+
+    public doLogIn = (params: { personalCode: string, password: string }) => {
+        axios.post(`https://jsonplaceholder.typicode.com/users`, {params})
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
+    };
+
+    public doSmartIdLogIn = (identityCode: string) => {
+        console.log('%%%%%%%%%%%%%%%%%%%%%%%%5');
+        axios.post(`http://localhost:9701/coco-api/smartid`, {identityCode: identityCode}, {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
             .then(res => {
                 console.log(res);
                 console.log(res.data);

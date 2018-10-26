@@ -9,32 +9,34 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import Button from "@material-ui/core/Button/Button";
 import UserStore from "app/stores/UserStore";
-import {inject} from "mobx-react";
 
 interface LoginPasswordProps {
     classes?: any;
     userStore: UserStore;
 }
 
-@inject('userStore')
 export class LoginPassword extends React.Component<LoginPasswordProps> {
     constructor(props) {
         super(props);
 
+        console.log(this.props.userStore)
         this.handleChangePersonalCode = this.handleChangePersonalCode.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.redirectToPage = this.redirectToPage.bind(this);
     }
 
     handleChangePersonalCode(event) {
-        console.log('PersonalCode: ', event.target.value)
+        console.log('PersonalCode: ', event.target.value);
+        this.props.userStore.user.personalCode = event.target.value;
     };
 
     handleChangePassword(event) {
-        console.log('Password: ', event.target.value)
+        console.log('Password: ', event.target.value);
+        this.props.userStore.user.password = event.target.value;
     };
     redirectToPage = () => {
-        window.location.href="/";
+        const user = this.props.userStore.user;
+        this.props.userStore.doLogIn({personalCode: user.personalCode, password: user.password})
     };
 
   render() {
@@ -75,7 +77,7 @@ export class LoginPassword extends React.Component<LoginPasswordProps> {
                   label="Remember me"
               />
               <Button
-                  onClick={() => { this.redirectToPage(); }}
+                  onClick={this.redirectToPage}
                   type="submit"
                   fullWidth
                   variant="contained"
