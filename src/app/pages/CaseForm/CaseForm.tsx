@@ -13,6 +13,9 @@ import RootContainer from "app/components/Container/RootContainer";
 import Send from "@material-ui/icons/Send";
 import SettingsBackupRestore from "@material-ui/icons/SettingsBackupRestore";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
+import CardContent from '@material-ui/core/es/CardContent/CardContent';
+import Card from "@material-ui/core/es/Card/Card";
+import CardActions from "@material-ui/core/es/CardActions/CardActions";
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
 
@@ -43,7 +46,7 @@ class CaseForm extends React.Component<DashboardProps> {
                             <Typography variant="h4" gutterBottom> New case </Typography>
                             <Chip
                                 avatar={<Avatar><FaceIcon/></Avatar>}
-                                label="John Doe (Cars Ltd)"
+                                label="Bill Gates (Cars Ltd)"
                                 onClick={this.handleChange}
                                 className={classes.chip}
                             />
@@ -54,7 +57,6 @@ class CaseForm extends React.Component<DashboardProps> {
                                 onClick={this.handleChange}
                                 className={classes.chip}
                             />
-
                         </Grid>
                         <Grid item xs={2} justify="flex-end">
                             <Button variant="contained" color="primary" className={classes.button}>
@@ -74,6 +76,55 @@ class CaseForm extends React.Component<DashboardProps> {
                                 />
                             </form>
                         </Paper>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <Card>
+                            <CardContent>
+                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    Claimant
+                                </Typography>
+                                <Typography variant="h5" component="h2">
+                                    Bill Gates (Cars Ltd)
+
+                                </Typography>
+                                <Typography className={classes.pos} color="textSecondary">
+                                    data
+                                </Typography>
+                                <Typography component="p">
+                                    data2
+                                    <br/>
+                                    {'"data3"'}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small">Learn More</Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Card>
+                            <CardContent>
+                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    Defendant
+                                </Typography>
+                                <Typography variant="h5" component="h2">
+                                    Elon Musk (Tesla Ltd)
+
+                                </Typography>
+                                <Typography className={classes.pos} color="textSecondary">
+                                    data
+                                </Typography>
+                                <Typography component="p">
+                                    data2
+                                    <br/>
+                                    {'"data3"'}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small">Learn More</Button>
+                            </CardActions>
+                        </Card>
                     </Grid>
 
                     <Grid container spacing={24}>
