@@ -12,8 +12,8 @@ class Dashboard extends React.Component<DashboardProps> {
   render() {
     const { classes } = this.props;
     return (
-      <>
-        <Grid container className={classes.root}>
+      <div className={classes.root}>
+        <Grid className={classes.container} container>
           <Grid item xs={6}>
             <ClaimsSubmitter />
           </Grid>
@@ -24,7 +24,7 @@ class Dashboard extends React.Component<DashboardProps> {
 
           </Grid>
         </Grid>
-      </>
+      </div>
     );
   }
 }
