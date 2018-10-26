@@ -124,12 +124,9 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
         return (
             <RootContainer>
-
                 <div style={centerAlign}>
                     <Grid justify="space-between" container spacing={24}>
                         <Grid justify="center" item xs={12}>
-
-
                             <Card>
                                 <CardContent>
                                     {!this.lastStep() &&
