@@ -41,6 +41,8 @@ module.exports = {
           ? 'ts-loader'
           : ['babel-loader?plugins=react-hot-loader/babel', 'ts-loader']
       },
+      //sass
+      { test: /\.(scss|sass)$/, loader: 'style-loader!css-loader!sass-loader' },
       // css
       {
         test: /\.css$/,
