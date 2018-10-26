@@ -2,6 +2,16 @@ import * as React from 'react';
 import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Header from 'app/components/Header/Header';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#2274a5', light: '#e9f1f7', dark: '#131b23' },
+    secondary: { main: '#ef6461', light: '#e7dfc6', dark: '#816c61' }
+  }
+});
 
 const styles = (theme: Theme) => createStyles({
   background: {
@@ -30,16 +40,23 @@ interface RootContainerProps extends WithStyles<typeof styles> {
 
 class RootContainer extends React.Component<RootContainerProps> {
 
+  componentDidMount() {
+    document.body.style.backgroundColor = theme.palette.primary.light;
+  }
+
   render() {
     const { classes, children } = this.props;
     return (
-      <div className={classes.background}>
-        <div className={classes.root}>
-          <div className={classes.container}>
-            {children}
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.background}>
+          <Header />
+          <div className={classes.root}>
+            <div className={classes.container}>
+              {children}
+            </div>
           </div>
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }

@@ -33,5 +33,8 @@ export const caseFormStyles = (theme: Theme) => createStyles({
         pos: {
             marginBottom: 12,
         },
+        avatar: {
+            margin: 10,
+        },
     }
 );

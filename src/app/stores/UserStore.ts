@@ -1,6 +1,7 @@
 import {observable} from 'mobx';
 import axios from 'axios';
 import User from "app/models/User";
+import * as moment from 'moment';
 
 class UserStore {
 
@@ -44,6 +45,9 @@ class UserStore {
             })
     }
 
+  public get currentTime() {
+    return moment().format('LLLL');
+  }
 }
 
 export default UserStore;

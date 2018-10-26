@@ -23,9 +23,20 @@ import ListItemText from '@material-ui/core/es/ListItemText/ListItemText';
 import InboxIcon from '@material-ui/icons/Inbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
 import Divider from "@material-ui/core/es/Divider/Divider";
+import MenuItem from '@material-ui/core/es/MenuItem/MenuItem';
+import Menu from "@material-ui/core/es/Menu/Menu";
+
+const judgesList = [
+    ['Foster Edward Abner', 49],
+    ['Roy John Jayce', 69],
+    ['Bert Alfred', 85],
+    ['Jefferson Archer Jarvis', 88],
+    ['Garth Beau', 79],
+    ['Wyatt Edwin', 91],
+    ['Samson Chauncey Lee', 17],
+];
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
-
 }
 
 class CaseForm extends React.Component<DashboardProps> {
@@ -34,6 +45,21 @@ class CaseForm extends React.Component<DashboardProps> {
         age: '',
         multiline: 'Controlled',
         currency: 'EUR',
+        anchorEl: null,
+        selectedIndex: 0,
+    };
+
+
+    handleClickListItem = event => {
+        this.setState({anchorEl: event.currentTarget});
+    };
+
+    handleMenuItemClick = (event, index) => {
+        this.setState({selectedIndex: index, anchorEl: null});
+    };
+
+    handleClose = () => {
+        this.setState({anchorEl: null});
     };
 
     handleChange = name => event => {
@@ -45,32 +71,11 @@ class CaseForm extends React.Component<DashboardProps> {
 
     render() {
         const {classes} = this.props;
+        const {anchorEl} = this.state;
         return (
             <RootContainer>
                 <Grid container spacing={24}>
-                    <Grid container direction="row" alignItems="center">
-                        <Grid item xs={10}>
-                            <Typography variant="h4" gutterBottom> New case </Typography>
-                            <Chip
-                                avatar={<Avatar><FaceIcon/></Avatar>}
-                                label="Bill Gates (Cars Ltd)"
-                                onClick={this.handleChange}
-                                className={classes.chip}
-                            />
-                            VS
-                            <Chip
-                                avatar={<Avatar><FaceIcon/></Avatar>}
-                                label="Elon Musk (Tesla Ltd)"
-                                onClick={this.handleChange}
-                                className={classes.chip}
-                            />
-                        </Grid>
-                        <Grid item xs={2} justify="flex-end">
-                            <Button variant="contained" color="primary" className={classes.button}>
-                                PRINT
-                            </Button>
-                        </Grid>
-                    </Grid>
+                    {this.getHeader(classes)}
 
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
@@ -78,23 +83,48 @@ class CaseForm extends React.Component<DashboardProps> {
                                 <List component="nav">
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <InboxIcon />
+                                            <InboxIcon/>
                                         </ListItemIcon>
-                                        <ListItemText primary="Inbox" />
+                                        <ListItemText primary="Status - Submitted"/>
                                     </ListItem>
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <DraftsIcon />
+                                            <DraftsIcon/>
                                         </ListItemIcon>
-                                        <ListItemText primary="Drafts" />
+                                        <ListItemText primary="Fee - PAID "/>
                                     </ListItem>
                                 </List>
-                                <Divider />
-                                <List component="nav">
-                                    <ListItem button>
-                                        <ListItemText primary="Trash" />
-                                    </ListItem>
-                                </List>
+                                <Grid item xs={12}>
+                                    {/*<Grid item xs={2}>*/}
+                                    {/*<DraftsIcon/>*/}
+                                    {/*</Grid>*/}
+                                    <Grid item xs={10}>
+
+                                        <div className={classes.root}>
+                                            <List component="nav">
+                                                <ListItem button onClick={this.handleClickListItem}>
+                                                    <ListItemText primary="Choose a judge"/>
+                                                </ListItem>
+                                            </List>
+                                            <Menu id="lock-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
+                                                {judgesList.map((option, index) => (
+                                                    <MenuItem
+                                                        key={option[0]}
+                                                        disabled={index === 0}
+                                                        selected={index === this.state.selectedIndex}
+                                                        onClick={event => this.handleMenuItemClick(event, index)}
+                                                    >
+                                                        <Avatar alt="Remy Sharp" src={"/assets/img/" + option[1] + ".jpg"} className={classes.avatar}/>
+
+                                                        {option[0]}
+                                                    </MenuItem>
+                                                ))}
+                                            </Menu>
+                                        </div>
+                                    </Grid>
+
+                                </Grid>
+                                <Divider/>
                             </div>
 
                             <form className={classes.container} noValidate autoComplete="off">
@@ -175,6 +205,32 @@ class CaseForm extends React.Component<DashboardProps> {
                 </Grid>
             </RootContainer>
         );
+    }
+
+    private getHeader(classes: any) {
+        return <Grid container direction="row" alignItems="center">
+            <Grid item xs={10}>
+                <Typography variant="h4" gutterBottom> New case </Typography>
+                <Chip
+                    avatar={<Avatar><FaceIcon/></Avatar>}
+                    label="Bill Gates (Cars Ltd)"
+                    onClick={this.handleChange}
+                    className={classes.chip}
+                />
+                VS
+                <Chip
+                    avatar={<Avatar><FaceIcon/></Avatar>}
+                    label="Elon Musk (Tesla Ltd)"
+                    onClick={this.handleChange}
+                    className={classes.chip}
+                />
+            </Grid>
+            <Grid item xs={2} justify="flex-end">
+                <Button variant="contained" color="primary" className={classes.button}>
+                    PRINT
+                </Button>
+            </Grid>
+        </Grid>;
     }
 }
 
