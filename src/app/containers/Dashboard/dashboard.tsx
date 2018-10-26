@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid/Grid';
 import ClaimsSubmitter from 'app/components/ClaimsSubmitter/ClaimsSubmitter';
 import RootContainer from 'app/components/Container/RootContainer';
 import CalendarCard from 'app/components/Calendar/Calendar';
+import ClientCases from 'app/components/ClientCases/ClientCases';
 
 interface DashboardProps extends WithStyles<typeof dashboardStyles> {
 
@@ -22,7 +23,7 @@ class Dashboard extends React.Component<DashboardProps> {
             <CalendarCard />
           </Grid>
           <Grid item xs={12}>
-
+            <ClientCases />
           </Grid>
         </Grid>
       </RootContainer>

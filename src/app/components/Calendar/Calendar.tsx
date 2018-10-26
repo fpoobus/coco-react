@@ -10,9 +10,10 @@ interface DashboardProps extends WithStyles<typeof calendarStyles> {
 
 class CalendarCard extends React.Component<DashboardProps> {
   render() {
+    const { classes } = this.props;
     return (
       <>
-        <Calendar calendarType="Arabic" />
+        <Calendar className={classes.root} calendarType="Arabic" />
       </>
     );
   }

@@ -31,10 +31,8 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
     );
   };
 
-  toggleClaims = () => {
-    const { claimsDataStore } = this.props;
-
-    claimsDataStore.setHasClaims(!claimsDataStore.hasClaims);
+  toNewClaim = () => {
+    window.location.assign('/new-claim');
   };
 
   render() {
@@ -47,7 +45,7 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
             {this.renderClaimsContent()}
           </CardContent>
           <CardActions className={classes.justifyCenter}>
-            <Button variant="contained" onClick={this.toggleClaims}>
+            <Button variant="contained" onClick={this.toNewClaim}>
               Submit a claim
             </Button>
           </CardActions>
