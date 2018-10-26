@@ -27,5 +27,11 @@ export const caseFormStyles = (theme: Theme) => createStyles({
         rightIcon: {
             marginLeft: theme.spacing.unit,
         },
+        title: {
+            fontSize: 14,
+        },
+        pos: {
+            marginBottom: 12,
+        },
     }
 );
