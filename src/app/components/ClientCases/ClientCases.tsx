@@ -13,6 +13,7 @@ const mockData = {
   evidence: 'something else',
   details1: 'something else',
   details2: 'something else'
+
 };
 
 interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
@@ -26,7 +27,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
     return (
       mockDataList.map((mockData, idx) => {
         return <>
-          <TableRow key={`$dataRow${idx}`}>
+          <TableRow key={idx}>
             <TableCell>{mockData.status}</TableCell>
             <TableCell>{mockData.evidence}</TableCell>
             <TableCell>{mockData.details1}</TableCell>
@@ -43,8 +44,10 @@ class ClientCases extends React.Component<ClientCasesProps> {
         <Paper>
           <Table>
             <TableHead>
-              {['Status', 'Evidence', 'Details', 'Details', '']
-                .map((title, idx) => <TableCell key={`title${idx}`}>{title}</TableCell>)}
+              <TableRow>
+                {['Status', 'Evidence', 'Details', 'Details', '']
+                  .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
+              </TableRow>
             </TableHead>
             <TableBody>
               {this.renderTableBody()}

@@ -4,6 +4,14 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = (theme: Theme) => createStyles({
+  background: {
+    backgroundImage: `url(${'../../../assets/img/skyline.svg'})`,
+    backgroundPosition: 'center bottom',
+    backgroundRepeat: 'no-repeat',
+    width: '100%',
+    height: '100%',
+    position: 'fixed'
+  },
   root: {
     display: 'flex',
     justifyContent: 'center',
@@ -25,9 +33,11 @@ class RootContainer extends React.Component<RootContainerProps> {
   render() {
     const { classes, children } = this.props;
     return (
-      <div className={classes.root}>
-        <div className={classes.container}>
-          {children}
+      <div className={classes.background}>
+        <div className={classes.root}>
+          <div className={classes.container}>
+            {children}
+          </div>
         </div>
       </div>
     );
