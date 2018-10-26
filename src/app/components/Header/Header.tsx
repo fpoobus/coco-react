@@ -1,21 +1,34 @@
 import * as React from 'react';
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import Toolbar from '@material-ui/core/Toolbar/Toolbar';
+import { Theme, WithStyles } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
+import createStyles from '@material-ui/core/styles/createStyles';
 
-export interface HeaderProps {
+
+export const styles = (theme: Theme) => createStyles({
+  root: {
+    marginBottom: '64px'
+  }
+});
+
+interface HeaderProps extends WithStyles<typeof styles> {
 }
 
-export interface HeaderState {
-  /* empty */
-}
-
-export class Header extends React.Component<HeaderProps, HeaderState> {
+class Header extends React.Component<HeaderProps> {
 
   render() {
+    const { classes } = this.props;
     return (
-      <header>
-        <h1>Header</h1>
-      </header>
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+
+          </Toolbar>
+        </AppBar>
+      </div>
     );
   }
 }
 
-export default Header;
+export default withStyles(styles)(Header);
