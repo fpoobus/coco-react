@@ -9,6 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography/Typography';
 import ClaimsDataStore from 'app/stores/ClaimsDataStore';
 import { inject, observer } from 'mobx-react';
+import CardActions from '@material-ui/core/CardActions/CardActions';
 
 
 interface ClaimsSubmitterProps extends WithStyles<typeof claimsSubmitterStyles> {
@@ -40,14 +41,16 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
     const { classes } = this.props;
     return (
       <>
-        <Card>
+        <Card className={classes.card}>
           <CardHeader title="My Claims" />
           <CardContent className={classes.justifyCenter}>
             {this.renderClaimsContent()}
+          </CardContent>
+          <CardActions className={classes.justifyCenter}>
             <Button variant="contained" onClick={this.toggleClaims}>
               Submit a claim
             </Button>
-          </CardContent>
+          </CardActions>
         </Card>
       </>
     );

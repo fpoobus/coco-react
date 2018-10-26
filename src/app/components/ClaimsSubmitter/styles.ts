@@ -5,5 +5,8 @@ export const claimsSubmitterStyles = (theme: Theme) => createStyles({
   justifyCenter: {
     display: 'flex',
     justifyContent: 'center'
+  },
+  card: {
+    minHeight: '20%'
   }
 });
