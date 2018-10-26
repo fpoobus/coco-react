@@ -16,6 +16,13 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import CardContent from '@material-ui/core/es/CardContent/CardContent';
 import Card from "@material-ui/core/es/Card/Card";
 import CardActions from "@material-ui/core/es/CardActions/CardActions";
+import List from "@material-ui/core/es/List/List";
+import ListItem from "@material-ui/core/es/ListItem/ListItem";
+import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
+import ListItemText from '@material-ui/core/es/ListItemText/ListItemText';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import Divider from "@material-ui/core/es/Divider/Divider";
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
 
@@ -67,6 +74,29 @@ class CaseForm extends React.Component<DashboardProps> {
 
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
+                            <div className={classes.root}>
+                                <List component="nav">
+                                    <ListItem button>
+                                        <ListItemIcon>
+                                            <InboxIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Inbox" />
+                                    </ListItem>
+                                    <ListItem button>
+                                        <ListItemIcon>
+                                            <DraftsIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Drafts" />
+                                    </ListItem>
+                                </List>
+                                <Divider />
+                                <List component="nav">
+                                    <ListItem button>
+                                        <ListItemText primary="Trash" />
+                                    </ListItem>
+                                </List>
+                            </div>
+
                             <form className={classes.container} noValidate autoComplete="off">
                                 <TextField
                                     id="standard-name"
@@ -110,7 +140,6 @@ class CaseForm extends React.Component<DashboardProps> {
                                 </Typography>
                                 <Typography variant="h5" component="h2">
                                     Elon Musk (Tesla Ltd)
-
                                 </Typography>
                                 <Typography className={classes.pos} color="textSecondary">
                                     data

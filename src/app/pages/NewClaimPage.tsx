@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import {RouteComponentProps} from 'react-router';
-import {Header} from '../components/Header/Header'
-import {Footer} from '../components/Footer/Footer';
 import NewClaimStore from "app/stores/NewClaimStore";
 import Claimant from "app/components/NewClaim/Step1/Claimant/Claimant";
 import NewClaim from "app/model/NewClaim";
@@ -19,6 +17,7 @@ import Documents from "app/components/NewClaim/Step3/Documents/Documents";
 import Payment from "app/components/NewClaim/Step4/Payment/Payment";
 import Summary from "app/components/NewClaim/Step5/Summary/Summary";
 import Paper from "@material-ui/core/Paper";
+import RootContainer from "app/components/Container/RootContainer";
 
 export interface NewClaimPageProps extends RouteComponentProps<any> {
     newClaimStore: NewClaimStore
@@ -53,67 +52,67 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
         return this.props.newClaimStore.step === 0 &&
             <>
 
-                <Grid container spacing={16}>
-                    <Grid item xs={12}>
-                        <Grid container justify="center">
-                            <Grid item>
+              <Grid container spacing={16}>
+                <Grid item xs={12}>
+                  <Grid container justify="center">
+                    <Grid item>
 
-                                <Paper style={padding} elevation={5}>
+                      <Paper style={padding} elevation={5}>
 
-                                    <Button variant="contained"
-                                            color="primary" onClick={this.props.newClaimStore.setOpenSectionNatural}>New Claim As A
-                                        Natural Entity
-                                    </Button>
-                                </Paper>
+                        <Button variant="contained"
+                                color="primary" onClick={this.props.newClaimStore.setOpenSectionNatural}>New Claim As A
+                          Natural Entity
+                        </Button>
+                      </Paper>
 
-                            </Grid>
-
-                            <Grid item>
-
-                                <Paper style={padding}  elevation={5}>
-
-                                    <Button variant="contained"
-                                            color="primary" onClick={this.props.newClaimStore.setOpenSectionLegal}>New Claim As A Legal
-                                        Entity
-                                    </Button>
-                                </Paper>
-
-                            </Grid>
-                        </Grid>
                     </Grid>
+
+                    <Grid item>
+
+                      <Paper style={padding} elevation={5}>
+
+                        <Button variant="contained"
+                                color="primary" onClick={this.props.newClaimStore.setOpenSectionLegal}>New Claim As A Legal
+                          Entity
+                        </Button>
+                      </Paper>
+
+                    </Grid>
+                  </Grid>
                 </Grid>
+              </Grid>
 
 
-                <Claimant newClaimStore={this.props.newClaimStore}/>
+              <Claimant newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
     renderStep2() {
         return this.props.newClaimStore.step === 1 &&
             <>
-                <ClaimInformation newClaimStore={this.props.newClaimStore}/>
+              <ClaimInformation newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
     renderStep3() {
         return this.props.newClaimStore.step === 2 &&
             <>
-                <Documents newClaimStore={this.props.newClaimStore}/>
+              <Documents newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
     renderStep4() {
         return this.props.newClaimStore.step === 3 &&
             <>
-                <Payment newClaimStore={this.props.newClaimStore}/>
+              <Payment newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
     renderStep5() {
         return this.props.newClaimStore.step === 4 &&
             <>
-                <Summary history={this.props.history} location={this.props.location} match={this.props.match}
-                         newClaimStore={this.props.newClaimStore}/>
+              <Summary history={this.props.history} location={this.props.location} match={this.props.match}
+                       newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
@@ -124,12 +123,11 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
     render() {
 
         return (
-            <>
-                <Header/>
+            <RootContainer>
 
                 <div style={centerAlign}>
                     <Grid justify="space-between" container spacing={24}>
-                        <Grid justify="center" item xs={8}>
+                        <Grid justify="center" item xs={12}>
 
 
                             <Card>
@@ -137,18 +135,18 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                     {!this.lastStep() &&
                                     <Stepper activeStep={this.props.newClaimStore.step} alternativeLabel>
 
-                                        <Step>
-                                            <StepLabel>Choose Claim Type</StepLabel>
-                                        </Step>
-                                        <Step>
-                                            <StepLabel>Claim Information</StepLabel>
-                                        </Step>
-                                        <Step>
-                                            <StepLabel>Documents</StepLabel>
-                                        </Step>
-                                        <Step>
-                                            <StepLabel>State Fee</StepLabel>
-                                        </Step>
+                                      <Step>
+                                        <StepLabel>Choose Claim Type</StepLabel>
+                                      </Step>
+                                      <Step>
+                                        <StepLabel>Claim Information</StepLabel>
+                                      </Step>
+                                      <Step>
+                                        <StepLabel>Documents</StepLabel>
+                                      </Step>
+                                      <Step>
+                                        <StepLabel>State Fee</StepLabel>
+                                      </Step>
                                     </Stepper>
                                     }
                                     <div>
@@ -166,21 +164,15 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                     {!this.lastStep() &&
                                     <Button onClick={this.props.newClaimStore.nextStep} variant="contained"
                                             color="primary">
-                                        Continue
+                                      Continue
                                     </Button>
                                     }
                                 </CardActions>
                             </Card>
-
-
                         </Grid>
                     </Grid>
-
                 </div>
-
-
-                <Footer/>
-            </>
+            </RootContainer>
         );
     }
 }
