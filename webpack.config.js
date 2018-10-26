@@ -42,7 +42,7 @@ module.exports = {
           : ['babel-loader', 'ts-loader']
       },
       //sass
-      { test: /\.(scss|sass)$/, loader: 'style-loader!css-loader!sass-loader' },
+      { test: /\.(scss|sass|less)$/, loader: 'style-loader!css-loader!sass-loader!less-loader' },
       // css
       {
         test: /\.css$/,
