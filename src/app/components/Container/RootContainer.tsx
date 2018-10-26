@@ -9,7 +9,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#2274a5', light: '#e9f1f7', dark: '#131b23' },
-    secondary: { main: '#2274a5', light: '#e7dfc6', dark: '#816c61' }
+    secondary: { main: '#ef6461', light: '#e7dfc6', dark: '#816c61' }
   }
 });
 
