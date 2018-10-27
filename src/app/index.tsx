@@ -11,6 +11,7 @@ import CaseForm from 'app/pages/CaseForm/CaseForm';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import {NewClaimPaymentCompletePage} from "app/pages/NewClaimPaymentCompletePage";
+import JudgmentForm from 'app/components/JudgmentForm/JudgmentForm';
 
 export const theme = createMuiTheme({
   palette: {
@@ -33,6 +34,7 @@ export const App = hot(module)(({ history }) => (
             <Route exact path="/new-claim" component={NewClaimPage} />
             <Route exact path="/new-claim/payment-complete" component={NewClaimPaymentCompletePage} />
           <Route path="/case" component={CaseForm} />
+          <Route path="/judgment-form" component={JudgmentForm} />
         </Switch>
       </Router>
     </Root>
