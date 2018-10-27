@@ -4,8 +4,8 @@ import { caseFormStyles } from 'app/pages/CaseForm/styles';
 import Grid from '@material-ui/core/Grid/Grid';
 import Paper from '@material-ui/core/es/Paper/Paper';
 import Avatar from '@material-ui/core/Avatar/Avatar';
-import { Chip } from '@material-ui/core';
-import FaceIcon from '@material-ui/icons/Face';
+// import { Chip } from '@material-ui/core';
+// import FaceIcon from '@material-ui/icons/Face';
 import Typography from '@material-ui/core/es/Typography/Typography';
 import Button from '@material-ui/core/es/Button/Button';
 import RootContainer from 'app/components/Container/RootContainer';
@@ -219,26 +219,25 @@ class CaseForm extends React.Component<DashboardProps> {
       <Grid item xs={10}>
         <Grid container direction="row" alignItems="flex-start">
 
-          <Grid container item xs={4} justify="flex-end">
-            <Typography variant="h4" gutterBottom>Case: {courtCase.caseNumber}</Typography>
-          </Grid>
           <Grid container item xs={3} justify="flex-end">
-            <Chip
-              avatar={<Avatar><FaceIcon /></Avatar>}
-              label="Bill Gates (Cars Ltd)"
-              onClick={this.handleChange}
-              className={classes.chip}
-            />
-            {/*VS*/}
+            <Typography variant="h5" gutterBottom>Case: {courtCase.caseNumber}</Typography>
           </Grid>
-          <Grid container item xs={3} justify="flex-end">
-            <Chip
-              avatar={<Avatar><FaceIcon /></Avatar>}
-              label="Elon Musk (Tesla Ltd)"
-              onClick={this.handleChange}
-              className={classes.chip}
-            />
-          </Grid>
+          {/*<Grid container item xs={5} justify="flex-end">*/}
+            {/*<Chip*/}
+              {/*avatar={<Avatar><FaceIcon /></Avatar>}*/}
+              {/*label={courtCase.claimant.name}*/}
+              {/*onClick={this.handleChange}*/}
+              {/*className={classes.chip}*/}
+            {/*/>*/}
+          {/*</Grid>*/}
+          {/*<Grid container item xs={3} justify="flex-end">*/}
+            {/*<Chip*/}
+              {/*avatar={<Avatar><FaceIcon /></Avatar>}*/}
+              {/*label={courtCase.claimant.name}*/}
+              {/*onClick={this.handleChange}*/}
+              {/*className={classes.chip}*/}
+            {/*/>*/}
+          {/*</Grid>*/}
         </Grid>
 
       </Grid>
