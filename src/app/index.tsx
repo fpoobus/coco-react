@@ -6,12 +6,12 @@ import Dashboard from 'app/containers/Dashboard/dashboard';
 import { NewClaimPage } from 'app/pages/NewClaimPage';
 
 import Login from 'app/containers/Login/Login';
-import Hearing from 'app/containers/HearingForm/HearingForm'
+import Hearing from 'app/containers/HearingForm/HearingForm';
 import CaseForm from 'app/pages/CaseForm/CaseForm';
 
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import {NewClaimPaymentCompletePage} from "app/pages/NewClaimPaymentCompletePage";
+import { NewClaimPaymentCompletePage } from 'app/pages/NewClaimPaymentCompletePage';
 import JudgmentForm from 'app/components/JudgmentForm/JudgmentForm';
 
 export const theme = createMuiTheme({
@@ -32,11 +32,11 @@ export const App = hot(module)(({ history }) => (
         <Switch>
           <Route path="/login" component={Login} />
           <Route exact path="/" component={Dashboard} />
-            <Route exact path="/new-claim" component={NewClaimPage} />
-            <Route exact path="/new-claim/payment-complete" component={NewClaimPaymentCompletePage} />
+          <Route exact path="/new-claim" component={NewClaimPage} />
+          <Route exact path="/new-claim/payment-complete" component={NewClaimPaymentCompletePage} />
           <Route path="/case" component={CaseForm} />
           <Route path="/judgment-form" component={JudgmentForm} />
-            <Route path="/hearing" component={Hearing} />
+          <Route path="/hearing" component={Hearing} />
         </Switch>
       </Router>
     </Root>
