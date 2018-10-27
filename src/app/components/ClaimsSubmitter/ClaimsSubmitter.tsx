@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography/Typography';
 import ClaimsDataStore from 'app/stores/ClaimsDataStore';
 import { inject, observer } from 'mobx-react';
 import CardActions from '@material-ui/core/CardActions/CardActions';
+import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 
 
 interface ClaimsSubmitterProps extends WithStyles<typeof claimsSubmitterStyles> {
@@ -19,6 +21,8 @@ interface ClaimsSubmitterProps extends WithStyles<typeof claimsSubmitterStyles> 
 @inject('claimsDataStore')
 @observer
 class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
+
+  newClaimLink = props => <Link to="/new-claim" {...props} />;
 
   renderClaimsContent = (): JSX.Element => {
     const { claimsDataStore } = this.props;
@@ -32,7 +36,8 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
   };
 
   toNewClaim = () => {
-    window.location.assign('/new-claim');
+    //window.location.assign('/new-claim');
+    return <Redirect push to="/new-claim" />;
   };
 
   render() {
@@ -45,7 +50,7 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
             {this.renderClaimsContent()}
           </CardContent>
           <CardActions className={classes.justifyCenter}>
-            <Button variant="contained" onClick={this.toNewClaim}  color="primary">
+            <Button variant="contained" component={this.newClaimLink} color="primary">
               Submit a claim
             </Button>
           </CardActions>
