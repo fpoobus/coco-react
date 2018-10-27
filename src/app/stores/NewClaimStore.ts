@@ -1,5 +1,5 @@
 import {observable, action, computed} from "mobx";
-import NewClaim, {PersonResponse} from "app/model/NewClaim";
+import NewClaim, {DefendantResponse, PersonResponse} from "app/model/NewClaim";
 
 export class NewClaimStore {
 
@@ -17,6 +17,12 @@ export class NewClaimStore {
 
     @observable
     public personResponse: PersonResponse;
+
+    @observable
+    public defendantResponse: DefendantResponse;
+
+    @observable
+    public defendantRegistryCode: string;
 
     constructor() {
         this.step = 0;
@@ -71,6 +77,12 @@ export class NewClaimStore {
     setLoading = (loading) => {
         this.loading = loading;
     };
+
+    @action
+    setDefendantRegistryCode = (code) => {
+        this.defendantRegistryCode = code;
+    };
+
 }
 
 export default NewClaimStore;

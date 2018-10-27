@@ -7,36 +7,46 @@ import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import Input from "@material-ui/core/Input/Input";
 import Button from "@material-ui/core/Button/Button";
 import UserStore from "app/stores/UserStore";
+import VerificationModal from "app/components/Modals/VerificationModal";
+import {observer} from "mobx-react";
+import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
+import Grid from "@material-ui/core/Grid/Grid";
 
 interface LoginSmartIdProps {
     classes?: any;
     userStore: UserStore;
 }
 
+@observer
 export class LoginSmartId extends React.Component<LoginSmartIdProps> {
 
     constructor(props) {
         super(props);
 
-        console.log(this.props.userStore)
+        console.log(this.props.userStore);
         this.handleChangePersonalCode = this.handleChangePersonalCode.bind(this);
         this.redirectToPage = this.redirectToPage.bind(this);
     }
 
+    state = {
+        verificationCode: this.props.userStore.verificationCode,
+    };
+
     handleChangePersonalCode(event) {
-        console.log('PersonalCode: ', event.target.value);
         this.props.userStore.personalCode = event.target.value;
     };
 
-    redirectToPage = () => {
-        console.log('%%%%%%%%%%%%%%%%5')
+    redirectToPage = async () => {
         const personalCode = this.props.userStore.personalCode;
-        console.log(this.props.userStore.personalCode)
-        console.log(personalCode)
-        this.props.userStore.doSmartIdLogIn(personalCode);
+        await this.props.userStore.doSmartIdLogIn(personalCode);
+        const sessionId = this.props.userStore.sessionId;
+        console.log(sessionId);
+        await this.props.userStore.pollSmartId(sessionId);
     };
 
-    render() {
+    renderLoginForm = () => {
+
+
         const { classes } = this.props;
         return (
             <React.Fragment>
@@ -68,10 +78,38 @@ export class LoginSmartId extends React.Component<LoginSmartIdProps> {
                     >
                         Sign in
                     </Button>
+                    <VerificationModal userStore={this.props.userStore}/>
                 </form>
             </React.Fragment>
         );
-    }
+    };
+
+    renderVerificationStep = () => {
+        const { classes } = this.props;
+
+        return (
+          <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+          >
+
+              <Grid container xs={6} justify="center" alignItems="center">
+                  <CircularProgress size={50}/>
+                  <br/>
+                  <h3 className={classes.verificationText}>Verification Code</h3>
+                  <h1>{this.props.userStore.verificationCode}</h1>
+              </Grid>
+          </Grid>
+      );
+    };
+
+    render() {
+        return (
+            this.props.userStore.verificationCode ? this.renderVerificationStep() : this.renderLoginForm()
+        );
+    };
 }
 
 export default LoginSmartId;

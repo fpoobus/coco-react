@@ -3,16 +3,6 @@ import createStyles from '@material-ui/core/styles/createStyles';
 
 export const caseFormStyles = (theme: Theme) => createStyles({
         root: {},
-        container: {
-            display: 'flex',
-            flexWrap: 'wrap',
-        },
-        textField: {
-            marginLeft: theme.spacing.unit,
-            marginRight: theme.spacing.unit,
-            width: 200,
-
-        },
         paper: {
             padding: theme.spacing.unit * 2,
             textAlign: 'center',
@@ -23,6 +13,9 @@ export const caseFormStyles = (theme: Theme) => createStyles({
         },
         button: {
             margin: theme.spacing.unit,
+            '&:hover': {
+                backgroundColor: '#e8d081',
+            },
         },
         rightIcon: {
             marginLeft: theme.spacing.unit,
@@ -32,9 +25,6 @@ export const caseFormStyles = (theme: Theme) => createStyles({
         },
         pos: {
             marginBottom: 12,
-        },
-        avatar: {
-            margin: 10,
-        },
+        }
     }
 );
