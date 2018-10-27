@@ -50,7 +50,7 @@ class UserStore {
             .then(res => {
                 if(res.status == 200){
                     this.fillUserInfoLogin(res.data);
-                    window.location.href = "/dashboard"
+                    window.location.href = "/"
                 }
             })
     };
@@ -77,7 +77,7 @@ class UserStore {
             .then(res => {
                 if(res.data){
                     this.fillUserInfoSmartId(res.data);
-                    window.location.href = "/dashboard";
+                    window.location.href = "/";
                 }
             })
     };
