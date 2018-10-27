@@ -6,6 +6,8 @@ import {runInAction} from 'mobx';
 import axios from "axios";
 import {DefendantResponse} from "app/model/NewClaim";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 
 export interface DefendantProps {
     newClaimStore: NewClaimStore
@@ -66,9 +68,14 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
             </Button>
 
             {this.props.newClaimStore.defendantResponse && <>
-                <p>{this.props.newClaimStore.defendantResponse.name}</p>
-                <p>{this.props.newClaimStore.defendantResponse.registryCode}</p>
-                <p>{this.props.newClaimStore.defendantResponse.activities.join(", ")}</p>
+                <br/><br/>
+                <Typography component="h2" variant="h6" gutterBottom>
+                    Found the following legal entity:
+                </Typography>
+                <Divider light/>
+                <p><strong>Name: </strong>{this.props.newClaimStore.defendantResponse.name}</p>
+                <p><strong>Registry Code: </strong>{this.props.newClaimStore.defendantResponse.registryCode}</p>
+                <p><strong>Activities: </strong>{this.props.newClaimStore.defendantResponse.activities.join(", ")}</p>
             </>}
 
         </>;
