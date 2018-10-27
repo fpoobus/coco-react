@@ -88,8 +88,13 @@ class Header extends React.Component<IProps & HeaderProps> {
                 indicator: classes.indicator
               }}
             >            
+<<<<<<< HEAD
               <Tab label="Dashboard" value="/"  className={classes.colorWhite} />
               <Tab label="Claims" value="/new-claim" className={classes.colorWhite} />
+=======
+              <Tab label="Dashboard" className={classes.colorWhite} />
+              <Tab label="Claims" className={classes.colorWhite} />
+>>>>>>> 010a14c869207533c57e957b940190cc2d30345b
             </Tabs>
             <MenuItem className={classes.typoContainer}>
               <Typography className={classes.typo}>LOG OUT</Typography>
