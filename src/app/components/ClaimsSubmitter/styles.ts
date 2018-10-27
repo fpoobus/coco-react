@@ -8,5 +8,10 @@ export const claimsSubmitterStyles = (theme: Theme) => createStyles({
   },
   card: {
     minHeight: 300
+  },
+  btnHover:{
+    '&:hover': {
+      backgroundColor: '#e8d081',
+  },
   }
 });

@@ -23,6 +23,8 @@ import CheckIcon from '@material-ui/icons/Check';
 import Divider from "@material-ui/core/es/Divider/Divider";
 import MenuItem from '@material-ui/core/es/MenuItem/MenuItem';
 import Menu from "@material-ui/core/es/Menu/Menu";
+import {inject, observer} from "mobx-react";
+import CaseStore from "app/stores/CaseStore";
 
 const judgesList = [
     ['Justice Foster Edward Abner', 49],
@@ -35,12 +37,15 @@ const judgesList = [
 ];
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
+    caseStore?: CaseStore;
 }
 
-function getAvatar(option, classes:any) {
-    return <Avatar alt="Remy Sharp" src={"/assets/img/" + option[1] + ".jpg"} className={classes.avatar}/>;
+function getAvatar(option, classes: any) {
+    return <Avatar alt="Justice" src={"/assets/img/" + option[1] + ".jpg"} className={classes.avatar}/>;
 }
 
+@inject('caseStore')
+@observer
 class CaseForm extends React.Component<DashboardProps> {
     state = {
         name: 'Case type',
@@ -50,7 +55,6 @@ class CaseForm extends React.Component<DashboardProps> {
         anchorEl: null,
         selectedIndex: -1,
     };
-
 
     handleClickListItem = event => {
         this.setState({anchorEl: event.currentTarget});
@@ -70,7 +74,6 @@ class CaseForm extends React.Component<DashboardProps> {
         });
     };
 
-
     render() {
         const {classes} = this.props;
         const {anchorEl} = this.state;
@@ -78,7 +81,6 @@ class CaseForm extends React.Component<DashboardProps> {
             <RootContainer>
                 <Grid container spacing={24}>
                     {this.getHeader(classes)}
-
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <div className={classes.root}>
@@ -97,9 +99,6 @@ class CaseForm extends React.Component<DashboardProps> {
                                     </ListItem>
                                 </List>
                                 <Grid item xs={12}>
-                                    {/*<Grid item xs={2}>*/}
-                                    {/*<DraftsIcon/>*/}
-                                    {/*</Grid>*/}
                                     <Grid item xs={10}>
 
                                         <div className={classes.root}>
@@ -116,10 +115,8 @@ class CaseForm extends React.Component<DashboardProps> {
                                                     <MenuItem
                                                         key={option[0]}
                                                         selected={index === this.state.selectedIndex}
-                                                        onClick={event => this.handleMenuItemClick(event, index)}
-                                                    >
+                                                        onClick={event => this.handleMenuItemClick(event, index)}>
                                                         {getAvatar(option, classes)}
-
                                                         {option[0]}
                                                     </MenuItem>
                                                 ))}
@@ -202,7 +199,7 @@ class CaseForm extends React.Component<DashboardProps> {
 
                     <Grid container spacing={24}>
                         <Grid item xs={12}>
-                            <Button variant="contained" color="primary" className={classes.button}>
+                            <Button  variant="contained" color="primary" className={classes.button}>
                                 Register
                                 <Send className={classes.rightIcon}/>
                             </Button>
@@ -227,7 +224,7 @@ class CaseForm extends React.Component<DashboardProps> {
                 <Grid container direction="row" alignItems="flex-start">
 
                     <Grid item xs={3} justify="flex-end">
-                        <Typography variant="h4" gutterBottom style={{ marginLeft: 10 }}> New case </Typography>
+                        <Typography variant="h4" gutterBottom style={{marginLeft: 10}}> New case </Typography>
                     </Grid>
                     <Grid item xs={3} justify="flex-end">
                         <Chip

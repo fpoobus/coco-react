@@ -9,6 +9,11 @@ import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import CaseStore from "app/stores/CaseStore";
 import {inject, observer} from "mobx-react";
+import Button from "@material-ui/core/Button/Button";
+import Typography from "@material-ui/core/es/Typography/Typography";
+import Grid from "@material-ui/core/Grid/Grid";
+import {Link} from 'react-router-dom';
+
 
 interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
     caseStore?: CaseStore;
@@ -17,20 +22,27 @@ interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
 @inject('caseStore')
 @observer
 class ClientCases extends React.Component<ClientCasesProps> {
+    newClaimLink = (props, id) => <Link to={"/case?id=" + id} {...props} />;
 
     renderTableBody = () => {
-        const {caseStore} = this.props;
+        const {caseStore, classes} = this.props;
 
         const caseData = caseStore.casesData;
         return (
-            caseData.map((mockData, idx) =>
-                    <TableRow key={idx} >
-                        <TableCell>{mockData.status}</TableCell>
-                        <TableCell>{mockData.type}</TableCell>
-                        <TableCell>{mockData.claimantId}</TableCell>
-                        <TableCell>{mockData.defendantId}</TableCell>
-                        <TableCell>{mockData.description}</TableCell>
+            caseData.map((courtCase, idx) => {
+                    return <TableRow key={idx}>
+                        <TableCell>{courtCase.status}</TableCell>
+                        <TableCell>{courtCase.type}</TableCell>
+                        <TableCell>{courtCase.claimantId}</TableCell>
+                        <TableCell>{courtCase.defendantId}</TableCell>
+                        <TableCell>{courtCase.description}</TableCell>
+                        <TableCell>
+                            <Button variant="contained" className={classes.btn} component={props => this.newClaimLink(props, courtCase.id)} color="primary">
+                                Go to case
+                            </Button>
+                        </TableCell>
                     </TableRow>
+                }
             )
         );
     };
@@ -44,10 +56,19 @@ class ClientCases extends React.Component<ClientCasesProps> {
         return (
             <>
                 <Paper>
+                    <Grid container spacing={24}>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" gutterBottom style={{marginLeft: 20}}>
+                                New cases
+                            </Typography>
+
+                        </Grid>
+
+                    </Grid>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                {['Status', 'Type', 'Calimant', 'Defendant', 'Description']
+                                {['Status', 'Type', 'Calimant', 'Defendant', 'Description', '']
                                     .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
                             </TableRow>
                         </TableHead>
