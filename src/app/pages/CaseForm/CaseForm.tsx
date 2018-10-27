@@ -25,6 +25,7 @@ import MenuItem from '@material-ui/core/es/MenuItem/MenuItem';
 import Menu from "@material-ui/core/es/Menu/Menu";
 import {inject, observer} from "mobx-react";
 import CaseStore from "app/stores/CaseStore";
+import {Link} from 'react-router-dom';
 
 const judgesList = [
     ['Justice Foster Edward Abner', 49],
@@ -48,10 +49,6 @@ function getAvatar(option, classes: any) {
 @observer
 class CaseForm extends React.Component<DashboardProps> {
     state = {
-        name: 'Case type',
-        age: '',
-        multiline: 'Controlled',
-        currency: 'EUR',
         anchorEl: null,
         selectedIndex: -1,
     };
@@ -74,13 +71,20 @@ class CaseForm extends React.Component<DashboardProps> {
         });
     };
 
+    homeLink = props => <Link to="/" {...props} />;
+
     render() {
-        const {classes} = this.props;
+        const {classes, caseStore} = this.props;
         const {anchorEl} = this.state;
+        let caseId = new URLSearchParams(window.location.search).get('id');
+        const courtCase = caseStore.casesData.find(c => {
+            return c.id === parseInt(caseId);
+        });
+
         return (
             <RootContainer>
                 <Grid container spacing={24}>
-                    {this.getHeader(classes)}
+                    {this.getHeader(classes, courtCase)}
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
                             <div className={classes.root}>
@@ -89,13 +93,17 @@ class CaseForm extends React.Component<DashboardProps> {
                                         <ListItemIcon>
                                             <CheckIcon/>
                                         </ListItemIcon>
-                                        <ListItemText primary="Status - Submitted"/>
+                                        <ListItemText>
+                                            Status - {courtCase.status}
+                                        </ListItemText>
                                     </ListItem>
                                     <ListItem button>
                                         <ListItemIcon>
                                             <CheckIcon/>
                                         </ListItemIcon>
-                                        <ListItemText primary="Fee - PAID "/>
+                                        <ListItemText>
+                                            Fee - {courtCase.fee} {courtCase.paymentStatus}
+                                        </ListItemText>
                                     </ListItem>
                                 </List>
                                 <Grid item xs={12}>
@@ -132,18 +140,7 @@ class CaseForm extends React.Component<DashboardProps> {
                             </Typography>
 
                             <Typography component="p" align={"left"}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nisl diam, dignissim ut lorem a, ullamcorper maximus nisi.
-                                Curabitur quis lectus interdum, facilisis eros sit amet, laoreet ipsum. Cras rhoncus sapien eget justo finibus lacinia.
-                                Phasellus eleifend tincidunt viverra. Suspendisse volutpat condimentum velit quis aliquet. Interdum et malesuada fames ac ante
-                                ipsum primis in faucibus. Fusce rutrum gravida tortor. Nulla facilisi. In rhoncus bibendum nisi sit amet condimentum. Integer
-                                sed tristique mi. In consequat sit amet turpis vitae tincidunt. Phasellus consectetur finibus dapibus. Pellentesque tincidunt
-                                tristique arcu. Integer sapien ipsum, dictum vitae nunc in, placerat mattis dolor. Donec orci risus, rutrum quis eros sed,
-                                pharetra rhoncus nisl.
-
-                                Mauris fermentum ac nisl sit amet semper. Quisque quis fringilla tortor. Donec egestas tellus vitae ornare dapibus. Suspendisse
-                                gravida eget lectus sit amet pulvinar. Suspendisse pulvinar facilisis ex, et viverra est feugiat vulputate. Quisque tincidunt
-                                blandit nisl, in sollicitudin lectus ullamcorper et. Integer volutpat ultrices massa sit amet efficitur. Etiam mollis convallis
-                                urna non molestie. Fusce vitae arcu odio. Nulla vel elementum erat.
+                                {courtCase.description}
                             </Typography>
 
                         </Paper>
@@ -207,7 +204,7 @@ class CaseForm extends React.Component<DashboardProps> {
                                 Return to claimant
                                 <SettingsBackupRestore/>
                             </Button>
-                            <Button variant="contained" color="primary" className={classes.button}>
+                            <Button variant="contained" color="primary" component={this.homeLink} className={classes.button}>
                                 <KeyboardArrowLeft/>
                                 Back
                             </Button>
@@ -218,24 +215,24 @@ class CaseForm extends React.Component<DashboardProps> {
         );
     }
 
-    private getHeader(classes: any) {
+    private getHeader(classes: any, courtCase: any) {
         return <Grid container direction="row" alignItems="center">
             <Grid item xs={10}>
                 <Grid container direction="row" alignItems="flex-start">
 
-                    <Grid item xs={3} justify="flex-end">
-                        <Typography variant="h4" gutterBottom style={{marginLeft: 10}}> New case </Typography>
+                    <Grid container item xs={4} justify="flex-end">
+                        <Typography variant="h4" gutterBottom>Case: {courtCase.caseNumber}</Typography>
                     </Grid>
-                    <Grid item xs={3} justify="flex-end">
+                    <Grid container item xs={3} justify="flex-end">
                         <Chip
                             avatar={<Avatar><FaceIcon/></Avatar>}
                             label="Bill Gates (Cars Ltd)"
                             onClick={this.handleChange}
                             className={classes.chip}
                         />
-                        VS
+                        {/*VS*/}
                     </Grid>
-                    <Grid item xs={3} justify="flex-end">
+                    <Grid container item xs={3} justify="flex-end">
                         <Chip
                             avatar={<Avatar><FaceIcon/></Avatar>}
                             label="Elon Musk (Tesla Ltd)"
@@ -246,7 +243,7 @@ class CaseForm extends React.Component<DashboardProps> {
                 </Grid>
 
             </Grid>
-            <Grid item xs={2} justify="flex-end" alignItems={"flex-end"} alignContent={"flex-end"}>
+            <Grid container item xs={2} justify="flex-end" alignItems={"flex-end"} alignContent={"flex-end"}>
                 <Button variant="contained" color="primary" className={classes.button}>
                     PRINT
                 </Button>
