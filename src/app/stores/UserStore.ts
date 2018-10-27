@@ -7,13 +7,13 @@ class UserStore {
 
     constructor() {
         let user = new User();
-        this.user = user;
         if (localStorage.getItem("firstName")) {
             user.firstName = localStorage.getItem("firstName");
             user.lastName = localStorage.getItem("lastName");
             user.personalCode = localStorage.getItem("personalCode");
-            user.password = localStorage.getItem("password");
+            console.log(user);
         }
+        this.user = user;
     }
 
     @observable
@@ -49,6 +49,7 @@ class UserStore {
         })
             .then(res => {
                 if(res.status == 200){
+                    this.fillUserInfoLogin(res.data);
                     window.location.href = "/dashboard"
                 }
             })
@@ -74,8 +75,33 @@ class UserStore {
             }
         })
             .then(res => {
-                console.log(res.data);
+                if(res.data){
+                    this.fillUserInfoSmartId(res.data);
+                    window.location.href = "/dashboard";
+                }
             })
+    };
+
+    public fillUserInfoLogin = (data: any) => {
+        let user = new User();
+        user.personalCode = data.personalCode;
+        user.firstName = data.firstName;
+        user.lastName = data.lastName;
+        this.user = user;
+        localStorage.setItem('personalCode', user.personalCode);
+        localStorage.setItem('firstName', user.firstName);
+        localStorage.setItem('lastName', user.lastName);
+    };
+
+    public fillUserInfoSmartId = (data: any) => {
+        let user = new User();
+        user.personalCode = data.identityCode;
+        user.firstName = data.givenName;
+        user.lastName = data.surName;
+        this.user = user;
+        localStorage.setItem('personalCode', user.personalCode);
+        localStorage.setItem('firstName', user.firstName);
+        localStorage.setItem('lastName', user.lastName);
     };
 
     public get currentTime() {
