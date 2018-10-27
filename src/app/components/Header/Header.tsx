@@ -78,8 +78,7 @@ class Header extends React.Component<HeaderProps> {
               classes={{
                 indicator: classes.indicator
               }}
-            >
-              
+            >            
               <Tab label="Dashboard" className={classes.colorWhite} />
               <Tab label="Claims" className={classes.colorWhite} />
             </Tabs>
