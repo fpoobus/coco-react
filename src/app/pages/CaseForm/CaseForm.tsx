@@ -84,6 +84,7 @@ class CaseForm extends React.Component<DashboardProps> {
     const courtCase = caseStore.casesData.find(c => {
       return c.id === parseInt(caseId);
     });
+    console.log(">>>>>>>>>>>>>>", courtCase);
 
     return (
       <RootContainer>
@@ -157,16 +158,12 @@ class CaseForm extends React.Component<DashboardProps> {
                   Claimant
                 </Typography>
                 <Typography variant="h5" component="h2">
-                  Bill Gates (Cars Ltd)
+                  {courtCase.claimant.name} {courtCase.claimant.registryCode}
 
                 </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  data
-                </Typography>
                 <Typography component="p">
-                  data2
+                    {courtCase.claimant.activities[0]}
                   <br />
-                  {'"data3"'}
                 </Typography>
               </CardContent>
               <CardActions>
@@ -181,15 +178,13 @@ class CaseForm extends React.Component<DashboardProps> {
                   Defendant
                 </Typography>
                 <Typography variant="h5" component="h2">
-                  Elon Musk (Tesla Ltd)
+                  {courtCase.claimant.name} {courtCase.claimant.registryCode}
                 </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  data
-                </Typography>
+
                 <Typography component="p">
-                  data2
+                    {courtCase.claimant.activities[0]}
                   <br />
-                  {'"data3"'}
+
                 </Typography>
               </CardContent>
               <CardActions>

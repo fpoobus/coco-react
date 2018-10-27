@@ -32,7 +32,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
       caseData.map((courtCase, idx) => {
           return <TableRow key={idx}>
             <TableCell>{courtCase.status}</TableCell>
-            <TableCell>{courtCase.type}</TableCell>
+            <TableCell>{courtCase.caseType}</TableCell>
             <TableCell>{courtCase.claimantId}</TableCell>
             <TableCell>{courtCase.defendantId}</TableCell>
             <TableCell>{courtCase.description}</TableCell>
