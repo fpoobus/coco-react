@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar/AppBar';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
-import { Theme, WithStyles, Typography, MenuItem } from '@material-ui/core';
+import { MenuItem, Theme, Typography, WithStyles } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import AccountBalance from '@material-ui/icons/AccountBalance';
@@ -16,10 +16,10 @@ import RouterStore from 'app/stores/RouterStore';
 export const styles = (theme: Theme) =>
   createStyles({
     root: {
-      marginBottom: '64px',
+      marginBottom: '64px'
     },
     bar: {
-      backgroundColor:'#131b23'
+      backgroundColor: '#131b23'
     },
     typo: {
       color: theme.palette.primary.light,
@@ -46,7 +46,6 @@ interface HeaderProps extends WithStyles<typeof styles> {
   routerStore?: RouterStore
 }
 
-
 @inject('routerStore')
 @observer
 class Header extends React.Component<HeaderProps> {
@@ -64,41 +63,37 @@ class Header extends React.Component<HeaderProps> {
   };
 
 
-
   toNewClaim = props => <Link to="/new-claim" {...props} />;
 
   toDashboard = props => <Link to="/" {...props} />;
 
   handleChange = (event, value) => {
-    this.setState({
-      value: value,
-    });
+    const { routerStore } = this.props;
+    routerStore.setCurrentTab(value);
   };
-  setSelectedTab
 
   render() {
-    const { classes } = this.props;
-    const { routerStore } = this.props;
+    const { classes, routerStore } = this.props;
     return (
       <div className={classes.root}>
         <AppBar className={classes.bar} position="static">
           <Toolbar className={classes.justifyCenter}>
-            <MenuItem className={classes.typoContainer}  component={this.toDashboard} >
+            <MenuItem className={classes.typoContainer} component={this.toDashboard} onClick={() => routerStore.setCurrentTab('dashboard')}>
               <AccountBalance
                 className={classes.typo}
                 aria-owns={this.state.anchorEl ? 'simple-menu' : null}
-                aria-haspopup="true"                      
+                aria-haspopup="true"
               />
             </MenuItem>
             <Tabs
-              value={routerStore.currentTab !== undefined ? routerStore.currentTab : 0}
-           onChange= {this.handleChange}
+              value={routerStore.currentTab ? routerStore.currentTab : 'dashboard'}
+              onChange={this.handleChange}
               classes={{
                 indicator: classes.indicator
               }}
-            >            
-              <Tab label="Dashboard" value="0" component={this.toDashboard} className={classes.colorWhite}   />
-              <Tab label="Claims"  value="1" component={this.toNewClaim} className={classes.colorWhite} />
+            >
+              <Tab label="Dashboard" value="dashboard" component={this.toDashboard} className={classes.colorWhite} />
+              <Tab label="Claims" value="newClaim" component={this.toNewClaim} className={classes.colorWhite} />
             </Tabs>
             <MenuItem className={classes.typoContainer}>
               <Typography className={classes.typo}>LOG OUT</Typography>

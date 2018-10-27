@@ -64,7 +64,8 @@ class ClientCases extends React.Component<ClientCasesProps> {
 
             </Grid>
 
-          </Grid>
+         
+          <Grid item xs={12}>
           <Table>
             <TableHead>
               <TableRow>
@@ -76,6 +77,8 @@ class ClientCases extends React.Component<ClientCasesProps> {
               {this.renderTableBody()}
             </TableBody>
           </Table>
+          </Grid>
+          </Grid>
         </Paper>
       </>
     );

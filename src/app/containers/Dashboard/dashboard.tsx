@@ -16,10 +16,10 @@ class Dashboard extends React.Component<DashboardProps> {
     return (
       <RootContainer>
         <Grid container spacing={16}>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <ClaimsSubmitter />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={6}>
             <CalendarCard />
           </Grid>
           <Grid item xs={12}>
