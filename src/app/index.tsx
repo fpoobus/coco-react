@@ -16,7 +16,7 @@ import JudgmentForm from 'app/components/JudgmentForm/JudgmentForm';
 
 export const theme = createMuiTheme({
   palette: {
-    primary: { main: '#e8d598', light: '#f4f4f4', dark: '#131b23' },
+    primary: { main: '#e8d598', light: '#f4f4f4', dark: '#e8d081' },
     secondary: { main: '#6d6160', light: '#e7dfc6', dark: '#816c61' }
   }
 });

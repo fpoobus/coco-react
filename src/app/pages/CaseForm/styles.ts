@@ -13,9 +13,6 @@ export const caseFormStyles = (theme: Theme) => createStyles({
         },
         button: {
             margin: theme.spacing.unit,
-            '&:hover': {
-                backgroundColor: '#e8d081',
-            },
         },
         rightIcon: {
             marginLeft: theme.spacing.unit,
