@@ -32,7 +32,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
     };
 
     componentDidMount() {
-        axios.get(`http://139.59.148.64/coco-api/persons/70101010000`, {
+        axios.get(`http://139.59.148.64/coco-api/persons/70102010000`, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
