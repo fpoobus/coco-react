@@ -48,6 +48,7 @@ export const courtHearingDateStyles = (theme: Theme) => createStyles({
     dateContainer: {
       height: '200px',
         paddingBottom: '20px',
-        paddingTop: '20px'
+        paddingTop: '20px',
+        paddingLeft: '20px',
     }
 });
