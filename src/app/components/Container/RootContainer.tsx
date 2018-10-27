@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
+<<<<<<< HEAD
 import Header from 'app/components/Header/Header';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
@@ -12,6 +13,8 @@ const theme = createMuiTheme({
     secondary: { main: '#6d6160', light: '#e7dfc6', dark: '#816c61' }
   }
 });
+=======
+>>>>>>> 48a1c91d09edeac832af69c70d8bafa4ffcb75bc
 
 const styles = (theme: Theme) => createStyles({
   background: {
@@ -40,23 +43,16 @@ interface RootContainerProps extends WithStyles<typeof styles> {
 
 class RootContainer extends React.Component<RootContainerProps> {
 
-  componentDidMount() {
-    document.body.style.backgroundColor = theme.palette.primary.light;
-  }
-
   render() {
     const { classes, children } = this.props;
     return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.background}>
-          <Header />
-          <div className={classes.root}>
-            <div className={classes.container}>
-              {children}
-            </div>
+      <div className={classes.background}>
+        <div className={classes.root}>
+          <div className={classes.container}>
+            {children}
           </div>
         </div>
-      </MuiThemeProvider>
+      </div>
     );
   }
 }
