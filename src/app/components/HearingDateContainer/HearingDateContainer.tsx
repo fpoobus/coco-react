@@ -1,22 +1,29 @@
 import * as React from 'react';
 import { WithStyles } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
-import ClaimsDataStore from 'app/stores/ClaimsDataStore';
-import { inject } from 'mobx-react';
 import {courtHearingDateStyles} from "app/components/CourtHearingDate/styles";
 import Divider from "../../../../node_modules/@material-ui/core/Divider/Divider";
 import '../../../../node_modules/react-datepicker/dist/react-datepicker-cssmodules.css';
 import '../../../../node_modules/react-datepicker/dist/react-datepicker.css';
 import Paper from "../../../../node_modules/@material-ui/core/Paper/Paper";
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 interface CourtHearingDateProps extends WithStyles<typeof courtHearingDateStyles> {
-  claimsDataStore?: ClaimsDataStore
+  //hearingStore?: HearingStore
 }
-@inject('claimsDataStore')
+
 class CourtHearingDate extends React.Component<CourtHearingDateProps> {
-  constructor (props) {
-    super(props)
-  }
+    constructor (props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(date) {
+
+    }
 
   render() {
     const { classes } = this.props;
@@ -28,7 +35,8 @@ class CourtHearingDate extends React.Component<CourtHearingDateProps> {
               </div>
               <Divider />
             <div className={classes.dateContainer}>
-
+                <h3>Date: </h3>
+                <h3>Time: </h3>
             </div>
           </Paper>
       </>

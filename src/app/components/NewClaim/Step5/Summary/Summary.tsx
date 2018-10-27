@@ -27,6 +27,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
 
     renderSummary() {
         return <>
+            {JSON.stringify(this.props.newClaimStore.newClaim)}
             <h1>Your claim has been submitted.</h1>
             <Button onClick={this.toClaims} variant="contained"
                     color="primary">
