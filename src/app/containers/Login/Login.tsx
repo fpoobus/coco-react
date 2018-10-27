@@ -35,7 +35,7 @@ class Login extends React.Component<LoginProps> {
     };
 
     render() {
-        const { classes, userStore } = this.props;
+        const { classes } = this.props;
         const { value } = this.state;
         return (
             <React.Fragment>
@@ -54,8 +54,8 @@ class Login extends React.Component<LoginProps> {
                         </Tabs>
                     </Paper>
                     <Paper className={classes.paper} elevation={1}>
-                        {value === 0 && <TabContainer><LoginPassword classes = {classes} userStore={userStore} /></TabContainer>}
-                        {value === 1 && <TabContainer><LoginSmartId classes = {classes} userStore={userStore} /></TabContainer>}
+                        {value === 0 && <TabContainer><LoginPassword classes = {classes} userStore={this.props.userStore} /></TabContainer>}
+                        {value === 1 && <TabContainer><LoginSmartId classes = {classes} userStore={this.props.userStore} /></TabContainer>}
                     </Paper>
                 </main>
             </React.Fragment>
