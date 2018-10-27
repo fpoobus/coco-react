@@ -30,11 +30,13 @@ let gridItem = {
 export class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInformationState> {
 
     state = {
-        value: 'female',
+        value: '',
     };
 
     renderClaimInfo() {
         let claim = this.props.newClaimStore.newClaim.claim;
+        this.state.value = claim.case_type;
+
         return <>
             <Grid container justify="center">
                 <Grid item>
@@ -72,7 +74,7 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
                                 </RadioGroup>
 
                                 <Typography variant="subtitle1" gutterBottom>
-                                    State Fee: 30 EUR
+                                    State Fee: 30 USD
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -104,7 +106,7 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
                                 </RadioGroup>
 
                                 <Typography variant="subtitle1" gutterBottom>
-                                    State Fee: 80 EUR
+                                    State Fee: 80 USD
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -134,6 +136,13 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
 
     setCaseType = event => {
         console.log("asd")
+
+        if(event.target.value === 'contract-violation') {
+            this.props.newClaimStore.newClaim.fee.fee = "80";
+        } else {
+            this.props.newClaimStore.newClaim.fee.fee = "30";
+        }
+
         this.setState({value: event.target.value});
         runInAction(() => {
             this.props.newClaimStore.newClaim.claim.case_type = event.target.value;
