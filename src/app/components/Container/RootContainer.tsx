@@ -10,6 +10,7 @@ const styles = (theme: Theme) => createStyles({
     backgroundImage: `url(${'../../../assets/img/skyline.svg'})`,
     backgroundPosition: 'center bottom',
     backgroundRepeat: 'no-repeat',
+    backgroundSize: '100%',
     width: '100%',
     height: '100%',
     position: 'absolute'
