@@ -39,8 +39,11 @@ export const styles = (theme: Theme) =>
   });
 
 interface HeaderProps extends WithStyles<typeof styles> {}
+interface IProps {
+  history?: any
+}
 
-class Header extends React.Component<HeaderProps> {
+class Header extends React.Component<IProps & HeaderProps> {
   state = {
     anchorEl: null,
     value: 0
@@ -54,12 +57,18 @@ class Header extends React.Component<HeaderProps> {
     this.setState({ anchorEl: null });
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
+  // handleChange = (event, value) => {
+  //   this.setState({ value });
+  // };
+
+  handleChange = (event: any, value: any) => {
+    this.props.history.push(value);
+};
 
   render() {
     const { classes } = this.props;
+    // let route = '/' + this.props.history.location.pathname.split('/')[1]; 
+
     return (
       <div className={classes.root}>
         <AppBar className={classes.bar} position="static">
@@ -73,15 +82,14 @@ class Header extends React.Component<HeaderProps> {
               />
             </MenuItem>
             <Tabs
-              value={this.state.value}
+                value={this.state.value}
               onChange={this.handleChange}
               classes={{
                 indicator: classes.indicator
               }}
-            >
-              
-              <Tab label="Dashboard" className={classes.colorWhite} />
-              <Tab label="Claims" className={classes.colorWhite} />
+            >            
+              <Tab label="Dashboard" value="/"  className={classes.colorWhite} />
+              <Tab label="Claims" value="/new-claim" className={classes.colorWhite} />
             </Tabs>
             <MenuItem className={classes.typoContainer}>
               <Typography className={classes.typo}>LOG OUT</Typography>
