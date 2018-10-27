@@ -34,8 +34,9 @@ export const loginStyles = (theme: Theme) => createStyles({
         alignItems: 'center',
     },
     avatar: {
-        margin: theme.spacing.unit,
+        margin: 'auto',
         backgroundColor: theme.palette.secondary.main,
+        marginBottom: '30px',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -43,5 +44,9 @@ export const loginStyles = (theme: Theme) => createStyles({
     },
     submit: {
         marginTop: theme.spacing.unit * 3,
+    },
+    verificationText: {
+        marginTop: '45px',
+        textAlign: 'center',
     },
 });

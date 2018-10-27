@@ -26,17 +26,15 @@ export class LoginPassword extends React.Component<LoginPasswordProps> {
     }
 
     handleChangePersonalCode(event) {
-        console.log('PersonalCode: ', event.target.value);
         this.props.userStore.user.personalCode = event.target.value;
     };
 
     handleChangePassword(event) {
-        console.log('Password: ', event.target.value);
         this.props.userStore.user.password = event.target.value;
     };
     redirectToPage = () => {
         const user = this.props.userStore.user;
-        this.props.userStore.doLogIn({personalCode: user.personalCode, password: user.password})
+        this.props.userStore.doLogIn({identityCode: user.personalCode, password: user.password})
     };
 
   render() {
@@ -78,7 +76,6 @@ export class LoginPassword extends React.Component<LoginPasswordProps> {
               />
               <Button
                   onClick={this.redirectToPage}
-                  type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
