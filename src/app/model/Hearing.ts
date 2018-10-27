@@ -1,9 +1,6 @@
 export interface Hearing {
   caseNumber: string;
-  claimantId: string;
-  dateOfRegistration: string;
-  defendantId: string;
+  endTime: string;
   judge: string;
-  status: string;
-  type: string;
+  startTime: string;
 }

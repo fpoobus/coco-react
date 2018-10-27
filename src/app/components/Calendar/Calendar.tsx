@@ -1,7 +1,7 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { calendarStyles } from 'app/components/Calendar/styles';
-import '../../../../node_modules/react-calendar/dist/Calendar.less';
+import './Calendar.less';
 import Calendar, { CalendarTileProperties } from 'react-calendar';
 import Paper from '@material-ui/core/Paper/Paper';
 import UserStore from 'app/stores/UserStore';
@@ -27,7 +27,7 @@ class CalendarCard extends React.Component<DashboardProps> {
     const isCorrectDay = hearingsDataStore.userHearingDates
       .find(date => tile.date.getDate() === date.getDate() && tile.date.getMonth() === date.getMonth());
     if (tile.view === 'month' && isCorrectDay) {
-      return <p>!</p>;
+      return <span>*</span>;
     }
 
   };
