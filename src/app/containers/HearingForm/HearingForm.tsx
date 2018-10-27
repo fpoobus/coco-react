@@ -3,9 +3,9 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import {hearingFormStyles} from "app/containers/HearingForm/styles";
 import Grid from '@material-ui/core/Grid/Grid';
 import CalendarCard from "app/components/Calendar/Calendar";
-import CourtHearingDate from "app/components/CourtHearingDate/CourtHearingDate";
 import CourtParticipantsProps from "app/components/CourtParticipants/CourtParticipants";
 import RootContainer from "app/components/Container/RootContainer";
+import CourtHearingDate from "app/components/HearingDateContainer/HearingDateContainer"
 
 interface HearingFormProps extends WithStyles<typeof hearingFormStyles> {
 

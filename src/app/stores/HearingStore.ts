@@ -3,7 +3,6 @@ import axios from 'axios';
 
 class HearingStore {
 
-    @observable user: User;
     @observable personalCode: string;
     @observable isAuthenticated: boolean;
 
