@@ -32,7 +32,6 @@ class HearingsDataStore {
 
   private static getDateFromHearing(hearing: Hearing): Date {
     const mDate = moment(hearing.startTime);
-    debugger;
     return new Date(mDate.format('LLLL'));
   }
 }
