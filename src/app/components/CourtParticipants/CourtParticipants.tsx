@@ -11,6 +11,7 @@ import TableCell from "../../../../node_modules/@material-ui/core/TableCell/Tabl
 import TableBody from "../../../../node_modules/@material-ui/core/TableBody/TableBody";
 import Divider from "../../../../node_modules/@material-ui/core/Divider/Divider";
 import Paper from "../../../../node_modules/@material-ui/core/Paper/Paper";
+import Button from "../../../../node_modules/@material-ui/core/Button/Button";
 
 
 interface CourtParticipantsProps extends WithStyles<typeof courtParticipantsStyles> {
@@ -40,7 +41,7 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
           <Paper>
               <div>
                   <p className={classes.heading}>Participants</p>
-                  <button className={classes.addParticipants}>+ Add participants</button>
+                  <Button variant="contained" color="primary" className={classes.addParticipants}>+ Add participants</Button>
               </div>
               <Divider />
               <Table>

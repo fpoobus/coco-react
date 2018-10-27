@@ -27,13 +27,7 @@ export const courtParticipantsStyles = (theme: Theme) => createStyles({
         float: 'right',
         justifyContent: 'center',
         margin: '0 auto',
-        backgroundColor: '#2196f3',
-        color: 'white',
-        padding: '10px 20px 10px 20px',
-        borderRadius: '10px',
-        border: 'none',
-        marginTop: '15px',
+        marginTop: '10px',
         marginRight: '30px',
-        cursor: 'pointer'
     },
 });

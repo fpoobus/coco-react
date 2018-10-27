@@ -1,20 +1,13 @@
-import { observable } from 'mobx';
-import axios from 'axios';
+import {action, observable} from 'mobx';
 
 class HearingStore {
 
-    @observable user: User;
-    @observable personalCode: string;
-    @observable isAuthenticated: boolean;
+    @observable hearingDate: Date;
 
-    public doLogIn = async (params: {personalCode: string, password: string}) => {
-        axios.post(`https://jsonplaceholder.typicode.com/users`, { params })
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-            })
+    @action
+    public setHearingDate = (hearingDate: Date) => {
+        this.hearingDate = hearingDate;
     }
-
 }
 
 export default HearingStore;

@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { WithStyles } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
-import '../../../../node_modules/react-datepicker/dist/react-datepicker-cssmodules.css';
-import '../../../../node_modules/react-datepicker/dist/react-datepicker.css';
 import Paper from "../../../../node_modules/@material-ui/core/Paper/Paper";
-import 'react-datepicker/dist/react-datepicker.css';
-import 'react-datepicker/dist/react-datepicker-cssmodules.css';
-import {courtHearingCalendarStyles} from "app/components/CourtHearingCalendar/styles";
+import {courtHearingCalendarStyles} from "app/components/HearingTimeTable/styles";
 import Divider from "../../../../node_modules/@material-ui/core/Divider/Divider";
 import Avatar from "../../../../node_modules/@material-ui/core/Avatar/Avatar";
 import LockIcon from "../../../../node_modules/@material-ui/core/SvgIcon/SvgIcon";
@@ -15,16 +11,16 @@ import Typography from "../../../../node_modules/@material-ui/core/Typography/Ty
 interface CourtHearingCalendarProps extends WithStyles<typeof courtHearingCalendarStyles> {
 }
 
-let judgeTime;
+//let judgeTime;
 
-class CourtHearingCalendar extends React.Component<CourtHearingCalendarProps> {
+class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
     constructor (props) {
         super(props);
         this.acceptTime = this.acceptTime.bind(this);
     }
 
     acceptTime = (time: string) => {
-        judgeTime = time;
+
     };
 
   render() {
@@ -101,4 +97,4 @@ class CourtHearingCalendar extends React.Component<CourtHearingCalendarProps> {
   }
 }
 
-export default withStyles(courtHearingCalendarStyles)(CourtHearingCalendar);
+export default withStyles(courtHearingCalendarStyles)(HearingTimeTable);
