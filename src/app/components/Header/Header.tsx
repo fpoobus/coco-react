@@ -8,6 +8,8 @@ import AccountBalance from '@material-ui/icons/AccountBalance';
 import FaceIcon from '@material-ui/icons/Face';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { Link } from 'react-router-dom';
+import { runInThisContext } from 'vm';
 
 export const styles = (theme: Theme) =>
   createStyles({
@@ -39,14 +41,11 @@ export const styles = (theme: Theme) =>
   });
 
 interface HeaderProps extends WithStyles<typeof styles> {}
-interface IProps {
-  history?: any
-}
 
-class Header extends React.Component<IProps & HeaderProps> {
+class Header extends React.Component<HeaderProps> {
   state = {
     anchorEl: null,
-    value: 0
+    value: '0'
   };
 
   handleClick = (event) => {
@@ -57,18 +56,21 @@ class Header extends React.Component<IProps & HeaderProps> {
     this.setState({ anchorEl: null });
   };
 
-  // handleChange = (event, value) => {
-  //   this.setState({ value });
-  // };
 
-  handleChange = (event: any, value: any) => {
-    this.props.history.push(value);
-};
+
+  toNewClaim = props => <Link to="/new-claim" {...props} />;
+
+  toDashboard = props => <Link to="/" {...props} />;
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+
 
   render() {
     const { classes } = this.props;
-    // let route = '/' + this.props.history.location.pathname.split('/')[1]; 
-
+    const { value } = this.state;
     return (
       <div className={classes.root}>
         <AppBar className={classes.bar} position="static">
@@ -82,14 +84,14 @@ class Header extends React.Component<IProps & HeaderProps> {
               />
             </MenuItem>
             <Tabs
-                value={this.state.value}
+              value={value}
               onChange={this.handleChange}
               classes={{
                 indicator: classes.indicator
               }}
             >            
-              <Tab label="Dashboard" value="/"  className={classes.colorWhite} />
-              <Tab label="Claims" value="/new-claim" className={classes.colorWhite} />
+              <Tab label="Dashboard" value="0" component={this.toDashboard} className={classes.colorWhite}  ></Tab>
+              <Tab label="Claims" value="1" component={this.toNewClaim} className={classes.colorWhite} />
             </Tabs>
             <MenuItem className={classes.typoContainer}>
               <Typography className={classes.typo}>LOG OUT</Typography>
