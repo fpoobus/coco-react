@@ -46,7 +46,7 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
             {this.renderClaimsContent()}
           </CardContent>
           <CardActions className={classes.justifyCenter}>
-            <Button variant="contained" component={this.newClaimLink} color="primary">
+            <Button variant="contained" component={this.newClaimLink} color="primary" className={classes.btnHover}>
               Submit a claim
             </Button>
           </CardActions>

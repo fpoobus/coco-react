@@ -44,6 +44,9 @@ export const loginStyles = (theme: Theme) => createStyles({
     },
     submit: {
         marginTop: theme.spacing.unit * 3,
+        '&:hover': {
+            backgroundColor: '#e8d081',
+        }
     },
     verificationText: {
         marginTop: '45px',

@@ -25,7 +25,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
     newClaimLink = (props, id) => <Link to={"/case?id=" + id} {...props} />;
 
     renderTableBody = () => {
-        const {caseStore} = this.props;
+        const {caseStore, classes} = this.props;
 
         const caseData = caseStore.casesData;
         return (
@@ -37,7 +37,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
                         <TableCell>{courtCase.defendantId}</TableCell>
                         <TableCell>{courtCase.description}</TableCell>
                         <TableCell>
-                            <Button variant="contained" component={props => this.newClaimLink(props, courtCase.id)} color="primary">
+                            <Button variant="contained" className={classes.btn} component={props => this.newClaimLink(props, courtCase.id)} color="primary">
                                 Go to case
                             </Button>
                         </TableCell>

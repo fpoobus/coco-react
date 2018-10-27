@@ -199,7 +199,7 @@ class CaseForm extends React.Component<DashboardProps> {
 
                     <Grid container spacing={24}>
                         <Grid item xs={12}>
-                            <Button variant="contained" color="primary" className={classes.button}>
+                            <Button  variant="contained" color="primary" className={classes.button}>
                                 Register
                                 <Send className={classes.rightIcon}/>
                             </Button>
