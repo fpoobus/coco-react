@@ -7,7 +7,7 @@ import { NewClaimPage } from 'app/pages/NewClaimPage';
 
 import Login from 'app/containers/Login/Login';
 import CaseForm from 'app/pages/CaseForm/CaseForm';
-import Header from 'app/components/Header/Header';
+
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
@@ -25,7 +25,6 @@ export const App = hot(module)(({ history }) => (
 
   <MuiThemeProvider theme={theme}>
     <Root>
-      <Header />
       <Router history={history}>
         <Switch>
           <Route path="/login" component={Login} />
