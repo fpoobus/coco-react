@@ -9,7 +9,9 @@ import FaceIcon from '@material-ui/icons/Face';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom';
-import { runInThisContext } from 'vm';
+import { inject, observer } from 'mobx-react';
+import RouterStore from 'app/stores/RouterStore';
+
 
 export const styles = (theme: Theme) =>
   createStyles({
@@ -40,12 +42,17 @@ export const styles = (theme: Theme) =>
     }
   });
 
-interface HeaderProps extends WithStyles<typeof styles> {}
+interface HeaderProps extends WithStyles<typeof styles> {
+  routerStore?: RouterStore
+}
 
+
+@inject('routerStore')
+@observer
 class Header extends React.Component<HeaderProps> {
   state = {
     anchorEl: null,
-    value: '0'
+    value: '/'
   };
 
   handleClick = (event) => {
@@ -62,36 +69,37 @@ class Header extends React.Component<HeaderProps> {
 
   toDashboard = props => <Link to="/" {...props} />;
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  handleChange = (value) => {
+    const { routerStore } = this.props;
+ routerStore.currentTabMapper()
+ console.log(routerStore.currentTab)
+
   };
-
-
+  setSelectedTab
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
+    const { routerStore } = this.props;
     return (
       <div className={classes.root}>
         <AppBar className={classes.bar} position="static">
           <Toolbar className={classes.justifyCenter}>
-            <MenuItem className={classes.typoContainer}>
+            <MenuItem className={classes.typoContainer}  component={this.toDashboard} >
               <AccountBalance
                 className={classes.typo}
                 aria-owns={this.state.anchorEl ? 'simple-menu' : null}
-                aria-haspopup="true"
-                onClick={this.handleClick}
+                aria-haspopup="true"                      
               />
             </MenuItem>
             <Tabs
-              value={value}
-              onChange={this.handleChange}
+              value={routerStore.currentTab !== undefined ? routerStore.currentTab : 0}
+           onChange= {this.handleChange}
               classes={{
                 indicator: classes.indicator
               }}
             >            
-              <Tab label="Dashboard" value="0" component={this.toDashboard} className={classes.colorWhite}  ></Tab>
-              <Tab label="Claims" value="1" component={this.toNewClaim} className={classes.colorWhite} />
+              <Tab label="Dashboard" component={this.toDashboard} className={classes.colorWhite}   />
+              <Tab label="Claims"  component={this.toNewClaim} className={classes.colorWhite} />
             </Tabs>
             <MenuItem className={classes.typoContainer}>
               <Typography className={classes.typo}>LOG OUT</Typography>
