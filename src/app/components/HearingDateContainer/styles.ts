@@ -39,7 +39,7 @@ export const courtHearingDateStyles = (theme: Theme) => createStyles({
       marginTop: '4px'
     },
     heading: {
-        fontSize: '30px',
+        fontSize: '26px',
         display: 'inline-block',
         padding: '0 30px 0 30px',
         marginBottom: '15px',

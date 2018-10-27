@@ -27,7 +27,7 @@ export const courtHearingCalendarStyles = (theme: Theme) => createStyles({
     },
     chooseDateContainer: {
       height: '40px',
-        fontSize: '20px',
+        fontSize: '18px',
         display: 'inline-block',
         verticalAlign: 'middle',
         marginTop: '25px',
@@ -37,7 +37,7 @@ export const courtHearingCalendarStyles = (theme: Theme) => createStyles({
     judgeActivity: {
       display: 'inline-block',
       float: 'right',
-        fontSize: '20px',
+        fontSize: '18px',
         marginTop: '25px',
         paddingRight: '10%',
     },
