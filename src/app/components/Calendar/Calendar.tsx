@@ -8,7 +8,6 @@ import UserStore from 'app/stores/UserStore';
 import { inject, observer } from 'mobx-react';
 import HearingsDataStore from 'app/stores/HearingsDataStore';
 import * as moment from 'moment';
-import Typography from '@material-ui/core/Typography/Typography';
 
 interface DashboardProps extends WithStyles<typeof calendarStyles> {
   userStore?: UserStore;
@@ -24,11 +23,13 @@ class CalendarCard extends React.Component<DashboardProps> {
   };
 
   returnCalendarTileNotices = (tile: CalendarTileProperties) => {
-    const { hearingsDataStore } = this.props;
+    const { hearingsDataStore, classes } = this.props;
     const isCorrectDay = hearingsDataStore.userHearingDates
       .find(date => tile.date.getDate() === date.getDate() && tile.date.getMonth() === date.getMonth());
     if (tile.view === 'month' && isCorrectDay) {
-      return <Typography color="textSecondary">*</Typography>;
+      return <span className={classes.hearing} />;
+      //return <Typography color="textSecondary">*</Typography>;
+      //return 'hearing';
     }
 
   };
