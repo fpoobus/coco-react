@@ -18,6 +18,7 @@ import Select from '@material-ui/core/Select/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput/OutlinedInput';
 import { judgmentSanctions, judgmentTypes } from 'app/model/JudgmentForm';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
+import { Link } from 'react-router-dom';
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -118,8 +119,10 @@ class JudgmentForm extends React.Component<JudgmentFormProps> {
     );
   };
 
+  caseLink = (props, id) => <Link to={'/case?id=' + id} {...props} />;
+
   render() {
-    const { classes } = this.props;
+    const { classes, caseStore } = this.props;
     return (
       <RootContainer>
         <Paper className={classes.root}>
@@ -142,6 +145,9 @@ class JudgmentForm extends React.Component<JudgmentFormProps> {
             <Typography component="h2" variant="h5">Judgment summary</Typography>
             {this.renderJudgmentSummary()}
           </div>
+          <Button variant="contained" component={props => this.caseLink(props, caseStore.selectedCaseId)} color="primary">
+            Submit form
+          </Button>
         </Paper>
       </RootContainer>
     );

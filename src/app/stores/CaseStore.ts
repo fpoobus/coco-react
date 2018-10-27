@@ -3,6 +3,7 @@ import axios from 'axios';
 import { JudgmentForm } from 'app/model/JudgmentForm';
 
 export class CaseStore {
+  @observable selectedCaseId: number;
   @observable cases = observable.array<any>();
   @observable judgmentForm: JudgmentForm = {
     type: 'default',
@@ -34,6 +35,11 @@ export class CaseStore {
   @action.bound
   public setJudgmentFormSanction(sanction: number) {
     this.judgmentForm.sanction = sanction;
+  }
+
+  @action.bound
+  public setSelectedCaseId(id: number) {
+    this.selectedCaseId = id;
   }
 }
 
