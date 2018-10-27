@@ -40,6 +40,5 @@ export const App = hot(module)(({ history }) => (
         </Switch>
       </Router>
     </Root>
-
   </MuiThemeProvider>
 ));

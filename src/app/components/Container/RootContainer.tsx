@@ -11,13 +11,12 @@ const styles = () => createStyles({
     backgroundPosition: 'center bottom',
     backgroundRepeat: 'no-repeat',
     width: '100%',
-    height: '100%'
-
+    height: '100%',
+    position: 'absolute'
   },
   root: {
     display: 'flex',
     justifyContent: 'center',
-    padding: '0px 16px',
     width: '100%'
   },
   container: {
