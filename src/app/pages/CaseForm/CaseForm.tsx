@@ -49,6 +49,7 @@ function getAvatar(option, classes: any) {
 @observer
 class CaseForm extends React.Component<DashboardProps> {
   judgmentFormLink = props => <Link to="/judgment-form" {...props} />;
+  hearingLink = props => <Link to="/hearing" {...props} />;
 
   state = {
     anchorEl: null,
@@ -250,6 +251,9 @@ class CaseForm extends React.Component<DashboardProps> {
         <Button variant="contained" color="primary" component={this.judgmentFormLink} className={classes.button}>
           Judgment
         </Button>
+          <Button variant="contained" color="primary" component={this.hearingLink} className={classes.button}>
+              Hearing
+          </Button>
         <Button variant="contained" color="primary" className={classes.button}>
           PRINT
         </Button>
