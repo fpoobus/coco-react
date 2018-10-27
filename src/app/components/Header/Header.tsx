@@ -33,6 +33,9 @@ export const styles = (theme: Theme) => createStyles({
   },
   indicator:{
     backgroundColor:'#e8d598'
+  },
+  colorWhite:{
+    color: '#fff'
   }
 });
 
@@ -74,8 +77,8 @@ class Header extends React.Component<HeaderProps> {
         <Tabs value={this.state.value} onChange={this.handleChange}  classes={{
     indicator: classes.indicator
   }}>>
-            <Tab label="Dashboard"  />
-            <Tab label="Claims" />
+            <Tab label="Dashboard" className={classes.colorWhite} />
+            <Tab label="Claims" className={classes.colorWhite}/>
 
           </Tabs>
           <MenuItem className={classes.typoContainer}>
