@@ -1,15 +1,25 @@
-import { observable, action } from "mobx";
+import {action, computed, observable} from "mobx";
+import axios from "axios";
 
-export class DemoStore {
+export class CaseStore {
+    @observable cases = observable.array<any>();
 
-  @observable
-  public test: String;
+    @computed
+    get casesData(): any[] {
+        return Array.from(this.cases.values());
+    }
 
-  @action
-  setTest = (test: String) => {
-    this.test = test;
-  };
+    public async loadCases() {
+        const response = await axios.get(`http://139.59.148.64/coco-api/cases`,
+            {headers: {'Access-Control-Allow-Origin': '*'}});
+        console.log(response);
+        this.setCases(response);
+    }
 
+    @action
+    public setCases(response) {
+        this.cases.replace(response.data)
+    }
 }
 
-export default DemoStore;
+export default CaseStore;

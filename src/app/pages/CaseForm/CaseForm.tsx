@@ -2,7 +2,6 @@ import * as React from 'react';
 import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
 import {caseFormStyles} from 'app/pages/CaseForm/styles';
 import Grid from '@material-ui/core/Grid/Grid';
-import TextField from '@material-ui/core/TextField';
 import Paper from "@material-ui/core/es/Paper/Paper";
 import Avatar from '@material-ui/core/Avatar/Avatar';
 import {Chip} from '@material-ui/core';
@@ -20,23 +19,26 @@ import List from "@material-ui/core/es/List/List";
 import ListItem from "@material-ui/core/es/ListItem/ListItem";
 import ListItemIcon from "@material-ui/core/es/ListItemIcon/ListItemIcon";
 import ListItemText from '@material-ui/core/es/ListItemText/ListItemText';
-import InboxIcon from '@material-ui/icons/Inbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
+import CheckIcon from '@material-ui/icons/Check';
 import Divider from "@material-ui/core/es/Divider/Divider";
 import MenuItem from '@material-ui/core/es/MenuItem/MenuItem';
 import Menu from "@material-ui/core/es/Menu/Menu";
 
 const judgesList = [
-    ['Foster Edward Abner', 49],
-    ['Roy John Jayce', 69],
-    ['Bert Alfred', 85],
-    ['Jefferson Archer Jarvis', 88],
-    ['Garth Beau', 79],
-    ['Wyatt Edwin', 91],
-    ['Samson Chauncey Lee', 17],
+    ['Justice Foster Edward Abner', 49],
+    ['Justice Roy John Jayce', 69],
+    ['Justice Bert Alfred', 85],
+    ['Justice Jefferson Archer Jarvis', 88],
+    ['Justice Garth Beau', 79],
+    ['Justice Wyatt Edwin', 91],
+    ['Justice Samson Chauncey Lee', 17],
 ];
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
+}
+
+function getAvatar(option, classes:any) {
+    return <Avatar alt="Remy Sharp" src={"/assets/img/" + option[1] + ".jpg"} className={classes.avatar}/>;
 }
 
 class CaseForm extends React.Component<DashboardProps> {
@@ -46,7 +48,7 @@ class CaseForm extends React.Component<DashboardProps> {
         multiline: 'Controlled',
         currency: 'EUR',
         anchorEl: null,
-        selectedIndex: 0,
+        selectedIndex: -1,
     };
 
 
@@ -83,13 +85,13 @@ class CaseForm extends React.Component<DashboardProps> {
                                 <List component="nav">
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <InboxIcon/>
+                                            <CheckIcon/>
                                         </ListItemIcon>
                                         <ListItemText primary="Status - Submitted"/>
                                     </ListItem>
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <DraftsIcon/>
+                                            <CheckIcon/>
                                         </ListItemIcon>
                                         <ListItemText primary="Fee - PAID "/>
                                     </ListItem>
@@ -103,18 +105,20 @@ class CaseForm extends React.Component<DashboardProps> {
                                         <div className={classes.root}>
                                             <List component="nav">
                                                 <ListItem button onClick={this.handleClickListItem}>
-                                                    <ListItemText primary="Choose a judge"/>
+                                                    <ListItemText>
+                                                        {this.state.selectedIndex < 0 ?
+                                                            "Choose a judge" : judgesList[this.state.selectedIndex][0]}
+                                                    </ListItemText>
                                                 </ListItem>
                                             </List>
                                             <Menu id="lock-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
                                                 {judgesList.map((option, index) => (
                                                     <MenuItem
                                                         key={option[0]}
-                                                        disabled={index === 0}
                                                         selected={index === this.state.selectedIndex}
                                                         onClick={event => this.handleMenuItemClick(event, index)}
                                                     >
-                                                        <Avatar alt="Remy Sharp" src={"/assets/img/" + option[1] + ".jpg"} className={classes.avatar}/>
+                                                        {getAvatar(option, classes)}
 
                                                         {option[0]}
                                                     </MenuItem>
@@ -122,19 +126,29 @@ class CaseForm extends React.Component<DashboardProps> {
                                             </Menu>
                                         </div>
                                     </Grid>
-
                                 </Grid>
                                 <Divider/>
                             </div>
+                            <br/>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom align={"left"}>
+                                Claim description
+                            </Typography>
 
-                            <form className={classes.container} noValidate autoComplete="off">
-                                <TextField
-                                    id="standard-name"
-                                    className={classes.textField}
-                                    value={this.state.name}
-                                    onChange={this.handleChange('name')}
-                                />
-                            </form>
+                            <Typography component="p" align={"left"}>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nisl diam, dignissim ut lorem a, ullamcorper maximus nisi.
+                                Curabitur quis lectus interdum, facilisis eros sit amet, laoreet ipsum. Cras rhoncus sapien eget justo finibus lacinia.
+                                Phasellus eleifend tincidunt viverra. Suspendisse volutpat condimentum velit quis aliquet. Interdum et malesuada fames ac ante
+                                ipsum primis in faucibus. Fusce rutrum gravida tortor. Nulla facilisi. In rhoncus bibendum nisi sit amet condimentum. Integer
+                                sed tristique mi. In consequat sit amet turpis vitae tincidunt. Phasellus consectetur finibus dapibus. Pellentesque tincidunt
+                                tristique arcu. Integer sapien ipsum, dictum vitae nunc in, placerat mattis dolor. Donec orci risus, rutrum quis eros sed,
+                                pharetra rhoncus nisl.
+
+                                Mauris fermentum ac nisl sit amet semper. Quisque quis fringilla tortor. Donec egestas tellus vitae ornare dapibus. Suspendisse
+                                gravida eget lectus sit amet pulvinar. Suspendisse pulvinar facilisis ex, et viverra est feugiat vulputate. Quisque tincidunt
+                                blandit nisl, in sollicitudin lectus ullamcorper et. Integer volutpat ultrices massa sit amet efficitur. Etiam mollis convallis
+                                urna non molestie. Fusce vitae arcu odio. Nulla vel elementum erat.
+                            </Typography>
+
                         </Paper>
                     </Grid>
 
@@ -210,22 +224,32 @@ class CaseForm extends React.Component<DashboardProps> {
     private getHeader(classes: any) {
         return <Grid container direction="row" alignItems="center">
             <Grid item xs={10}>
-                <Typography variant="h4" gutterBottom> New case </Typography>
-                <Chip
-                    avatar={<Avatar><FaceIcon/></Avatar>}
-                    label="Bill Gates (Cars Ltd)"
-                    onClick={this.handleChange}
-                    className={classes.chip}
-                />
-                VS
-                <Chip
-                    avatar={<Avatar><FaceIcon/></Avatar>}
-                    label="Elon Musk (Tesla Ltd)"
-                    onClick={this.handleChange}
-                    className={classes.chip}
-                />
+                <Grid container direction="row" alignItems="flex-start">
+
+                    <Grid item xs={3} justify="flex-end">
+                        <Typography variant="h4" gutterBottom style={{ marginLeft: 10 }}> New case </Typography>
+                    </Grid>
+                    <Grid item xs={3} justify="flex-end">
+                        <Chip
+                            avatar={<Avatar><FaceIcon/></Avatar>}
+                            label="Bill Gates (Cars Ltd)"
+                            onClick={this.handleChange}
+                            className={classes.chip}
+                        />
+                        VS
+                    </Grid>
+                    <Grid item xs={3} justify="flex-end">
+                        <Chip
+                            avatar={<Avatar><FaceIcon/></Avatar>}
+                            label="Elon Musk (Tesla Ltd)"
+                            onClick={this.handleChange}
+                            className={classes.chip}
+                        />
+                    </Grid>
+                </Grid>
+
             </Grid>
-            <Grid item xs={2} justify="flex-end">
+            <Grid item xs={2} justify="flex-end" alignItems={"flex-end"} alignContent={"flex-end"}>
                 <Button variant="contained" color="primary" className={classes.button}>
                     PRINT
                 </Button>
