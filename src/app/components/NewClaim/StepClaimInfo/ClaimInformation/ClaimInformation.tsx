@@ -55,11 +55,6 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
 
           <Paper style={gridItem} elevation={1}>
 
-            <Grid justify="center">
-              <Grid item>
-                <br /><br /><br />
-              </Grid>
-            </Grid>
 
             <Grid justify="center">
               <Grid item>
@@ -88,12 +83,6 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
 
             <Grid container justify="center">
               <Grid item>
-                <br /><br /><br />
-              </Grid>
-            </Grid>
-
-            <Grid container justify="center">
-              <Grid item>
 
                 <RadioGroup
                   aria-label="Case Type"
@@ -112,6 +101,33 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
             </Grid>
           </Paper>
         </Grid>
+
+
+          <Grid xs={3} sm={3}>
+
+              <Paper style={gridItem} elevation={1}>
+
+                  <Grid container justify="center">
+                      <Grid item>
+
+                          <RadioGroup
+                              aria-label="Case Type"
+                              name="claim_type"
+                              value={this.state.value}
+                              onChange={this.setCaseType}
+                          >
+                              <FormControlLabel value="equitable-claim" control={<Radio />}
+                                                label="Equitable Claim" />
+                          </RadioGroup>
+
+                          <Typography variant="subtitle1" gutterBottom>
+                              State Fee: 80 USD
+                          </Typography>
+                      </Grid>
+                  </Grid>
+              </Paper>
+          </Grid>
+
       </Grid>
 
 
