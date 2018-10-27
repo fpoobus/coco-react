@@ -6,7 +6,7 @@ import {
 import { observable, action } from 'mobx';
 
 export class RouterStore extends BaseRouterStore {
-  @observable currentTab: number  
+  @observable currentTab: string  
   constructor(history?: History) {
     super();
     this.currentTabMapper;
@@ -19,10 +19,10 @@ export class RouterStore extends BaseRouterStore {
   currentTabMapper(){
    const path =  window.location.pathname
    if(path === "/"){
-     this.currentTab = 0;
+     this.currentTab = '0';
    }
    else if(path === "new-claim"){
-     this.currentTab === 1;
+     this.currentTab === '1';
    }
 
   }

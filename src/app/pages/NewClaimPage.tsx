@@ -306,7 +306,8 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                     }
                                     {this.lastPreStep() && !this.props.newClaimStore.loading &&
                                     <Button onClick={this.proceedToPayment} variant="contained"
-                                            color="primary">
+                                            color="primary"
+                                            >
                                         Proceed to Payment
                                     </Button>
                                     }

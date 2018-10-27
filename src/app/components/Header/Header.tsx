@@ -16,10 +16,10 @@ import RouterStore from 'app/stores/RouterStore';
 export const styles = (theme: Theme) =>
   createStyles({
     root: {
-      marginBottom: '64px'
+      marginBottom: '64px',
     },
     bar: {
-      backgroundColor: theme.palette.primary.dark
+      backgroundColor:'#131b23'
     },
     typo: {
       color: theme.palette.primary.light,
@@ -69,11 +69,10 @@ class Header extends React.Component<HeaderProps> {
 
   toDashboard = props => <Link to="/" {...props} />;
 
-  handleChange = (value) => {
-    const { routerStore } = this.props;
- routerStore.currentTabMapper()
- console.log(routerStore.currentTab)
-
+  handleChange = (event, value) => {
+    this.setState({
+      value: value,
+    });
   };
   setSelectedTab
 
@@ -98,8 +97,8 @@ class Header extends React.Component<HeaderProps> {
                 indicator: classes.indicator
               }}
             >            
-              <Tab label="Dashboard" component={this.toDashboard} className={classes.colorWhite}   />
-              <Tab label="Claims"  component={this.toNewClaim} className={classes.colorWhite} />
+              <Tab label="Dashboard" value="0" component={this.toDashboard} className={classes.colorWhite}   />
+              <Tab label="Claims"  value="1" component={this.toNewClaim} className={classes.colorWhite} />
             </Tabs>
             <MenuItem className={classes.typoContainer}>
               <Typography className={classes.typo}>LOG OUT</Typography>
