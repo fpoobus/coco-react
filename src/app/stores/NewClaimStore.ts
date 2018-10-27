@@ -22,6 +22,9 @@ export class NewClaimStore {
         this.step = 0;
     }
 
+    @observable
+    public loading: boolean;
+
     @action
     setOpenSection = (section: String) => {
         this.openSection = section;
@@ -62,6 +65,11 @@ export class NewClaimStore {
     @action
     setClaim = (claim: NewClaim) => {
         this.newClaim = claim;
+    };
+
+    @action
+    setLoading = (loading) => {
+        this.loading = loading;
     };
 }
 

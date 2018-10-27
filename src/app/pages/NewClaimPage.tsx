@@ -18,6 +18,11 @@ import Payment from "app/components/NewClaim/Step4/Payment/Payment";
 import Summary from "app/components/NewClaim/Step5/Summary/Summary";
 import Paper from "@material-ui/core/Paper";
 import RootContainer from "app/components/Container/RootContainer";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import AccountBox from "@material-ui/icons/AccountBox";
+import AccountBalance from "@material-ui/icons/AccountBalance";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 export interface NewClaimPageProps extends RouteComponentProps<any> {
     newClaimStore: NewClaimStore
@@ -36,8 +41,14 @@ const centerAlign = {
 
 let padding = {
     padding: "20px",
-    margin: "10px"
+    margin: "10px",
+    height: "100px"
 }
+
+let iconScale = {
+    transform: "scale(3.8)"
+}
+
 
 @inject('routerStore', 'newClaimStore')
 @observer
@@ -47,77 +58,146 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
         this.props.newClaimStore.setClaim(new NewClaim());
     }
 
+    nextAndSetTypeNatural = () => {
+        this.props.newClaimStore.setOpenSectionNatural();
+        this.nextStepWithLoader();
+    }
+
+    nextAndSetTypeLegal = () => {
+        this.props.newClaimStore.setOpenSectionLegal();
+        this.nextStepWithLoader();
+    }
 
     renderStep1() {
         return this.props.newClaimStore.step === 0 &&
             <>
 
-              <Grid container spacing={16}>
-                <Grid item xs={12}>
-                  <Grid container justify="center">
-                    <Grid item>
+                <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                        <Grid container justify="center">
 
-                      <Paper style={padding} elevation={5}>
+                            <Grid container justify="center">
+                                <Grid item>
+                                    <Typography component="h2" variant="h4" gutterBottom>
+                                        Please choose who you are representing
+                                    </Typography>
+                                    <Divider light />
+                                    <br/><br/>
+                                </Grid>
+                            </Grid>
 
-                        <Button variant="contained"
-                                color="primary" onClick={this.props.newClaimStore.setOpenSectionNatural}>New Claim As A
-                          Natural Entity
-                        </Button>
-                      </Paper>
+                            <Grid item xs={12} sm={6}>
 
+                                <Paper style={padding} elevation={1}>
+
+                                    <Grid container justify="center">
+                                        <Grid item>
+                                            <AccountBox style={iconScale}/>
+                                            <br/><br/><br/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container justify="center">
+                                        <Grid item>
+
+                                            <Button variant="contained"
+                                                    color="primary"
+                                                    onClick={this.nextAndSetTypeNatural}>
+                                                Represent Yourself
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </Paper>
+
+                            </Grid>
+
+                            <Grid item xs={12} sm={6}>
+
+                                <Paper style={padding} elevation={1}>
+
+                                    <Grid container justify="center">
+                                        <Grid item>
+                                            <AccountBalance style={iconScale}/>
+                                            <br/><br/><br/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container justify="center">
+                                        <Grid item>
+
+                                            <Button variant="contained"
+                                                    color="primary"
+                                                    onClick={this.nextAndSetTypeLegal}>
+                                                Represent a Legal Entity
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </Paper>
+
+                            </Grid>
+                        </Grid>
                     </Grid>
-
-                    <Grid item>
-
-                      <Paper style={padding} elevation={5}>
-
-                        <Button variant="contained"
-                                color="primary" onClick={this.props.newClaimStore.setOpenSectionLegal}>New Claim As A Legal
-                          Entity
-                        </Button>
-                      </Paper>
-
-                    </Grid>
-                  </Grid>
                 </Grid>
-              </Grid>
 
 
-              <Claimant newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
+    renderStep1p2() {
+        return this.props.newClaimStore.step === 1 && <Claimant newClaimStore={this.props.newClaimStore}/>
+    }
+
     renderStep2() {
-        return this.props.newClaimStore.step === 1 &&
+        return this.props.newClaimStore.step === 2 &&
             <>
-              <ClaimInformation newClaimStore={this.props.newClaimStore}/>
+                <ClaimInformation newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
     renderStep3() {
-        return this.props.newClaimStore.step === 2 &&
+        return this.props.newClaimStore.step === 3 &&
             <>
-              <Documents newClaimStore={this.props.newClaimStore}/>
+                <Documents newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
     renderStep4() {
-        return this.props.newClaimStore.step === 3 &&
+        return this.props.newClaimStore.step === 4 &&
             <>
-              <Payment newClaimStore={this.props.newClaimStore}/>
+                <Payment newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
     renderStep5() {
-        return this.props.newClaimStore.step === 4 &&
+        return this.props.newClaimStore.step === 5 &&
             <>
-              <Summary history={this.props.history} location={this.props.location} match={this.props.match}
-                       newClaimStore={this.props.newClaimStore}/>
+                <Summary history={this.props.history} location={this.props.location} match={this.props.match}
+                         newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
     lastStep() {
-        return this.props.newClaimStore.step >= 4;
+        return this.props.newClaimStore.step >= 5;
+    }
+
+    firstStep() {
+        return this.props.newClaimStore.step == 0;
+    }
+
+    nextStepWithLoader = () => {
+        this.props.newClaimStore.setLoading(true);
+        setTimeout(() => {
+            this.props.newClaimStore.setLoading(false);
+            this.props.newClaimStore.nextStep();
+        }, 800);
+    }
+
+    previousStepWithLoader = () => {
+        this.props.newClaimStore.setLoading(true);
+        setTimeout(() => {
+            this.props.newClaimStore.setLoading(false);
+            this.props.newClaimStore.previousStep();
+        }, 400);
     }
 
     render() {
@@ -128,40 +208,65 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                     <Grid justify="space-between" container spacing={24}>
                         <Grid justify="center" item xs={12}>
                             <Card>
+
+
                                 <CardContent>
+
+
                                     {!this.lastStep() &&
                                     <Stepper activeStep={this.props.newClaimStore.step} alternativeLabel>
 
-                                      <Step>
-                                        <StepLabel>Choose Claim Type</StepLabel>
-                                      </Step>
-                                      <Step>
-                                        <StepLabel>Claim Information</StepLabel>
-                                      </Step>
-                                      <Step>
-                                        <StepLabel>Documents</StepLabel>
-                                      </Step>
-                                      <Step>
-                                        <StepLabel>State Fee</StepLabel>
-                                      </Step>
+                                        <Step>
+                                            <StepLabel>Choose Claim Type</StepLabel>
+                                        </Step>
+                                        <Step>
+                                            <StepLabel>Claimant Information</StepLabel>
+                                        </Step>
+                                        <Step>
+                                            <StepLabel>Claim Information</StepLabel>
+                                        </Step>
+                                        <Step>
+                                            <StepLabel>Documents</StepLabel>
+                                        </Step>
+                                        <Step>
+                                            <StepLabel>State Fee</StepLabel>
+                                        </Step>
                                     </Stepper>
                                     }
                                     <div>
 
                                     </div>
 
-                                    {this.renderStep1()}
-                                    {this.renderStep2()}
-                                    {this.renderStep3()}
-                                    {this.renderStep4()}
-                                    {this.renderStep5()}
+                                    {!this.props.newClaimStore.loading && this.renderStep1()}
+                                    {!this.props.newClaimStore.loading && this.renderStep1p2()}
+                                    {!this.props.newClaimStore.loading && this.renderStep2()}
+                                    {!this.props.newClaimStore.loading && this.renderStep3()}
+                                    {!this.props.newClaimStore.loading && this.renderStep4()}
+                                    {!this.props.newClaimStore.loading && this.renderStep5()}
+
+                                    {this.props.newClaimStore.loading && <>
+                                        <Grid container justify="center">
+                                            <Grid item>
+
+                                                <CircularProgress size={50}/>
+
+                                            </Grid>
+                                        </Grid>
+                                    </>}
+
 
                                 </CardContent>
                                 <CardActions>
-                                    {!this.lastStep() &&
-                                    <Button onClick={this.props.newClaimStore.nextStep} variant="contained"
+                                    {!this.lastStep() && !this.firstStep() && !this.props.newClaimStore.loading &&
+                                    <Button onClick={this.previousStepWithLoader} variant="contained"
                                             color="primary">
-                                      Continue
+                                        Back
+                                    </Button>
+                                    }
+                                    {!this.lastStep() && !this.firstStep() && !this.props.newClaimStore.loading &&
+                                    <Button onClick={this.nextStepWithLoader} variant="contained"
+                                            color="primary">
+                                        Continue
                                     </Button>
                                     }
                                 </CardActions>
