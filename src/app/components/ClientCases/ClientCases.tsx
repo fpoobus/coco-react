@@ -12,6 +12,8 @@ import {inject, observer} from "mobx-react";
 import Button from "@material-ui/core/Button/Button";
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Grid from "@material-ui/core/Grid/Grid";
+import {Link} from 'react-router-dom';
+
 
 interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
     caseStore?: CaseStore;
@@ -20,13 +22,14 @@ interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
 @inject('caseStore')
 @observer
 class ClientCases extends React.Component<ClientCasesProps> {
+    newClaimLink = (props, id) => <Link to={"/case?id=" + id} {...props} />;
+
     renderTableBody = () => {
         const {caseStore} = this.props;
 
         const caseData = caseStore.casesData;
         return (
             caseData.map((courtCase, idx) => {
-                    const id = courtCase.id;
                     return <TableRow key={idx}>
                         <TableCell>{courtCase.status}</TableCell>
                         <TableCell>{courtCase.type}</TableCell>
@@ -34,7 +37,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
                         <TableCell>{courtCase.defendantId}</TableCell>
                         <TableCell>{courtCase.description}</TableCell>
                         <TableCell>
-                            <Button variant="contained"  href={'/case?id=' + id} color="primary">
+                            <Button variant="contained" component={props => this.newClaimLink(props, courtCase.id)} color="primary">
                                 Go to case
                             </Button>
                         </TableCell>
@@ -55,7 +58,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
                 <Paper>
                     <Grid container spacing={24}>
                         <Grid item xs={12}>
-                            <Typography variant="h5" gutterBottom style={{ marginLeft: 20 }}>
+                            <Typography variant="h5" gutterBottom style={{marginLeft: 20}}>
                                 New cases
                             </Typography>
 
