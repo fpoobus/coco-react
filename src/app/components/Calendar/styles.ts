@@ -16,7 +16,7 @@ export const calendarStyles = (theme: Theme) => createStyles({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: '80%',
+    top: '75%',
     margin: 'auto',
     width: 7,
     height: 7
