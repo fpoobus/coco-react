@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Avatar from "@material-ui/core/Avatar/Avatar";
-import LockIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import Typography from "@material-ui/core/Typography/Typography";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
@@ -9,6 +8,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel/FormControlLabe
 import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import Button from "@material-ui/core/Button/Button";
 import UserStore from "app/stores/UserStore";
+import LockIcon from '@material-ui/icons/LockOutlined';
 
 interface LoginPasswordProps {
     classes?: any;

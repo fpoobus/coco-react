@@ -51,7 +51,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
         axios.post('http://139.59.148.64/coco-api/cases', {
             status: "PENDING",
             caseNumber: '1000000' + new Date().getMilliseconds().toString(),
-            claimantId: "",
+            claimantId: "100000003",
             defendantId: this.props.newClaimStore.newClaim.defendant.registryCode,
             caseType: this.props.newClaimStore.newClaim.claim.case_type,
             description: this.props.newClaimStore.newClaim.claim.description,
