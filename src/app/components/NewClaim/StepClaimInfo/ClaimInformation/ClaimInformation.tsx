@@ -115,13 +115,17 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
             </Grid>
 
 
+
             <TextField
-                label="Description"
+                id="outlined-multiline-flexible"
+                label="Claim Summary"
+                multiline
                 fullWidth
+                rows="5"
                 value={claim.description}
                 onChange={this.handleChange('description')}
                 margin="normal"
-                multiline
+                variant="outlined"
             />
 
         </>;
