@@ -42,7 +42,7 @@ class UserStore {
     }
 
     public doLogIn = (params: { identityCode: string, password: string }) => {
-        axios.post(`http://localhost:9701/coco-api/login`, {identityCode: params.identityCode, password: params.password}, {
+        axios.post(`http://139.59.148.64/coco-api/login`, {identityCode: params.identityCode, password: params.password}, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
@@ -56,7 +56,7 @@ class UserStore {
     };
 
     public doSmartIdLogIn = async (identityCode: string) => {
-        await axios.post(`http://localhost:9701/coco-api/smartid`, {identityCode: identityCode}, {
+        await axios.post(`http://139.59.148.64/coco-api/smartid`, {identityCode: identityCode}, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
@@ -69,7 +69,7 @@ class UserStore {
     };
 
     public pollSmartId = (sessionId: string) => {
-        axios.post(`http://localhost:9701/coco-api/poll`, {sessionId: sessionId}, {
+        axios.post(`http://139.59.148.64/coco-api/poll`, {sessionId: sessionId}, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
