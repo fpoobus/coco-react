@@ -24,9 +24,11 @@ import AccountBalance from "@material-ui/icons/AccountBalance";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Defendant from "app/components/NewClaim/StepDefendant/Defendant/Defendant";
+import UserStore from "app/stores/UserStore";
 
 export interface NewClaimPageProps extends RouteComponentProps<any> {
-    newClaimStore: NewClaimStore
+    newClaimStore: NewClaimStore,
+    userStore: UserStore
 }
 
 export interface IndexPageState {
@@ -51,7 +53,7 @@ let iconScale = {
 }
 
 
-@inject('routerStore', 'newClaimStore')
+@inject('routerStore', 'newClaimStore', 'userStore')
 @observer
 export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
     constructor(props: NewClaimPageProps, context: any) {
@@ -192,7 +194,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
         return this.props.newClaimStore.step === 6 &&
             <>
                 <Summary history={this.props.history} location={this.props.location} match={this.props.match}
-                         newClaimStore={this.props.newClaimStore}/>
+                         userStore={this.props.userStore} newClaimStore={this.props.newClaimStore}/>
             </>
     }
 
@@ -226,7 +228,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
     proceedToPayment = () => {
         localStorage.setItem('newClaim', JSON.stringify(this.props.newClaimStore.newClaim));
-        localStorage.setItem('step', "5");
+        localStorage.setItem('step', "6");
         let redirUrl = window.location.protocol + "//" + window.location.host + "/new-claim/payment-complete"
         window.location.href = "https://rkdemo.aktors.ee/proto/bank?amount=10&returnUrl=" + redirUrl;
     }
@@ -304,7 +306,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                         Continue
                                     </Button>
                                     }
-                                    {this.lastPreStep() && !this.props.newClaimStore.loading &&
+                                    {this.lastPreStep() && !this.lastStep() && !this.props.newClaimStore.loading &&
                                     <Button onClick={this.proceedToPayment} variant="contained"
                                             color="primary">
                                         Proceed to Payment
