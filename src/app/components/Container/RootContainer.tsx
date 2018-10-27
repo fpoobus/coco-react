@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { WithStyles } from '@material-ui/core';
+import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Header from 'app/components/Header/Header';
 
 
-const styles = () => createStyles({
+const styles = (theme: Theme) => createStyles({
   background: {
     backgroundImage: `url(${'../../../assets/img/skyline.svg'})`,
     backgroundPosition: 'center bottom',
@@ -21,7 +21,10 @@ const styles = () => createStyles({
   },
   container: {
     maxWidth: 1200,
-    width: '75%'
+    width: '75%',
+    [theme.breakpoints.down('md')]: {
+      width: '95%'
+    }
   }
 });
 

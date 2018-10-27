@@ -11,7 +11,6 @@ import CaseStore from 'app/stores/CaseStore';
 import { inject, observer } from 'mobx-react';
 import Button from '@material-ui/core/Button/Button';
 import Typography from '@material-ui/core/es/Typography/Typography';
-import Grid from '@material-ui/core/Grid/Grid';
 import { Link } from 'react-router-dom';
 
 
@@ -53,34 +52,24 @@ class ClientCases extends React.Component<ClientCasesProps> {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <>
-        <Paper>
-          <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <Typography variant="h5" gutterBottom style={{ marginLeft: 20 }}>
-                New cases
-              </Typography>
-
-            </Grid>
-
-         
-          <Grid item xs={12}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {['Status', 'Type', 'Calimant', 'Defendant', 'Description', '']
-                  .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.renderTableBody()}
-            </TableBody>
-          </Table>
-          </Grid>
-          </Grid>
-        </Paper>
-      </>
+      <Paper className={classes.root}>
+        <Typography variant="h5" gutterBottom className={classes.title}>
+          New cases
+        </Typography>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {['Status', 'Type', 'Calimant', 'Defendant', 'Description', '']
+                .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {this.renderTableBody()}
+          </TableBody>
+        </Table>
+      </Paper>
     );
   }
 }
