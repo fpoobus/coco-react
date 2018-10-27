@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Avatar from "@material-ui/core/Avatar/Avatar";
-import LockIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import LockIcon from '@material-ui/icons/LockOutlined';
 import Typography from "@material-ui/core/Typography/Typography";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import InputLabel from "@material-ui/core/InputLabel/InputLabel";
