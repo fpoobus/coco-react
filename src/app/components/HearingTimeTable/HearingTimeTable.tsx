@@ -5,7 +5,7 @@ import Paper from "../../../../node_modules/@material-ui/core/Paper/Paper";
 import {courtHearingCalendarStyles} from "app/components/HearingTimeTable/styles";
 import Divider from "../../../../node_modules/@material-ui/core/Divider/Divider";
 import Avatar from "../../../../node_modules/@material-ui/core/Avatar/Avatar";
-import LockIcon from "../../../../node_modules/@material-ui/core/SvgIcon/SvgIcon";
+import PersonIcon from "../../../../node_modules/@material-ui/icons/PermIdentity";
 import Typography from "../../../../node_modules/@material-ui/core/Typography/Typography";
 
 interface CourtHearingCalendarProps extends WithStyles<typeof courtHearingCalendarStyles> {
@@ -37,7 +37,7 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
               <div className={classes.judgeBackground}>
                   <div className={classes.center}>
                       <Avatar className={classes.avatar}>
-                          <LockIcon/>
+                          <PersonIcon/>
                       </Avatar>
                       <Typography component="h1" variant="h6">
                           Lady Gaga
