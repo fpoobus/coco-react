@@ -26,12 +26,13 @@ class HearingsDataStore {
   public async loadHearings(personId: number): Promise<Array<Hearing>> {
     const response = await axios.get(`http://139.59.148.64/coco-api/hearings/byPerson/${personId}`,
       { headers: { 'Access-Control-Allow-Origin': '*' } });
-    console.log(response)
+    console.log(response);
     return response.data;
   }
 
   private static getDateFromHearing(hearing: Hearing): Date {
-    const mDate = moment(hearing.dateOfRegistration, 'YYYY-MM-DD');
+    const mDate = moment(hearing.startTime);
+    debugger;
     return new Date(mDate.format('LLLL'));
   }
 }
