@@ -4,8 +4,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import {courtHearingDateStyles} from "app/components/HearingDateContainer/styles";
 import Divider from "../../../../node_modules/@material-ui/core/Divider/Divider";
 import Paper from "../../../../node_modules/@material-ui/core/Paper/Paper";
-import {courtHearingDateStyles} from "app/components/HearingDateContainer/styles";
-
 
 interface CourtHearingDateProps extends WithStyles<typeof courtHearingDateStyles> {
   //hearingStore?: HearingStore
