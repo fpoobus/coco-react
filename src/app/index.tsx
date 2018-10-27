@@ -18,6 +18,8 @@ export const theme = createMuiTheme({
   }
 });
 
+document.body.style.backgroundColor = theme.palette.primary.light;
+
 // render react DOM
 export const App = hot(module)(({ history }) => (
 

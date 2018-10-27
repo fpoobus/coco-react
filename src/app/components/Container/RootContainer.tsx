@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { theme } from 'app/index';
 
 const styles = (theme: Theme) => createStyles({
   background: {
@@ -30,10 +29,6 @@ interface RootContainerProps extends WithStyles<typeof styles> {
 }
 
 class RootContainer extends React.Component<RootContainerProps> {
-
-  componentDidMount() {
-    document.body.style.backgroundColor = theme.palette.primary.light;
-  }
 
   render() {
     const { classes, children } = this.props;
