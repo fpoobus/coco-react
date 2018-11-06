@@ -32,6 +32,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
     };
 
     componentDidMount() {
+        this.props.newClaimStore.setLoading(true);
         axios.get(`http://139.59.148.64/coco-api/persons/81010260002`, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
@@ -44,6 +45,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
                     this.state.value = this.props.newClaimStore.newClaim.legalPerson.registry_code;
                     console.log(this.props.newClaimStore.personResponse);
                 });
+                this.props.newClaimStore.setLoading(false);
             });
     }
 

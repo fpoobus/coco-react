@@ -24,15 +24,18 @@ export class NewClaimStore {
     @observable
     public defendantRegistryCode: string;
 
-    constructor() {
-        this.step = 0;
-    }
-
     @observable
     public loading: boolean;
 
     @observable
     public summaryLoading: boolean;
+
+    @observable
+    public nextButtonDisabled: boolean;
+
+    constructor() {
+        this.step = 0;
+    }
 
     @action
     setOpenSection = (section: String) => {
@@ -89,6 +92,11 @@ export class NewClaimStore {
     @action
     setDefendantRegistryCode = (code) => {
         this.defendantRegistryCode = code;
+    };
+
+    @action
+    setNextButtonDisabled = (disabled) => {
+        this.nextButtonDisabled = disabled;
     };
 
 }

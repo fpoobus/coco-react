@@ -22,6 +22,9 @@ export interface DefendantState {
 @observer
 export class Defendant extends React.Component<DefendantProps, DefendantState> {
 
+    componentDidMount() {
+        this.props.newClaimStore.setNextButtonDisabled(true);
+    }
 
     handleChange = (name) => event => {
         this.props.newClaimStore.setDefendantRegistryCode(event.target.value);
@@ -47,9 +50,8 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
                     this.props.newClaimStore.defendantResponse = DefendantResponse.fromJson(res.data);
 
                 });
-            }).catch(e => {
-
-        });
+            }).catch(e => {});
+            this.props.newClaimStore.setNextButtonDisabled(false);
     }
 
     renderDefendantInput() {

@@ -61,14 +61,14 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
         let claim = new URLSearchParams(window.location.search).get('claim');
 
-        if(claim) {
+        if (claim) {
             this.props.newClaimStore.setClaim(NewClaim.fromJson(claim));
         } else {
             this.props.newClaimStore.setClaim(new NewClaim());
         }
 
         let step = new URLSearchParams(window.location.search).get('step');
-        if(step) {
+        if (step) {
             this.props.newClaimStore.step = parseInt(step);
         }
     }
@@ -84,118 +84,112 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
     }
 
     renderStep1() {
-        return this.props.newClaimStore.step === 0 &&
-            <>
+        return <>
 
-                <Grid container spacing={16}>
-                    <Grid item xs={12}>
+            <Grid container spacing={16}>
+                <Grid item xs={12}>
+                    <Grid container justify="center">
+
                         <Grid container justify="center">
+                            <Grid item>
+                                <Typography component="h2" variant="h4" gutterBottom>
+                                    Please choose who you are representing
+                                </Typography>
+                                <Divider light/>
+                                <br/><br/>
+                            </Grid>
+                        </Grid>
 
-                            <Grid container justify="center">
-                                <Grid item>
-                                    <Typography component="h2" variant="h4" gutterBottom>
-                                        Please choose who you are representing
-                                    </Typography>
-                                    <Divider light />
-                                    <br/><br/>
+                        <Grid item xs={12} sm={6}>
+
+                            <Paper style={padding} elevation={1}>
+
+                                <Grid container justify="center">
+                                    <Grid item>
+                                        <AccountBox style={iconScale}/>
+                                        <br/><br/><br/>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
 
-                            <Grid item xs={12} sm={6}>
+                                <Grid container justify="center">
+                                    <Grid item>
 
-                                <Paper style={padding} elevation={1}>
-
-                                    <Grid container justify="center">
-                                        <Grid item>
-                                            <AccountBox style={iconScale}/>
-                                            <br/><br/><br/>
-                                        </Grid>
+                                        <Button variant="contained"
+                                                color="primary"
+                                                onClick={this.nextAndSetTypeNatural}>
+                                            Represent Yourself
+                                        </Button>
                                     </Grid>
+                                </Grid>
+                            </Paper>
 
-                                    <Grid container justify="center">
-                                        <Grid item>
+                        </Grid>
 
-                                            <Button variant="contained"
-                                                    color="primary"
-                                                    onClick={this.nextAndSetTypeNatural}>
-                                                Represent Yourself
-                                            </Button>
-                                        </Grid>
+                        <Grid item xs={12} sm={6}>
+
+                            <Paper style={padding} elevation={1}>
+
+                                <Grid container justify="center">
+                                    <Grid item>
+                                        <AccountBalance style={iconScale}/>
+                                        <br/><br/><br/>
                                     </Grid>
-                                </Paper>
+                                </Grid>
 
-                            </Grid>
+                                <Grid container justify="center">
+                                    <Grid item>
 
-                            <Grid item xs={12} sm={6}>
-
-                                <Paper style={padding} elevation={1}>
-
-                                    <Grid container justify="center">
-                                        <Grid item>
-                                            <AccountBalance style={iconScale}/>
-                                            <br/><br/><br/>
-                                        </Grid>
+                                        <Button variant="contained"
+                                                color="primary"
+                                                onClick={this.nextAndSetTypeLegal}>
+                                            Represent a Legal Entity
+                                        </Button>
                                     </Grid>
+                                </Grid>
+                            </Paper>
 
-                                    <Grid container justify="center">
-                                        <Grid item>
-
-                                            <Button variant="contained"
-                                                    color="primary"
-                                                    onClick={this.nextAndSetTypeLegal}>
-                                                Represent a Legal Entity
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                </Paper>
-
-                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
+            </Grid>
 
 
-            </>
+        </>
     }
 
-    renderStep1p2() {
-        return this.props.newClaimStore.step === 1 && <Claimant newClaimStore={this.props.newClaimStore}/>
+    renderClaimantStep() {
+        return <Claimant newClaimStore={this.props.newClaimStore}/>
     }
 
-    renderStep1p3() {
-        return this.props.newClaimStore.step === 2 &&
-            <>
-                <Defendant newClaimStore={this.props.newClaimStore}/>
-            </>
+    renderDefendantStep() {
+        return <>
+            <Defendant newClaimStore={this.props.newClaimStore}/>
+        </>
     }
 
-    renderStep2() {
-        return this.props.newClaimStore.step === 3 &&
-            <>
-                <ClaimInformation newClaimStore={this.props.newClaimStore}/>
-            </>
+    renderClaimInformationStep() {
+        return <>
+            <ClaimInformation newClaimStore={this.props.newClaimStore}/>
+        </>
     }
 
-    renderStep3() {
-        return this.props.newClaimStore.step === 4 &&
-            <>
-                <Documents newClaimStore={this.props.newClaimStore}/>
-            </>
+    renderDocumentsStep() {
+        return <>
+            <Documents newClaimStore={this.props.newClaimStore}/>
+        </>
     }
 
-    renderStep4() {
-        return this.props.newClaimStore.step === 5 &&
-            <>
-                <Payment newClaimStore={this.props.newClaimStore}/>
-            </>
+    renderPaymentStep() {
+        return <>
+            <Payment newClaimStore={this.props.newClaimStore}/>
+        </>
     }
 
-    renderStep5() {
-        return this.props.newClaimStore.step === 6 &&
-            <>
-                <Summary history={this.props.history} location={this.props.location} match={this.props.match}
-                         userStore={this.props.userStore} newClaimStore={this.props.newClaimStore}/>
-            </>
+    renderSummaryStep() {
+        return <>
+            <Summary history={this.props.history} location={this.props.location} match={this.props.match}
+                     userStore={this.props.userStore} newClaimStore={this.props.newClaimStore}/>
+        </>
     }
 
     lastStep() {
@@ -235,6 +229,10 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
     render() {
 
+        let dynamicClass = {
+            'display': this.props.newClaimStore.loading ? 'none' : 'block'
+        };
+
         return (
             <RootContainer>
                 <div style={centerAlign}>
@@ -273,13 +271,15 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
                                     </div>
 
-                                    {!this.props.newClaimStore.loading && this.renderStep1()}
-                                    {!this.props.newClaimStore.loading && this.renderStep1p2()}
-                                    {!this.props.newClaimStore.loading && this.renderStep1p3()}
-                                    {!this.props.newClaimStore.loading && this.renderStep2()}
-                                    {!this.props.newClaimStore.loading && this.renderStep3()}
-                                    {!this.props.newClaimStore.loading && this.renderStep4()}
-                                    {!this.props.newClaimStore.loading && this.renderStep5()}
+                                    <div style={dynamicClass}>
+                                        {this.props.newClaimStore.step === 0 && this.renderStep1()}
+                                        {this.props.newClaimStore.step === 1 && this.renderClaimantStep()}
+                                        {this.props.newClaimStore.step === 2 && this.renderDefendantStep()}
+                                        {this.props.newClaimStore.step === 3 && this.renderClaimInformationStep()}
+                                        {this.props.newClaimStore.step === 4 && this.renderDocumentsStep()}
+                                        {this.props.newClaimStore.step === 5 && this.renderPaymentStep()}
+                                        {this.props.newClaimStore.step === 6 && this.renderSummaryStep()}
+                                    </div>
 
                                     {this.props.newClaimStore.loading && <>
                                         <Grid container justify="center">
@@ -301,7 +301,8 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                     </Button>
                                     }
                                     {!this.lastStep() && !this.lastPreStep() && !this.firstStep() && !this.props.newClaimStore.loading &&
-                                    <Button onClick={this.nextStepWithLoader} variant="contained"
+                                    <Button disabled={this.props.newClaimStore.nextButtonDisabled}
+                                            onClick={this.nextStepWithLoader} variant="contained"
                                             color="primary">
                                         Continue
                                     </Button>
@@ -309,7 +310,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                     {this.lastPreStep() && !this.lastStep() && !this.props.newClaimStore.loading &&
                                     <Button onClick={this.proceedToPayment} variant="contained"
                                             color="primary"
-                                            >
+                                    >
                                         Proceed to Payment
                                     </Button>
                                     }
