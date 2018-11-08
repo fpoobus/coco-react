@@ -28,6 +28,34 @@ let textCenter = {
     textAlign: 'center' as 'center'
 };
 
+const claims = [
+    {
+        type: "bankruptcy",
+        name: "Bankruptcy",
+        fee: "30"
+    },
+    {
+        type: "contract-violation",
+        name: "Contract Violation",
+        fee: "60"
+    },
+    {
+        type: "equitable-claim",
+        name: "Equitable Claim",
+        fee: "90"
+    },
+    {
+        type: "tort-claim",
+        name: "Tort Claim",
+        fee: "110"
+    },
+    {
+        type: "property-dispute",
+        name: "Property Dispute",
+        fee: "125"
+    }
+];
+
 @inject('routerStore', 'newClaimStore')
 @observer
 export class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInformationState> {
@@ -35,6 +63,37 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
     state = {
         value: ''
     };
+
+    renderClaimTypes() {
+        let result = [];
+
+        claims.forEach(claim => result.push(<Grid xs={8} sm={6} md={4}>
+
+                <Paper style={gridItem} elevation={1}>
+
+                    <Grid container justify="center">
+                        <Grid item>
+
+                            <RadioGroup
+                                name="claim-type"
+                                value={this.state.value}
+                                onChange={this.setCaseType}
+                            >
+                                <FormControlLabel value={claim.type} control={<Radio/>}
+                                                  label={claim.name}/>
+                            </RadioGroup>
+
+                            <Typography variant="subtitle1" gutterBottom>
+                                State Fee: {claim.fee} USD
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </Grid>)
+        );
+
+        return result;
+    }
 
     renderClaimInfo() {
         let claim = this.props.newClaimStore.newClaim.claim;
@@ -53,86 +112,10 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
                     <br/><br/>
                 </Grid>
             </Grid>
+
+
             <Grid container justify="center">
-
-
-                <Grid xs={3} sm={3}>
-
-                    <Paper style={gridItem} elevation={1}>
-
-                        <Grid container justify="center">
-                            <Grid item>
-
-                                <RadioGroup
-                                    aria-label="Case Type"
-                                    name="claim_type"
-                                    value={this.state.value}
-                                    onChange={this.setCaseType}
-                                >
-                                    <FormControlLabel value="bankruptcy" control={<Radio/>}
-                                                      label="Bankruptcy"/>
-                                </RadioGroup>
-
-                                <Typography variant="subtitle1" gutterBottom>
-                                    State Fee: 30 USD
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                </Grid>
-
-
-                <Grid xs={3} sm={3}>
-
-                    <Paper style={gridItem} elevation={1}>
-
-                        <Grid container justify="center">
-                            <Grid item>
-
-                                <RadioGroup
-                                    aria-label="Case Type"
-                                    name="claim_type"
-                                    value={this.state.value}
-                                    onChange={this.setCaseType}
-                                >
-                                    <FormControlLabel value="contract-violation" control={<Radio/>}
-                                                      label="Contract Violation"/>
-                                </RadioGroup>
-
-                                <Typography variant="subtitle1" gutterBottom>
-                                    State Fee: 80 USD
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                </Grid>
-
-
-                <Grid xs={3} sm={3}>
-
-                    <Paper style={gridItem} elevation={1}>
-
-                        <Grid container justify="center">
-                            <Grid item>
-
-                                <RadioGroup
-                                    aria-label="Case Type"
-                                    name="claim_type"
-                                    value={this.state.value}
-                                    onChange={this.setCaseType}
-                                >
-                                    <FormControlLabel value="equitable-claim" control={<Radio/>}
-                                                      label="Equitable Claim"/>
-                                </RadioGroup>
-
-                                <Typography variant="subtitle1" gutterBottom>
-                                    State Fee: 80 USD
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                </Grid>
-
+                {this.renderClaimTypes()}
             </Grid>
 
 
@@ -154,18 +137,14 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
     handleChange = name => event => {
         runInAction(() => {
             this.props.newClaimStore.newClaim.claim[name] = event.target.value;
-
         });
     };
 
     setCaseType = event => {
-        console.log('asd');
 
-        if (event.target.value === 'contract-violation') {
-            this.props.newClaimStore.newClaim.fee.fee = '80';
-        } else {
-            this.props.newClaimStore.newClaim.fee.fee = '30';
-        }
+        let claim = claims.find(claim => claim.type === event.target.valu);
+
+        this.props.newClaimStore.newClaim.fee.fee = claim.fee;
 
         this.setState({value: event.target.value});
         runInAction(() => {

@@ -69,6 +69,7 @@ export class NewClaimStore {
 
     @action
     previousStep = () => {
+        this.nextButtonDisabled = false;
         if(this.step > 0) {
             this.step--;
         }
