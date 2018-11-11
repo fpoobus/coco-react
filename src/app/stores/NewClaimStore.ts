@@ -1,5 +1,5 @@
 import {observable, action, computed} from "mobx";
-import NewClaim, {DefendantResponse, PersonResponse} from "app/model/NewClaim";
+import NewClaim, {DefendantResponse, ClaimDocument, PersonResponse} from "app/model/NewClaim";
 
 export class NewClaimStore {
 
@@ -33,8 +33,12 @@ export class NewClaimStore {
     @observable
     public nextButtonDisabled: boolean;
 
+    @observable
+    public attachedFiles: ClaimDocument[];
+
     constructor() {
         this.step = 0;
+        this.attachedFiles = [];
     }
 
     @action

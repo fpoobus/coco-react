@@ -3,7 +3,7 @@ export default class NewClaim {
     legalPerson: LegalPerson;
     defendant: Defendant;
     claim: Claim;
-    documents: Document[];
+    documents: ClaimDocument[];
     fee: Fee;
 
     constructor() {
@@ -26,7 +26,7 @@ export default class NewClaim {
         claim.claim = Claim.fromJson(json['claim']);
 
         if (json && json['documents']) {
-            claim.documents = json['documents'].map(Document.fromJson);
+            claim.documents = json['documents'].map(ClaimDocument.fromJson);
         }
 
         claim.fee = Fee.fromJson(json['fee']);
@@ -96,13 +96,13 @@ export class Claim {
 
 }
 
-export class Document {
+export class ClaimDocument {
     name: string;
     added_by: string;
     modified: string;
 
     static fromJson(json) {
-        return Object.assign(new Document(), json);
+        return Object.assign(new ClaimDocument(), json);
     }
 }
 

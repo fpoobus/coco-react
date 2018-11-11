@@ -105,7 +105,10 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
                     <Typography style={textCenter} component="h2" variant="h4" gutterBottom>
                         Select Case Type
                     </Typography>
-                    <Typography component="subtitle1" gutterBottom>
+                    <Typography style={textCenter} component="subtitle1" gutterBottom>
+                        Please select the case type relevant for the claim being submitted
+                    </Typography>
+                    <Typography style={textCenter} component="subtitle1" gutterBottom>
                         Depending on the case type the State Fee will be different.
                     </Typography>
                     <Divider light/>
@@ -142,7 +145,7 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
 
     setCaseType = event => {
 
-        let claim = claims.find(claim => claim.type === event.target.valu);
+        let claim = claims.find(claim => claim.type === event.target.value);
 
         this.props.newClaimStore.newClaim.fee.fee = claim.fee;
 
