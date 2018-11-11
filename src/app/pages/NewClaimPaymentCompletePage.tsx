@@ -21,6 +21,9 @@ export class NewClaimPaymentCompletePage extends React.Component<NewClaimPayment
         let claim = localStorage.getItem('newClaim');
         let step = localStorage.getItem('step');
 
+        localStorage.removeItem('newClaim');
+        localStorage.removeItem('step');
+
         window.location.href = "/new-claim?claim=" + claim + "&step=" + step;
     }
 

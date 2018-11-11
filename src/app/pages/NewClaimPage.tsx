@@ -66,9 +66,10 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
         } else {
             this.props.newClaimStore.setClaim(new NewClaim());
         }
-
+        this.props.newClaimStore.step = 0;
         let step = new URLSearchParams(window.location.search).get('step');
         if (step) {
+            console.log("found step")
             this.props.newClaimStore.step = parseInt(step);
         }
     }
