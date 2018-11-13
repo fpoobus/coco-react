@@ -3,14 +3,16 @@ import {inject, observer} from 'mobx-react';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import TextField from '@material-ui/core/TextField';
 import {runInAction} from 'mobx';
-import axios from 'axios';
 import {LegalEntityResponse, PersonResponse} from 'app/model/NewClaim';
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
+import UserStore from "app/stores/UserStore";
+import axios from 'axios';
 
 export interface ClaimantProps {
-    newClaimStore: NewClaimStore
+    newClaimStore?: NewClaimStore,
+    userStore?: UserStore
 }
 
 export interface ClaimantState {
@@ -18,7 +20,7 @@ export interface ClaimantState {
 }
 
 
-@inject('routerStore', 'newClaimStore')
+@inject('routerStore', 'userStore', 'newClaimStore')
 @observer
 export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
@@ -33,20 +35,31 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
     componentDidMount() {
         this.props.newClaimStore.setLoading(true);
-        axios.get(`http://139.59.148.64/coco-api/persons/81010260002`, {
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
-        })
-            .then(res => {
-                runInAction(() => {
-                    console.log(res.data);
-                    this.props.newClaimStore.personResponse = PersonResponse.fromJson(res.data);
-                    this.state.value = this.props.newClaimStore.newClaim.legalPerson.registry_code;
-                    console.log(this.props.newClaimStore.personResponse);
-                });
-                this.props.newClaimStore.setLoading(false);
+        let personId = this.props.userStore.personalCode;
+        if (personId) {
+            //81010260002
+            axios.get(`http://139.59.148.64/coco-api/persons/` + personId, {
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                }
+            })
+                .then(res => {
+                    runInAction(() => {
+                        console.log(res.data);
+                        this.props.newClaimStore.personResponse = PersonResponse.fromJson(res.data);
+                        this.state.value = this.props.newClaimStore.newClaim.legalPerson.registry_code;
+                        console.log(this.props.newClaimStore.personResponse);
+                    });
+                    this.props.newClaimStore.setLoading(false);
+                }).catch(() => {
+                this.props.newClaimStore.setNoLeglaEntities(true);
+
             });
+        } else {
+            this.props.newClaimStore.setNoLeglaEntities(true);
+            this.props.newClaimStore.setLoading(false);
+        }
+
     }
 
     naturalEntityFields() {
@@ -117,7 +130,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
     setActiveLegalEntity = (entity: LegalEntityResponse) => {
         this.props.newClaimStore.newClaim.legalPerson.name = entity.name;
         this.props.newClaimStore.newClaim.legalPerson.registry_code = entity.entityId;
-       // this.nextStepWithLoader();
+        // this.nextStepWithLoader();
     };
 
 
@@ -135,12 +148,15 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
                 result.push(<br/>);
                 */
 
-                result.push(<FormControlLabel onClick={() => this.setActiveLegalEntity(legalEntity)} value={"" + legalEntity.registryCode}
+                result.push(<FormControlLabel onClick={() => this.setActiveLegalEntity(legalEntity)}
+                                              value={"" + legalEntity.registryCode}
                                               control={<Radio onClick={() => this.setActiveLegalEntity(legalEntity)}/>}
                                               label={legalEntity.registryCode + " " + legalEntity.name}/>)
             })
         }
-
+        if(this.props.newClaimStore.noLegalEntities) {
+            result.push(<p>No legal entities found</p>);
+        }
         return result;
     }
 

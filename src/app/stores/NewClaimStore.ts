@@ -1,5 +1,5 @@
-import {observable, action, computed} from "mobx";
-import NewClaim, {DefendantResponse, ClaimDocument, PersonResponse} from "app/model/NewClaim";
+import {action, computed, observable} from "mobx";
+import NewClaim, {ClaimDocument, DefendantResponse, PersonResponse} from "app/model/NewClaim";
 
 export class NewClaimStore {
 
@@ -34,10 +34,26 @@ export class NewClaimStore {
     public nextButtonDisabled: boolean;
 
     @observable
+    public noLegalEntities: boolean;
+
+    @observable
     public attachedFiles: ClaimDocument[];
 
     constructor() {
         this.step = 0;
+        this.attachedFiles = [];
+    }
+
+    reset() {
+        this.step = 0;
+        this.newClaim = new NewClaim();
+        this.openSection = "";
+        this.personResponse = null;
+        this.defendantResponse = null;
+        this.defendantRegistryCode = "";
+        this.loading = false;
+        this.summaryLoading = false;
+        this.nextButtonDisabled = false;
         this.attachedFiles = [];
     }
 
@@ -58,7 +74,7 @@ export class NewClaimStore {
 
     @computed
     get isLegalSection() {
-      return this.openSection === NewClaimStore.LEGAL;
+        return this.openSection === NewClaimStore.LEGAL;
     }
 
     @computed
@@ -74,7 +90,7 @@ export class NewClaimStore {
     @action
     previousStep = () => {
         this.nextButtonDisabled = false;
-        if(this.step > 0) {
+        if (this.step > 0) {
             this.step--;
         }
     };
@@ -104,6 +120,10 @@ export class NewClaimStore {
         this.nextButtonDisabled = disabled;
     };
 
+    @action
+    setNoLeglaEntities = (disabled) => {
+        this.noLegalEntities = disabled;
+    };
 }
 
 export default NewClaimStore;

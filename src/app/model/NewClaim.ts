@@ -26,11 +26,13 @@ export default class NewClaim {
         claim.claim = Claim.fromJson(json['claim']);
 
         if (json && json['documents']) {
-            claim.documents = json['documents'].map(ClaimDocument.fromJson);
+            json['documents'].map(item => {
+                claim.documents.push(ClaimDocument.fromJson(item));
+            });
         }
 
         claim.fee = Fee.fromJson(json['fee']);
-        console.log(claim);
+        console.log("Claim from JSON", claim);
         return claim;
     }
 }
@@ -114,8 +116,10 @@ export class Fee {
     fee: string;
 
     static fromJson(json) {
-        console.log(json);
-        return Object.assign(new Fee(), json);
+        console.log("Fee", json);
+        let fee = Object.assign(new Fee(), json);
+        console.log(fee);
+        return fee;
     }
 }
 

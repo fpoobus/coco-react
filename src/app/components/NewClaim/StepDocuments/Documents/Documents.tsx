@@ -81,6 +81,12 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
         return elements;
     }
 
+    componentWillUnmount() {
+        runInAction(() => {
+            this.props.newClaimStore.newClaim.documents = this.props.newClaimStore.attachedFiles;
+        });
+    }
+
     renderButton() {
         return <><Button onClick={this.handleClickOpen}>Attach Documents</Button>
         <Dialog

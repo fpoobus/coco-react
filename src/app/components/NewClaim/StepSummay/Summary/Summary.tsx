@@ -7,10 +7,15 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 import axios from 'axios';
 import UserStore from "app/stores/UserStore";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
 
 export interface SummaryProps extends RouteComponentProps<any> {
-    newClaimStore: NewClaimStore,
-    userStore: UserStore
+    newClaimStore?: NewClaimStore,
+    userStore?: UserStore
 }
 
 export interface SummaryState {
@@ -27,6 +32,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
     }
 
     componentDidMount() {
+        console.log("Summary didupdate");
         this.props.newClaimStore.setSummaryLoading(true);
 
         /*
@@ -44,11 +50,11 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
          */
 
         let user = "";
-        if(this.props.userStore && this.props.userStore.personalCode) {
+        if (this.props.userStore && this.props.userStore.personalCode) {
             user = this.props.userStore.personalCode;
         }
 
-        axios.post('http://139.59.148.64/coco-api/cases', {
+        const data = {
             status: "PENDING",
             caseNumber: '1000000' + new Date().getMilliseconds().toString(),
             claimantId: "100000003",
@@ -57,7 +63,10 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
             description: this.props.newClaimStore.newClaim.claim.description,
             value: user,
             fee: this.props.newClaimStore.newClaim.fee.fee
-        })
+        };
+        console.log(data);
+
+        axios.post('http://139.59.148.64/coco-api/cases', data)
             .then(res => {
                 this.props.newClaimStore.setSummaryLoading(false);
             })
@@ -75,11 +84,47 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
         return <>
 
             <h1>Your claim has been submitted.</h1>
+            <h2>State fee has been successful paid</h2>
+            <h2>Amount paid: {this.props.newClaimStore.newClaim.fee.fee}</h2>
+            <hr/>
+            <h2>Claim:</h2>
+            <p><strong>Claim type:</strong> {this.props.newClaimStore.newClaim.claim.case_type}</p>
+            <p><strong>Summary:</strong> {this.props.newClaimStore.newClaim.claim.description}</p>
+            <hr/>
+            <h2>Defendant:</h2>
+            <p><strong>Registry code: </strong>{this.props.newClaimStore.newClaim.defendant.registryCode}</p>
+            <hr/>
+            <h2>Attached Files</h2>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>File Name</TableCell>
+                        <TableCell>Modified</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {this.attachedFiles()}
+                </TableBody>
+            </Table>
+            <br/>
             <Button onClick={this.toClaims} variant="contained"
                     color="primary">
                 To Claims
             </Button>
         </>
+    }
+
+    attachedFiles() {
+        let result = [];
+        this.props.newClaimStore.newClaim.documents.forEach(item => {
+            result.push(<>
+                <TableRow>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.modified}</TableCell>
+                </TableRow>
+            </>);
+        })
+        return result;
     }
 
     loaderAndSend() {

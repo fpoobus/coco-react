@@ -60,13 +60,15 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
         super(props, context);
 
         let claim = new URLSearchParams(window.location.search).get('claim');
-
+        this.props.newClaimStore.reset();
         if (claim) {
+            console.log("Claim from JSON");
             this.props.newClaimStore.setClaim(NewClaim.fromJson(claim));
+            console.log("Newclaim", this.props.newClaimStore.newClaim)
         } else {
             this.props.newClaimStore.setClaim(new NewClaim());
         }
-        this.props.newClaimStore.step = 0;
+
         let step = new URLSearchParams(window.location.search).get('step');
         if (step) {
             console.log("found step")
@@ -188,8 +190,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
     renderSummaryStep() {
         return <>
-            <Summary history={this.props.history} location={this.props.location} match={this.props.match}
-                     userStore={this.props.userStore} newClaimStore={this.props.newClaimStore}/>
+            <Summary history={this.props.history} location={this.props.location} match={this.props.match}/>
         </>
     }
 
