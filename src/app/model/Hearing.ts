@@ -1,4 +1,4 @@
-export interface Hearing {
+export class Hearing {
   caseNumber: string;
   endTime: string;
   judge: string;
