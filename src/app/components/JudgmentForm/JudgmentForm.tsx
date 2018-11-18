@@ -13,12 +13,14 @@ import CaseStore from 'app/stores/CaseStore';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import Radio from '@material-ui/core/Radio/Radio';
 import Button from '@material-ui/core/Button/Button';
+import axios from 'axios';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import Select from '@material-ui/core/Select/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput/OutlinedInput';
 import { judgmentSanctions, judgmentTypes } from 'app/model/JudgmentForm';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import { Link } from 'react-router-dom';
+import {runInAction} from "mobx";
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -42,6 +44,17 @@ interface JudgmentFormProps extends WithStyles<typeof styles> {
 @inject('caseStore')
 @observer
 class JudgmentForm extends React.Component<JudgmentFormProps> {
+
+    componentDidMount() {
+        const courtCase = this.props.caseStore.casesData.find(c => {
+            return c.id === this.props.caseStore.selectedCaseId;
+        });
+        if(courtCase.judgmentFormType) {
+            this.props.caseStore.setJudgmentFormDescription(courtCase.judgmentDescription);
+            this.props.caseStore.setJudgmentFormType(courtCase.judgmentFormType);
+            this.props.caseStore.setJudgmentFormSanction(courtCase.sanction);
+        }
+    }
 
   renderSanctionsPicker = (): JSX.Element => {
     const { classes, caseStore } = this.props;
@@ -110,6 +123,8 @@ class JudgmentForm extends React.Component<JudgmentFormProps> {
         fullWidth
         margin="normal"
         variant="outlined"
+        value={this.props.caseStore.judgmentForm.description}
+        onChange={this.updateDescription()}
         multiline
         rows={8}
         InputLabelProps={{
@@ -117,6 +132,30 @@ class JudgmentForm extends React.Component<JudgmentFormProps> {
         }}
       />
     );
+  };
+
+  updateDescription = () => event => {
+    runInAction(() => {
+        this.props.caseStore.judgmentForm.description = event.target.value;
+    });
+  };
+
+  updateCase = (): void => {
+      const data = this.props.caseStore.casesData.find(c => {
+          return c.id === this.props.caseStore.selectedCaseId;
+      });
+
+      data.status = 'CLOSED';
+      data.judgmentFormType = this.props.caseStore.judgmentForm.type;
+      data.sanction = this.props.caseStore.judgmentForm.sanction;
+      data.judgmentDescription = this.props.caseStore.judgmentForm.description;
+
+      axios.put('http://localhost:9701/coco-api/cases/' + this.props.caseStore.selectedCaseId, data)
+          .then(res => {
+          })
+          .catch(error => {
+              console.log(error)
+          })
   };
 
   caseLink = (props, id) => <Link to={'/case?id=' + id} {...props} />;
@@ -145,7 +184,7 @@ class JudgmentForm extends React.Component<JudgmentFormProps> {
             <Typography component="h2" variant="h5">Judgment summary</Typography>
             {this.renderJudgmentSummary()}
           </div>
-          <Button variant="contained" component={props => this.caseLink(props, caseStore.selectedCaseId)} color="primary">
+          <Button variant="contained" onClick={this.updateCase} component={props => this.caseLink(props, caseStore.selectedCaseId)} color="primary">
             Submit form
           </Button>
         </Paper>

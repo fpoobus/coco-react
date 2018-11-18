@@ -7,7 +7,8 @@ export class CaseStore {
   @observable cases = observable.array<any>();
   @observable judgmentForm: JudgmentForm = {
     type: 'default',
-    sanction: -1
+    sanction: -1,
+    description: ''
   };
 
   @computed
@@ -35,6 +36,11 @@ export class CaseStore {
   @action.bound
   public setJudgmentFormSanction(sanction: number) {
     this.judgmentForm.sanction = sanction;
+  }
+
+  @action.bound
+  public setJudgmentFormDescription(description: string) {
+    this.judgmentForm.description = description;
   }
 
   @action.bound

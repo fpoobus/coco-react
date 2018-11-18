@@ -1,6 +1,7 @@
 export interface JudgmentForm {
   type: string;
   sanction: number;
+  description: string;
 }
 
 const formType = (type, label) => {
