@@ -31,6 +31,9 @@ class UserStore {
     @observable
     public sessionId: string;
 
+    @observable
+    public loginError: boolean;
+
     @action
     public setVerificationCode(code: number) {
         this.verificationCode = code;
@@ -41,18 +44,28 @@ class UserStore {
         this.sessionId = sessionid;
     }
 
+    @action
+    public setLoginError(loginError: boolean) {
+        this.loginError = loginError;
+    }
+
     public doLogIn = (params: { identityCode: string, password: string }) => {
-        axios.post(`http://139.59.148.64/coco-api/login`, {identityCode: params.identityCode, password: params.password}, {
+        axios.post(`http://localhost:9701/coco-api/login`, {
+            identityCode: params.identityCode,
+            password: params.password
+        }, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
         })
             .then(res => {
-                if(res.status == 200){
+                if (res.status == 200) {
                     this.fillUserInfoLogin(res.data);
                     window.location.href = "/"
                 }
-            })
+            }).catch(() => {
+                this.setLoginError(true);
+        })
     };
 
     public doSmartIdLogIn = async (identityCode: string) => {
@@ -75,7 +88,7 @@ class UserStore {
             }
         })
             .then(res => {
-                if(res.data){
+                if (res.data) {
                     this.fillUserInfoSmartId(res.data);
                     window.location.href = "/";
                 }
@@ -84,7 +97,7 @@ class UserStore {
 
     public fillUserInfoLogin = (data: any) => {
         let user = new User();
-        user.personalCode = data.personalCode;
+        user.personalCode = data.personId;
         user.firstName = data.firstName;
         user.lastName = data.lastName;
         this.user = user;
