@@ -150,7 +150,7 @@ class JudgmentForm extends React.Component<JudgmentFormProps> {
       data.sanction = this.props.caseStore.judgmentForm.sanction;
       data.judgmentDescription = this.props.caseStore.judgmentForm.description;
 
-      axios.put('http://localhost:9701/coco-api/cases/' + this.props.caseStore.selectedCaseId, data)
+      axios.put('http://139.59.148.64/coco-api/cases/' + this.props.caseStore.selectedCaseId, data)
           .then(res => {
           })
           .catch(error => {

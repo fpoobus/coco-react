@@ -127,6 +127,8 @@ export class Fee {
 export class PersonResponse {
     personId: string;
     legalEntities: LegalEntityResponse[];
+    firstName?: string;
+    lastName?: string;
 
     static fromJson(json) {
         const person = Object.assign(new PersonResponse(), json);

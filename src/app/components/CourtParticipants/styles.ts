@@ -37,4 +37,7 @@ export const courtParticipantsStyles = (theme: Theme) => createStyles({
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
     },
+    saveParticipants: {
+      marginTop: '30px'
+    }
 });

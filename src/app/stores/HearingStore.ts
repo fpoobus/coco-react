@@ -2,10 +2,12 @@ import {action, observable} from 'mobx';
 import User from "app/models/User";
 import axios from "axios";
 import {Hearing} from "app/model/Hearing";
+import {PersonResponse} from "app/model/NewClaim";
 
 class HearingStore {
 
-    @observable participants: User[];
+    @observable participants: User[] = [];
+    @observable chooseableParticipants: User[] = [];
     @observable hearing: Hearing;
     @observable activeDate;
     @observable activeTime;
@@ -14,6 +16,19 @@ class HearingStore {
     @observable hearingJudge: string;
     @observable isParticipantsModalOpen: boolean;
 
+    public participantExists(participant: User) {
+        return (this).participants.filter(item => item.personalCode == participant.personalCode).length != 0
+    }
+
+    @action
+    public toggleParticipant = (participant: User) => {
+        if(this.participantExists(participant)){
+            let index = this.participants.indexOf(participant);
+            this.participants.splice(index, 1);
+        }else{
+            this.participants.push(participant);
+        }
+    };
     @action
     public setIsParticipantsModalOpen = (isOpen: boolean) => {
         this.isParticipantsModalOpen = isOpen;
@@ -66,9 +81,40 @@ class HearingStore {
         }
     };
 
+    @action
+    setChooseableParticipants(persons: Array<User>) {
+        this.chooseableParticipants = persons;
+    }
+
+    async getChooseableParticipants() {
+        let allPersons = await this.getPersons();
+        return this.mapPersonsToUsers(allPersons);
+    }
+
+    async getPersons(): Promise<Array<PersonResponse>> {
+        const response = await axios.get(`http://139.59.148.64/coco-api/persons`,
+            {headers: {'Access-Control-Allow-Origin': '*'}});
+        return response.data;
+    };
+
+    mapPersonsToUsers(persons: Array<PersonResponse>) {
+        return persons.map((person) => {
+            return {
+                firstName: person.firstName,
+                lastName: person.lastName,
+                personalCode: person.personId
+            }
+        });
+    }
 
     private createPayload(hearing: Hearing): Object {
-        return {caseNumber: hearing.caseNumber, startTime: hearing.startTime, endTime: hearing.endTime, judge: hearing.judge, participants: this.participants};
+        return {
+            caseNumber: hearing.caseNumber,
+            startTime: hearing.startTime,
+            endTime: hearing.endTime,
+            judge: hearing.judge,
+            participants: this.participants
+        };
     }
 
     public createHearing = async () => {
