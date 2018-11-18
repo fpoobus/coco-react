@@ -50,7 +50,7 @@ class UserStore {
     }
 
     public doLogIn = (params: { identityCode: string, password: string }) => {
-        axios.post(`http://localhost:9701/coco-api/login`, {
+        axios.post(`http://139.59.148.64/coco-api/login`, {
             identityCode: params.identityCode,
             password: params.password
         }, {
@@ -97,7 +97,7 @@ class UserStore {
 
     public fillUserInfoLogin = (data: any) => {
         let user = new User();
-        user.personalCode = data.personalCode;
+        user.personalCode = data.personId;
         user.firstName = data.firstName;
         user.lastName = data.lastName;
         this.user = user;
