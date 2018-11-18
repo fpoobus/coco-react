@@ -61,7 +61,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
         <Table>
           <TableHead>
             <TableRow>
-              {['Status', 'Type', 'Calimant', 'Defendant', 'Description', '']
+              {['Status', 'Type', 'Claimant', 'Defendant', 'Description', '']
                 .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
             </TableRow>
           </TableHead>
