@@ -97,7 +97,7 @@ class UserStore {
 
     public fillUserInfoLogin = (data: any) => {
         let user = new User();
-        user.personalCode = data.personId;
+        user.personalCode = data.personalCode;
         user.firstName = data.firstName;
         user.lastName = data.lastName;
         this.user = user;
