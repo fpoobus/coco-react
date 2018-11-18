@@ -13,7 +13,7 @@ class UserStore {
             user.personalCode = localStorage.getItem("personalCode");
             console.log(user);
         }
-        this.user = user;
+        this.setUser(user)
     }
 
     @observable
@@ -33,6 +33,12 @@ class UserStore {
 
     @observable
     public loginError: boolean;
+
+    @action
+    public setUser(user: User) {
+        this.user = user;
+        this.personalCode = user.personalCode;
+    }
 
     @action
     public setVerificationCode(code: number) {
