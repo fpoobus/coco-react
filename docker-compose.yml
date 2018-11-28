@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+#TEST
+  coco-react:
+    build: Dockerfile
+    image: coco-react
+    container_name: coco-react
+    ports:
+    - 3001:3001
+
+networks:
+  default:
