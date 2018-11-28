@@ -92,7 +92,7 @@ class HearingStore {
     }
 
     async getPersons(): Promise<Array<PersonResponse>> {
-        const response = await axios.get(`http://localhost:9701/coco-api/persons`,
+        const response = await axios.get(`http://139.59.148.64/coco-api/persons`,
             {headers: {'Access-Control-Allow-Origin': '*'}});
         return response.data;
     };
@@ -146,7 +146,7 @@ class HearingStore {
     }
 
     public createHearing = async (hearing: Hearing) => {
-        await axios.post(`http://localhost:9701/coco-api/hearings/add`, hearing, {
+        await axios.post(`http://139.59.148.64/coco-api/hearings/add`, hearing, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
