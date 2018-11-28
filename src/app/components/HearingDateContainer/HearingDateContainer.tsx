@@ -33,7 +33,7 @@ class HearingDateContainer extends React.Component<CourtHearingDateProps> {
               </div>
               <Divider />
             <div className={classes.dateContainer}>
-                <h3>Pick a date from the calendar</h3>
+                <h3>Pick a suitable date from the calendar</h3>
                 <p>Date: {this.props.hearingStore.activeDate ? this.props.hearingStore.activeDate.toString().split(' ').slice(0,4).join(' ') : ''}</p>
                 <h3>Pick the available time from the timetable</h3>
                 <p>Time: {this.props.hearingStore.activeTime ? this.props.hearingStore.activeTime.toString() : ''}</p>

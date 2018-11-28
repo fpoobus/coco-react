@@ -21,10 +21,14 @@ import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import ListItem from "@material-ui/core/ListItem/ListItem";
 import List from "@material-ui/core/List/List";
 import User from "app/models/User";
+import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import CaseStore from "app/stores/CaseStore";
 
 
 interface CourtParticipantsProps extends WithStyles<typeof courtParticipantsStyles> {
     hearingStore?: HearingStore;
+    caseStore?: CaseStore
     chooseableParticipants?: PersonResponse[];
 }
 
@@ -39,11 +43,21 @@ function getModalStyle() {
     };
 }
 
-@inject('hearingStore')
+@inject('hearingStore', 'caseStore')
 @observer
 class CourtParticipants extends React.Component<CourtParticipantsProps> {
 
+    componentDidMount() {
+        this.props.hearingStore.emptyParticipants();
+        this.props.hearingStore.setJudge(this.props.caseStore.judge);
+    }
+    componentWillUnmount() {
+        this.props.hearingStore.clearJudge();
+    }
+
     handleOpen = async () => {
+        this.props.hearingStore.setParticipantsLoading(true);
+        this.stopLoading();
         const {hearingStore} = this.props;
         let persons = await hearingStore.getChooseableParticipants();
         hearingStore.setChooseableParticipants(persons);
@@ -55,6 +69,12 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
 
     handleClose = () => {
         this.props.hearingStore.setIsParticipantsModalOpen(false)
+    };
+
+    stopLoading = () => {
+        setTimeout(() => {
+            this.props.hearingStore.setParticipantsLoading(false);
+        }, 5000)
     };
 
     renderParticipantChoiceLine = (user: User): JSX.Element => {
@@ -81,8 +101,22 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
         );
     };
 
+    renderLoaderParticipants() {
+        this.stopLoading();
+        return this.props.hearingStore.participantsLoading && <>
+            <Grid container justify="center">
+                <Grid item>
+
+                    <CircularProgress size={50}/>
+
+                </Grid>
+            </Grid>
+        </>;
+    }
+
     renderModal = () => {
         const {classes} = this.props;
+
         return (
             <>
                 <Modal
@@ -92,13 +126,22 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
                     onClose={this.handleClose}
                 >
                     <div style={getModalStyle()} className={classes.paper}>
-                        <Typography variant="h6" id="modal-title">
-                            Choose participants
-                        </Typography>
-                        {this.renderParticipantChoices()}
-                        <Button className={classes.saveParticipants} color="primary" variant="contained" onClick={this.handleClose}>Continue</Button>
+                        {this.renderLoaderParticipants()}
+                        {!this.props.hearingStore.participantsLoading && this.renderModalTableData()}
                     </div>
                 </Modal>
+            </>
+        );
+    };
+    renderModalTableData = () => {
+        const {classes} = this.props;
+        return (
+            <>
+                <Typography variant="h6" id="modal-title">
+                    Choose participants
+                </Typography>
+                {this.renderParticipantChoices()}
+                <Button className={classes.saveParticipants} color="primary" variant="contained" onClick={this.handleClose}>Continue</Button>
             </>
         );
     };
@@ -126,6 +169,14 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
                             </TableRow>
                         </TableHead>
                         <TableBody>
+                            <TableRow key={'judge'}>
+                                <TableCell component="th" scope="row">
+                                    {this.props.caseStore.judge}
+                                </TableCell>
+                                <TableCell>Judge</TableCell>
+                                <TableCell>Yes</TableCell>
+                                <TableCell>Yes</TableCell>
+                            </TableRow>
                             {hearingStore.participants.map(participant => {
                                 return (
                                     <TableRow key={participant.personalCode}>

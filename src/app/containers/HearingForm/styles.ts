@@ -18,5 +18,19 @@ export const hearingFormStyles = (theme: Theme) => createStyles({
         color: '#000000',
         fontWeight: 'lighter',
         fontSize: '36px'
-    }
+    },
+    alertText: {
+        color: 'red',
+        textDecoration: 'underline'
+    },
+    alignCenter: {
+        textAlign: 'center'
+    },
+    paper: {
+        position: 'absolute',
+        width: theme.spacing.unit * 50,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+    },
 });

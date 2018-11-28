@@ -5,6 +5,7 @@ import { JudgmentForm } from 'app/model/JudgmentForm';
 export class CaseStore {
   @observable selectedCaseId: number;
   @observable cases = observable.array<any>();
+  @observable judge: string;
   @observable judgmentForm: JudgmentForm = {
     type: 'default',
     sanction: -1,
@@ -27,6 +28,11 @@ export class CaseStore {
   public setCases(response) {
     this.cases.replace(response.data);
   }
+
+    @action
+    public setJudge(judge: string) {
+        this.judge = judge;
+    }
 
   @action.bound
   public setJudgmentFormType(type: string) {

@@ -62,6 +62,9 @@ class CaseForm extends React.Component<DashboardProps> {
 
   handleMenuItemClick = (event, index) => {
     this.setState({ selectedIndex: index, anchorEl: null });
+    const judge = judgesList[index][0];
+    this.props.caseStore.setJudge(judge.toString());
+
   };
 
   handleClose = () => {

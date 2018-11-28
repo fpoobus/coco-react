@@ -3,6 +3,7 @@ import User from "app/models/User";
 import axios from "axios";
 import {Hearing} from "app/model/Hearing";
 import {PersonResponse} from "app/model/NewClaim";
+import {Participant} from "app/model/Participant";
 
 class HearingStore {
 
@@ -11,10 +12,12 @@ class HearingStore {
     @observable hearing: Hearing;
     @observable activeDate;
     @observable activeTime;
+    @observable judge;
     @observable timetableLoading: boolean;
     @observable participantsLoading: boolean;
-    @observable hearingJudge: string;
     @observable isParticipantsModalOpen: boolean;
+    @observable isHearingValid: boolean = false;
+    @observable isHearingSuccess: boolean = false;
 
     public participantExists(participant: User) {
         return (this).participants.filter(item => item.personalCode == participant.personalCode).length != 0
@@ -30,8 +33,28 @@ class HearingStore {
         }
     };
     @action
+    public emptyParticipants = () => {
+        this.participants = [];
+    };
+    public clearJudge = () => {
+        this.judge = undefined
+    };
+
+    @action
+    public setIsHearingFormCompleted = (isHearingFormCompleted: boolean) => {
+        this.isHearingSuccess = isHearingFormCompleted;
+    };
+    @action
+    public setJudge = (judge: string) => {
+        this.judge = judge;
+    };
+    @action
     public setIsParticipantsModalOpen = (isOpen: boolean) => {
         this.isParticipantsModalOpen = isOpen;
+    };
+    @action
+    public setIsHearingSuccess = (isHearingSuccess: boolean) => {
+        this.isHearingSuccess = isHearingSuccess;
     };
     @action
     public setTimeTableLoading = (isLoading: boolean) => {
@@ -54,31 +77,8 @@ class HearingStore {
         this.hearing.endTime = endTime;
     };
     @action
-    public setHearingCaseNumber = (hearingCaseNumber: number) => {
-        this.hearing.caseNumber = hearingCaseNumber.toString();
-    };
-    @action
     public setHearingStartTime = (hearingDate: string) => {
         this.hearing.startTime = hearingDate;
-    };
-    @action
-    public setHearingJudge = (hearingJudge: string) => {
-        this.hearingJudge = hearingJudge;
-    };
-    generateRandomJudge = () => {
-        const judgesList = [
-            ['Justice Foster Edward Abner', 49],
-            ['Justice Roy John Jayce', 69],
-            ['Justice Bert Alfred', 85],
-            ['Justice Jefferson Archer Jarvis', 88],
-            ['Justice Garth Beau', 79],
-            ['Justice Wyatt Edwin', 91],
-            ['Justice Samson Chauncey Lee', 17]
-        ];
-        let judgeName = judgesList[Math.floor(Math.random() * judgesList.length)];
-        if (judgeName) {
-            this.setHearingJudge(judgeName[0].toString());
-        }
     };
 
     @action
@@ -92,9 +92,36 @@ class HearingStore {
     }
 
     async getPersons(): Promise<Array<PersonResponse>> {
-        const response = await axios.get(`http://139.59.148.64/coco-api/persons`,
+        const response = await axios.get(`http://localhost:9701/coco-api/persons`,
             {headers: {'Access-Control-Allow-Origin': '*'}});
         return response.data;
+    };
+
+    buildStartTimeObject = () => {
+        let newDate = new Date(this.activeDate);
+        newDate.setHours(15);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        return newDate.toISOString();
+    };
+    buildEndTimeObject = () => {
+        let newDate = new Date(this.activeDate);
+        newDate.setHours(17);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        return newDate.toISOString();
+    };
+
+    isHearingFormCompleted = (hearing: Hearing): boolean => {
+        return !!(hearing.judge && hearing.endTime && hearing.startTime && hearing.caseNumber);
+    };
+
+    mapUserToParticipant = (user: User): Participant => {
+        if(user.personalCode) {
+            return {
+                personId: user.personalCode
+            }
+        }
     };
 
     mapPersonsToUsers(persons: Array<PersonResponse>) {
@@ -107,18 +134,19 @@ class HearingStore {
         });
     }
 
-    private createPayload(hearing: Hearing): Object {
+    public createPayload(): Hearing {
+        const participants: Participant[] = this.participants.map(user => this.mapUserToParticipant(user))
         return {
-            caseNumber: hearing.caseNumber,
-            startTime: hearing.startTime,
-            endTime: hearing.endTime,
-            judge: hearing.judge,
-            participants: this.participants
+            caseNumber: '134-CIVI-2018',
+            endTime: this.buildEndTimeObject(),
+            judge: this.judge,
+            startTime: this.buildStartTimeObject(),
+            participants: participants
         };
     }
 
-    public createHearing = async () => {
-        await axios.post(`http://139.59.148.64/coco-api/hearings/add`, this.createPayload(this.hearing), {
+    public createHearing = async (hearing: Hearing) => {
+        await axios.post(`http://localhost:9701/coco-api/hearings/add`, hearing, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }

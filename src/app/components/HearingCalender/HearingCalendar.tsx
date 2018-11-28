@@ -15,7 +15,7 @@ interface DashboardProps extends WithStyles<typeof calendarStyles> {
 @inject('hearingStore')
 class HearingCalendar extends React.Component<DashboardProps> {
 
-  componentDidMount= () => {
+  componentDidMount() {
       this.props.hearingStore.setActiveDate(new Date(moment.now()).toString())
   };
 

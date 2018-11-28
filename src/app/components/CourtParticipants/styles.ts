@@ -39,5 +39,5 @@ export const courtParticipantsStyles = (theme: Theme) => createStyles({
     },
     saveParticipants: {
       marginTop: '30px'
-    }
+    },
 });
