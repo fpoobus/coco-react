@@ -35,7 +35,7 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
     stopLoading = () => {
         setTimeout(() => {
             this.props.hearingStore.setTimeTableLoading(false);
-        }, 5000)
+        }, 3000)
     };
 
     loaderTimetable() {
@@ -111,10 +111,11 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
       const { classes } = this.props;
     return (
       <>
+          {!!this.props.hearingStore.judge &&
           <Paper className={classes.card}>
               <div className={classes.justifyCenter}>
                   <div className={classes.calendarHeader}>
-                      {this.props.hearingStore.activeDate ? this.props.hearingStore.activeDate.toString().split(' ').slice(0,4).join(' ') : ''}
+                      {this.props.hearingStore.activeDate ? this.props.hearingStore.activeDate.toString().split(' ').slice(0, 4).join(' ') : ''}
                   </div>
               </div>
               <Divider light={false} className={classes.slash}/>
@@ -132,6 +133,7 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
               {this.loaderTimetable()}
               {!this.props.hearingStore.timetableLoading && this.renderTimetableData()}
           </Paper>
+          }
       </>
     );
   }

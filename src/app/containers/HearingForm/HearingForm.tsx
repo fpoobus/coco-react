@@ -23,6 +23,8 @@ interface HearingFormProps extends WithStyles<typeof hearingFormStyles>, RouteCo
 class HearingForm extends React.Component<HearingFormProps> {
 
     toClaims = () => {
+        this.props.hearingStore.setIsHearingSuccess(false);
+        this.props.hearingStore.setIsHearingFormCompleted(false);
         this.props.history.push('/');
     };
 
@@ -30,7 +32,6 @@ class HearingForm extends React.Component<HearingFormProps> {
         const { hearingStore } = this.props;
 
         const hearing = hearingStore.createPayload();
-        console.log(hearing)
         if(hearingStore.isHearingFormCompleted(hearing) && hearingStore.activeTime){
             await this.props.hearingStore.createHearing(hearing);
             this.props.history.push('/');
@@ -55,7 +56,7 @@ class HearingForm extends React.Component<HearingFormProps> {
                             <SnackbarContent
                                 className={"error"}
                                 aria-describedby="client-snackbar"
-                                message={"Invalid or missing credentials. Try again"}
+                                message={this.props.hearingStore.getErrorMessageByHearingField()}
                             />
                         </Snackbar>
                         <Grid container spacing={16}>

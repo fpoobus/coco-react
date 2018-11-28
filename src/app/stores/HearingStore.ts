@@ -12,7 +12,7 @@ class HearingStore {
     @observable hearing: Hearing;
     @observable activeDate;
     @observable activeTime;
-    @observable judge;
+    @observable judge: string;
     @observable timetableLoading: boolean;
     @observable participantsLoading: boolean;
     @observable isParticipantsModalOpen: boolean;
@@ -36,6 +36,7 @@ class HearingStore {
     public emptyParticipants = () => {
         this.participants = [];
     };
+    @action
     public clearJudge = () => {
         this.judge = undefined
     };
@@ -115,6 +116,19 @@ class HearingStore {
     isHearingFormCompleted = (hearing: Hearing): boolean => {
         return !!(hearing.judge && hearing.endTime && hearing.startTime && hearing.caseNumber);
     };
+
+    @action
+    getErrorMessageByHearingField(): string {
+        if(!this.judge) {
+          return 'Judge is missing. Please select judge from case view';
+        } else if (!this.activeDate) {
+            return 'Date is missing. Please select date from the calendar';
+        } else if (!this.activeTime) {
+            return 'Please select available time from the timetable';
+        } else {
+            return 'Invalid or missing credentials. Try again';
+        }
+    }
 
     mapUserToParticipant = (user: User): Participant => {
         if(user.personalCode) {

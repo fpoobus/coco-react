@@ -74,7 +74,7 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
     stopLoading = () => {
         setTimeout(() => {
             this.props.hearingStore.setParticipantsLoading(false);
-        }, 5000)
+        }, 2000)
     };
 
     renderParticipantChoiceLine = (user: User): JSX.Element => {
