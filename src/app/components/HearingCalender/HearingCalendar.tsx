@@ -32,7 +32,7 @@ class HearingCalendar extends React.Component<DashboardProps> {
           <Calendar
             className={classes.root}
             calendarType="Arabic"
-            value={new Date(moment.now())}
+            value={this.props.hearingStore.activeDate ? new Date(this.props.hearingStore.activeDate) : new Date(moment.now())}
             onChange={this.onChange}
           />
         </Paper>

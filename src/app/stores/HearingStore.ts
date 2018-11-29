@@ -9,7 +9,6 @@ class HearingStore {
 
     @observable participants: User[] = [];
     @observable chooseableParticipants: User[] = [];
-    @observable hearing: Hearing;
     @observable activeDate;
     @observable activeTime;
     @observable judge: string;
@@ -73,15 +72,6 @@ class HearingStore {
     public setActiveTime = (activeTime: string) => {
         this.activeTime = activeTime;
     };
-    @action
-    public setHearingEndTime = (endTime: string) => {
-        this.hearing.endTime = endTime;
-    };
-    @action
-    public setHearingStartTime = (hearingDate: string) => {
-        this.hearing.startTime = hearingDate;
-    };
-
     @action
     setChooseableParticipants(persons: Array<User>) {
         this.chooseableParticipants = persons;
@@ -173,6 +163,18 @@ class HearingStore {
                 }
             })
     };
+
+    @action
+    public clearData() {
+        this.activeDate = undefined;
+        this.judge = undefined;
+        this.activeTime = undefined;
+        this.participants = [];
+        this.chooseableParticipants = [];
+        this.timetableLoading = false;
+        this.participantsLoading = false;
+        this.isParticipantsModalOpen = false;
+    }
 }
 
 export default HearingStore;

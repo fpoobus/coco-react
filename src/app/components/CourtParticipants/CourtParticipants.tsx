@@ -169,6 +169,7 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
                             </TableRow>
                         </TableHead>
                         <TableBody>
+                            {this.props.caseStore.judge &&
                             <TableRow key={'judge'}>
                                 <TableCell component="th" scope="row">
                                     {this.props.caseStore.judge}
@@ -177,6 +178,7 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
                                 <TableCell>Yes</TableCell>
                                 <TableCell>Yes</TableCell>
                             </TableRow>
+                            }
                             {hearingStore.participants.map(participant => {
                                 return (
                                     <TableRow key={participant.personalCode}>

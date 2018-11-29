@@ -25,6 +25,7 @@ class HearingForm extends React.Component<HearingFormProps> {
     toClaims = () => {
         this.props.hearingStore.setIsHearingSuccess(false);
         this.props.hearingStore.setIsHearingFormCompleted(false);
+        this.props.hearingStore.clearData();
         this.props.history.push('/');
     };
 
@@ -35,6 +36,7 @@ class HearingForm extends React.Component<HearingFormProps> {
         if(hearingStore.isHearingFormCompleted(hearing) && hearingStore.activeTime){
             await this.props.hearingStore.createHearing(hearing);
             this.props.history.push('/');
+            this.props.hearingStore.clearData();
             hearingStore.setIsHearingSuccess(true);
         } else {
             setTimeout(() => {
