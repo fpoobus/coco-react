@@ -19,8 +19,6 @@ import Summary from "app/components/NewClaim/StepSummay/Summary/Summary";
 import Paper from "@material-ui/core/Paper";
 import RootContainer from "app/components/Container/RootContainer";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import AccountBox from "@material-ui/icons/AccountBox";
-import AccountBalance from "@material-ui/icons/AccountBalance";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Defendant from "app/components/NewClaim/StepDefendant/Defendant/Defendant";
@@ -49,7 +47,7 @@ let padding = {
 }
 
 let iconScale = {
-    transform: "scale(3.8)"
+    height: '72px'
 }
 
 
@@ -109,7 +107,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
                                 <Grid container justify="center">
                                     <Grid item>
-                                        <AccountBox style={iconScale}/>
+                                    <img style={iconScale} src="../../../assets/icons/shop-cashier-man.svg"></img>
                                         <br/><br/><br/>
                                     </Grid>
                                 </Grid>
@@ -134,7 +132,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
                                 <Grid container justify="center">
                                     <Grid item>
-                                        <AccountBalance style={iconScale}/>
+                                    <img style={iconScale} src="../../../assets/icons/building-modern-1.svg"></img>
                                         <br/><br/><br/>
                                     </Grid>
                                 </Grid>

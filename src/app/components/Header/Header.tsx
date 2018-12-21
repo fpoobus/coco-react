@@ -4,8 +4,6 @@ import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import { MenuItem, Theme, Typography, WithStyles } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
-import AccountBalance from '@material-ui/icons/AccountBalance';
-import FaceIcon from '@material-ui/icons/Face';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom';
@@ -23,7 +21,10 @@ export const styles = (theme: Theme) =>
     },
     typo: {
       color: theme.palette.primary.light,
-      margin: '0 4px'
+    },
+    headerLogo: {
+      margin: '0 4px',
+      height: '44px'
     },
     justifyCenter: {
       display: 'flex',
@@ -39,6 +40,10 @@ export const styles = (theme: Theme) =>
     },
     colorWhite: {
       color: '#fff'
+    },
+    logoutIcon: {
+      margin: '0 4px',
+      height: '22px'
     }
   });
 
@@ -79,11 +84,14 @@ class Header extends React.Component<HeaderProps> {
         <AppBar className={classes.bar} position="static">
           <Toolbar className={classes.justifyCenter}>
             <MenuItem className={classes.typoContainer} component={this.toDashboard} onClick={() => routerStore.setCurrentTab('dashboard')}>
-              <AccountBalance
+              {/* <AccountBalance
                 className={classes.typo}
                 aria-owns={this.state.anchorEl ? 'simple-menu' : null}
                 aria-haspopup="true"
-              />
+              /> */}
+        
+              <img className={classes.headerLogo} src="../../../assets/icons/design-tool-quill-2.svg"></img>
+              <Typography className={classes.typo}>COCO</Typography>
             </MenuItem>
             <Tabs
               value={routerStore.currentTab ? routerStore.currentTab : 'dashboard'}
@@ -97,7 +105,7 @@ class Header extends React.Component<HeaderProps> {
             </Tabs>
             <MenuItem className={classes.typoContainer}>
               <Typography className={classes.typo}>LOG OUT</Typography>
-              <FaceIcon className={classes.typo} />
+              <img className={classes.logoutIcon} src="../../../assets/icons/cog.svg"></img>
             </MenuItem>
           </Toolbar>
         </AppBar>
