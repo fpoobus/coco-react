@@ -94,7 +94,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                         <Grid container justify="center">
                             <Grid item>
                                 <Typography component="h2" variant="h4" gutterBottom>
-                                    Please choose who you are representing
+                                    Please choose who you are <strong>representing</strong>
                                 </Typography>
                                 <Divider light/>
                                 <br/><br/>
@@ -118,7 +118,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                         <Button variant="contained"
                                                 color="primary"
                                                 onClick={this.nextAndSetTypeNatural}>
-                                            Represent Yourself
+                                            Yourself
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -143,7 +143,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                         <Button variant="contained"
                                                 color="primary"
                                                 onClick={this.nextAndSetTypeLegal}>
-                                            Represent a Legal Entity
+                                            Legal Entity
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -295,8 +295,8 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                                 </CardContent>
                                 <CardActions>
                                     {!this.lastStep() && !this.firstStep() && !this.props.newClaimStore.loading &&
-                                    <Button onClick={this.previousStepWithLoader} variant="contained"
-                                            color="primary">
+                                    <Button onClick={this.previousStepWithLoader} variant="text"
+                                            color="secondary">
                                         Back
                                     </Button>
                                     }

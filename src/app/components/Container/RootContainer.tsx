@@ -13,7 +13,8 @@ const styles = (theme: Theme) => createStyles({
     backgroundSize: '70%',
     width: '100%',
     height: '100%',
-    position: 'absolute'
+    position: 'fixed',
+    bottom: '0'
   },
   root: {
     display: 'flex',

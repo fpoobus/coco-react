@@ -17,6 +17,19 @@ export interface DefendantState {
     /* empty */
 }
 
+const textfield = {
+    width:'94%'
+}
+
+const findbtn = {
+    bottom: '0.6rem',
+    position: 'absolute',
+    marginLeft: '0.5rem',
+}
+
+const fieldcontainer = {
+    position: 'relative'
+}
 
 @inject('routerStore', 'newClaimStore')
 @observer
@@ -56,7 +69,7 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
 
     renderDefendantInput() {
 
-        return <>
+        return <div style={fieldcontainer} >
 
             <TextField
                 label="Defendant registry code"
@@ -64,8 +77,12 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
                 value={this.props.newClaimStore.defendantRegistryCode}
                 onChange={this.handleChange('registryCode')}
                 margin="normal"
+                style={textfield}
             />
-            <Button variant="contained" onClick={this.getDefendantInto}>
+            <Button
+                variant="contained"
+                onClick={this.getDefendantInto}
+                style={findbtn}>
                 Find
             </Button>
 
@@ -80,7 +97,7 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
                 <p><strong>Activities: </strong>{this.props.newClaimStore.defendantResponse.activities.join(", ")}</p>
             </>}
 
-        </>;
+        </div>;
     }
 
 
