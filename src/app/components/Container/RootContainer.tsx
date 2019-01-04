@@ -4,7 +4,6 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Header from 'app/components/Header/Header';
 
-
 const styles = (theme: Theme) => createStyles({
   background: {
     backgroundImage: `url(${'../../../assets/img/skyline.svg'})`,
@@ -13,7 +12,7 @@ const styles = (theme: Theme) => createStyles({
     backgroundSize: '70%',
     width: '100%',
     height: '100%',
-    position: 'fixed',
+    position: 'absolute',
     bottom: '0'
   },
   root: {
