@@ -8,6 +8,7 @@ import {DefendantResponse} from "app/model/NewClaim";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
+import {CSSProperties} from "react";
 
 export interface DefendantProps {
     newClaimStore: NewClaimStore
@@ -21,13 +22,13 @@ const textfield = {
     width:'94%'
 }
 
-const findbtn = {
+const findbtn: CSSProperties = {
     bottom: '0.6rem',
     position: 'absolute',
     marginLeft: '0.5rem',
 }
 
-const fieldcontainer = {
+const fieldcontainer: CSSProperties = {
     position: 'relative'
 }
 
