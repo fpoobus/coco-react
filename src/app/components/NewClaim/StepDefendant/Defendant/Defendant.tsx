@@ -19,17 +19,17 @@ export interface DefendantState {
 
 const textfield = {
     width:'94%'
-}
+} as React.CSSProperties;
 
 const findbtn = {
     bottom: '0.6rem',
     position: 'absolute',
     marginLeft: '0.5rem',
-}
+} as React.CSSProperties;
 
 const fieldcontainer = {
     position: 'relative'
-}
+} as React.CSSProperties;
 
 @inject('routerStore', 'newClaimStore')
 @observer

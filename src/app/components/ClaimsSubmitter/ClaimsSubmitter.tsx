@@ -29,7 +29,7 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
         <>
           <Typography>
             You haven't had to make any claims, lucky you
-          </Typography>;
+          </Typography>
         </>
     );
   };
@@ -46,6 +46,7 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
             {this.renderClaimsContent()}
           </CardContent>
           <CardActions className={classes.justifyCenter}>
+          <img className={classes.claimIcon} src="../../../assets/icons/email-action-receive.svg"></img>
             <Button variant="contained" component={this.newClaimLink} color="primary" className={classes.btnHover}>
               Submit a claim
             </Button>

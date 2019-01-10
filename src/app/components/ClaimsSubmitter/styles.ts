@@ -4,7 +4,9 @@ import createStyles from '@material-ui/core/styles/createStyles';
 export const claimsSubmitterStyles = (theme: Theme) => createStyles({
   justifyCenter: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   card: {
     minHeight: 300
@@ -13,5 +15,9 @@ export const claimsSubmitterStyles = (theme: Theme) => createStyles({
     '&:hover': {
       backgroundColor: '#e8d081',
   },
+  },
+  claimIcon: {
+    width:'5rem',
+    marginBottom: '1rem'
   }
 });

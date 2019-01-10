@@ -3,6 +3,7 @@ import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Header from 'app/components/Header/Header';
+import Footer from 'app/components/Footer/Footer';
 
 const styles = (theme: Theme) => createStyles({
   background: {
@@ -45,6 +46,7 @@ class RootContainer extends React.Component<RootContainerProps> {
             {children}
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
