@@ -23,8 +23,9 @@ const footerContent = {
 margin:0,
 display: 'flex',
 justifyContent:'space-around',
+alignItems: 'center',
 fontWeight:600,
-marginTop:'1rem',
+marginTop:'0.6rem',
 fontSize: '14px'
 } as React.CSSProperties;
 
@@ -33,7 +34,7 @@ export class Footer extends React.Component<FooterProps, FooterState> {
   render() {
     return (
       <footer style={footers}>
-        <div style={footerContent}><div>2018 Infotehnoloogia ja Telekommunikatsiooni Liit</div><div>Lõõtsa 6, 11415 Tallinn</div><div>6177 145</div><div>info@itl.ee</div></div>
+        <div style={footerContent}><div> <img width="20px" src="../../assets/img/itl_logo.svg"></img> Infotehnoloogia ja Telekommunikatsiooni Liit</div><div>Lõõtsa 6, 11415 Tallinn</div><div>6177 145</div><div>info@itl.ee</div><img height="30px" src="../../assets/img/edc-logo-300.png"></img></div>
       </footer>
     );
   }
