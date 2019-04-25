@@ -126,6 +126,16 @@ class UserStore {
     public get currentTime() {
         return moment().format('LLLL');
     }
+
+    @action
+    public doLogout = () => {
+        this.user = undefined;
+        this.personalCode = "";
+        this.isAuthenticated = false;
+        this.verificationCode = 0;
+        this.sessionId = "";
+        this.loginError = false;
+    }
 }
 
 export default UserStore;
