@@ -224,7 +224,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
         localStorage.setItem('newClaim', JSON.stringify(this.props.newClaimStore.newClaim));
         localStorage.setItem('step', "6");
         let redirUrl = window.location.protocol + "//" + window.location.host + "/new-claim/payment-complete"
-        window.location.href = "https://rkdemo.aktors.ee/proto/bank?amount=10&returnUrl=" + redirUrl;
+        window.location.href = "https://rkdemo.aktors.ee/proto/bank?amount="+this.props.newClaimStore.newClaim.fee.fee+"&returnUrl=" + redirUrl;
     }
 
     render() {

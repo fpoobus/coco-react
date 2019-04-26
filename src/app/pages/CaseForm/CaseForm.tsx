@@ -104,9 +104,28 @@ class CaseForm extends React.Component<DashboardProps> {
         const {anchorEl} = this.state;
         let caseId = new URLSearchParams(window.location.search).get('id');
         caseStore.setSelectedCaseId(+caseId);
-        const courtCase = caseStore.casesData.find(c => {
+        let courtCase = caseStore.casesData.find(c => {
             return c.id === parseInt(caseId);
         });
+
+        if(!courtCase) {
+            alert("Valid data is missing!");
+            courtCase = {
+                claimant: {
+                    name: "",
+                    registryCode: "",
+                    activities: [""],
+                },
+                defendant: {
+                    name: "",
+                    registryCode: "",
+                    activities: [""],
+                },
+                description: "",
+                paymentStatus: "",
+                status: ""
+            }
+        }
 
         return (
             <RootContainer>

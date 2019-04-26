@@ -12,6 +12,8 @@ import { inject, observer } from 'mobx-react';
 import Button from '@material-ui/core/Button/Button';
 import Typography from '@material-ui/core/es/Typography/Typography';
 import { Link } from 'react-router-dom';
+import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
@@ -58,17 +60,28 @@ class ClientCases extends React.Component<ClientCasesProps> {
         <Typography variant="h5" gutterBottom className={classes.title}>
           New cases
         </Typography>
-        <Table>
+        {this.props.caseStore.loading ? <>
+          <br/>
+          <Grid container justify="center">
+            <Grid item>
+
+              <CircularProgress size={50}/>
+
+            </Grid>
+          </Grid>
+          <br/>
+        </>: <Table>
           <TableHead>
             <TableRow>
               {['Status', 'Type', 'Claimant', 'Defendant', 'Description', '']
-                .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
+                  .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
             </TableRow>
           </TableHead>
           <TableBody>
             {this.renderTableBody()}
           </TableBody>
-        </Table>
+        </Table>}
+
       </Paper>
     );
   }
