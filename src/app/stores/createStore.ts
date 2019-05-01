@@ -6,6 +6,7 @@ import UserStore from 'app/stores/UserStore';
 import HearingsDataStore from 'app/stores/HearingsDataStore';
 import CaseStore from "app/stores/CaseStore";
 import HearingStore from "app/stores/HearingStore";
+import AdminStore from "app/stores/AdminStore";
 
 export function createStores(history: History) {
 
@@ -17,6 +18,7 @@ export function createStores(history: History) {
         ['claimsDataStore']: new ClaimsDataStore(),
         ['hearingsDataStore']: new HearingsDataStore(),
         ['caseStore']: new CaseStore(),
-        ['hearingStore']: new HearingStore()
+        ['hearingStore']: new HearingStore(),
+        ['adminStore']: new AdminStore()
     };
 }
