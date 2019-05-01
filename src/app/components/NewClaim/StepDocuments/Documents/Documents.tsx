@@ -2,7 +2,6 @@ import * as React from 'react';
 import {inject, observer} from "mobx-react";
 import NewClaimStore from "app/stores/NewClaimStore";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -18,6 +17,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import {ClaimDocument} from "app/model/NewClaim";
 import {runInAction} from "mobx";
+import Divider from "@material-ui/core/Divider";
 
 export interface DocumentsProps {
     newClaimStore: NewClaimStore
@@ -88,7 +88,7 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
     }
 
     renderButton() {
-        return <><Button onClick={this.handleClickOpen}>Attach Documents</Button>
+        return <><Button variant="contained" onClick={this.handleClickOpen}>Click To Attach Documents</Button>
         <Dialog
         fullScreen={false}
         open={this.state.open}
@@ -145,9 +145,10 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
     renderUploadButton() {
         return <>
 
-            <Typography component="h1" variant="h5">
+            <h1>
                 Please attach the documents relevant to the claim being submitted.
-            </Typography>
+            </h1>
+            <Divider light/>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -166,7 +167,10 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
             <br/>
             <label htmlFor="contained-button-file">
                 {this.renderButton()}
-            </label></>
+            </label>
+            <br/>
+                <br/>
+        </>
     }
 
     render() {

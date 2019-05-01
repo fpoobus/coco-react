@@ -121,7 +121,8 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
                 {this.renderClaimTypes()}
             </Grid>
 
-
+            <h2>Claim Summary</h2>
+            <Divider light/>
             <TextField
                 id="outlined-multiline-flexible"
                 label="Claim Summary"

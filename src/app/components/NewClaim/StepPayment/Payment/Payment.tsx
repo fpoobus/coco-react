@@ -3,6 +3,7 @@ import {inject, observer} from "mobx-react";
 import NewClaimStore from "app/stores/NewClaimStore";
 import {runInAction} from "mobx";
 import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 export interface PaymentProps {
     newClaimStore: NewClaimStore
@@ -20,9 +21,13 @@ export class Payment extends React.Component<PaymentProps, PaymentState> {
     renderPayment() {
 
         return <>
-            <Typography component="h2" variant="h4" gutterBottom>
+            <h1>
+                Submitting A Claim Requires State Fee Payment
+            </h1>
+            <Divider light/>
+            <h2>
                 The payment will take place in a secure payment processor
-            </Typography>
+            </h2>
             <Typography component="h2" variant="h6" gutterBottom>
                 Fee: {this.props.newClaimStore.newClaim.fee.fee} USD
             </Typography>

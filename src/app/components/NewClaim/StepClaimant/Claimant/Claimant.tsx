@@ -9,6 +9,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import UserStore from "app/stores/UserStore";
 import axios from 'axios';
+import Divider from "@material-ui/core/Divider";
 
 export interface ClaimantProps {
     newClaimStore?: NewClaimStore,
@@ -163,6 +164,8 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
     claimantInfo() {
         return <>
+            <h1>Claimant Information</h1>
+            <Divider light/>
             {this.props.newClaimStore.isNaturalSection && this.naturalEntityFields()}
             {this.props.newClaimStore.isLegalSection && <>
 

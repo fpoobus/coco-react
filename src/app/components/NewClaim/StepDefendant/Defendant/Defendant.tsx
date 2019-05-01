@@ -9,6 +9,14 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import {CSSProperties} from "react";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import List from "@material-ui/core/List";
+import DialogActions from "@material-ui/core/DialogActions";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 
 export interface DefendantProps {
     newClaimStore: NewClaimStore
@@ -19,7 +27,7 @@ export interface DefendantState {
 }
 
 const textfield = {
-    width:'94%'
+    width: '94%'
 } as React.CSSProperties;
 
 const findbtn: CSSProperties = {
@@ -36,8 +44,20 @@ const fieldcontainer: CSSProperties = {
 @observer
 export class Defendant extends React.Component<DefendantProps, DefendantState> {
 
+    state = {
+        open: false,
+        allLegalEntitiesResult: []
+    };
+
     componentDidMount() {
         this.props.newClaimStore.setNextButtonDisabled(true);
+    }
+
+    componentWillUnmount(): void {
+        runInAction(() => {
+            this.props.newClaimStore.defendantResponse = undefined;
+
+        });
     }
 
     handleChange = (name) => event => {
@@ -64,41 +84,135 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
                     this.props.newClaimStore.defendantResponse = DefendantResponse.fromJson(res.data);
 
                 });
-            }).catch(e => {});
-            this.props.newClaimStore.setNextButtonDisabled(false);
+            }).catch(e => {
+        });
+        this.props.newClaimStore.setNextButtonDisabled(false);
+    };
+
+    getAllLegalEntities = () => {
+
+        axios.get(`http://africa.nortal.com/company-registry/api/v1/companies`, {
+            headers: {}
+        })
+            .then(res => {
+                runInAction(() => {
+                    this.setState({open: true, allLegalEntitiesResult: res.data});
+                });
+            }).catch(e => {
+        });
+    };
+
+    handleClickOpen = () => {
+        this.getAllLegalEntities();
+    };
+
+    handleClose = () => {
+        this.setState({open: false});
+    };
+
+    searchByEntityId(code) {
+        runInAction(() => {
+            this.props.newClaimStore.newClaim.defendant.registryCode = code;
+            this.setState({open: false});
+            this.getDefendantInto();
+        })
+    }
+
+    renderLegalEntities() {
+        let files = [];
+
+        this.state.allLegalEntitiesResult.forEach(legalEntity => {
+            files.push({
+                name: legalEntity.name,
+                regNumber: legalEntity.regNumber
+            });
+        });
+
+        let elements = [];
+        files.forEach(file => {
+            elements.push(<ListItem button>
+                <ListItemText onClick={() => this.searchByEntityId(file.regNumber)}
+                              primary={file.regNumber + " - " + file.name}/>
+            </ListItem>);
+        });
+        return elements;
+    }
+
+    renderFindAllModalAndButton() {
+        return <><Button variant="contained" onClick={this.handleClickOpen}>Click to choose from list</Button>
+            <Dialog
+                fullScreen={false}
+                open={this.state.open}
+                onClose={this.handleClose}
+                aria-labelledby="responsive-dialog-title"
+            >
+                <DialogTitle
+                    id="responsive-dialog-title">{"Choose from the options below"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+
+                    </DialogContentText>
+
+                    <List component="nav">
+                        {this.renderLegalEntities()}
+                    </List>
+
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleClose} color="primary" autoFocus>
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog></>
     }
 
     renderDefendantInput() {
 
-        return <div style={fieldcontainer} >
-
-            <TextField
-                label="Defendant registry code"
-                fullWidth
-                value={this.props.newClaimStore.defendantRegistryCode}
-                onChange={this.handleChange('registryCode')}
-                margin="normal"
-                style={textfield}
-            />
-            <Button
-                variant="contained"
-                onClick={this.getDefendantInto}
-                style={findbtn}>
-                Find
-            </Button>
-
-            {this.props.newClaimStore.defendantResponse && <>
-                <br/><br/>
-                <Typography component="h2" variant="h6" gutterBottom>
-                    Found the following legal entity:
-                </Typography>
+        return <>
+            <h1>Choose the defendant by searching or selecting from list</h1>
+            <Divider light/>
+            <div>
+                <h3>Select defendant from list:</h3>
                 <Divider light/>
-                <p><strong>Name: </strong>{this.props.newClaimStore.defendantResponse.name}</p>
-                <p><strong>Registry Code: </strong>{this.props.newClaimStore.defendantResponse.registryCode}</p>
-                <p><strong>Activities: </strong>{this.props.newClaimStore.defendantResponse.activities.join(", ")}</p>
-            </>}
+                <br/>
+                {this.renderFindAllModalAndButton()}
+            </div>
+            <br/>
+            <h3>Search defendant by Registry code:</h3>
+            <Divider light/>
+            <div style={fieldcontainer}>
+                <TextField
+                    label="Defendant registry code"
+                    fullWidth
+                    value={this.props.newClaimStore.defendantRegistryCode}
+                    onChange={this.handleChange('registryCode')}
+                    margin="normal"
+                    style={textfield}
+                />
+                <Button
+                    variant="contained"
+                    onClick={this.getDefendantInto}
+                    style={findbtn}>
+                    Find
+                </Button>
+            </div>
+            <br/>
+            <div>
+                {this.props.newClaimStore.defendantResponse && <>
+                    <br/><br/>
+                    <Typography component="h2" variant="h6" gutterBottom>
+                        Found the following legal entity:
+                    </Typography>
+                    <Divider light/>
+                    <p><strong>Name: </strong>{this.props.newClaimStore.defendantResponse.name}</p>
+                    <p><strong>Registry Code: </strong>{this.props.newClaimStore.defendantResponse.registryCode}</p>
+                    <p><strong>Activities: </strong>{this.props.newClaimStore.defendantResponse.activities.join(", ")}
+                    </p>
+                </>}
 
-        </div>;
+            </div>
+        </>;
     }
 
 

@@ -28,7 +28,7 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
     return (claimsDataStore.hasAnyClaims ? null :
         <>
           <Typography>
-            You haven't had to make any claims, lucky you
+            Click below to submit a new claim
           </Typography>
         </>
     );
