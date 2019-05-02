@@ -20,7 +20,7 @@ interface AdminMultiFormProps extends WithStyles<typeof loginStyles> {
 }
 
 
-const proxy = "http://139.59.148.64/proxy/";
+const proxy = "http://139.59.148.64/:3500/";
 @inject('adminStore')
 @observer
 class AdminMultiForm extends React.Component<AdminMultiFormProps> {
