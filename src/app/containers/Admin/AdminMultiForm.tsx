@@ -20,7 +20,7 @@ interface AdminMultiFormProps extends WithStyles<typeof loginStyles> {
 }
 
 
-const proxy = "https://cors-anywhere.herokuapp.com/";
+const proxy = "http://139.59.148.64/proxy/";
 @inject('adminStore')
 @observer
 class AdminMultiForm extends React.Component<AdminMultiFormProps> {
