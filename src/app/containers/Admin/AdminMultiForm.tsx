@@ -125,7 +125,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             familyName: this.props.adminStore.formProps.father.lastName,
             givenName: this.props.adminStore.formProps.father.firstName,
             personCode: this.props.adminStore.formProps.father.personId,
-            sex: "MALE",
+            sex: this.props.adminStore.formProps.father.gender,
         };
         await this.registerPerson(data);
     };
@@ -137,7 +137,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             familyName: this.props.adminStore.formProps.mother.lastName,
             givenName: this.props.adminStore.formProps.mother.firstName,
             personCode: this.props.adminStore.formProps.mother.personId,
-            sex: "FEMALE",
+            sex: this.props.adminStore.formProps.mother.gender,
         };
         await this.registerPerson(data);
     };
@@ -163,7 +163,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             fatherCode: this.props.adminStore.formProps.father.personId,
             height: 30,
             motherCode: this.props.adminStore.formProps.mother.personId,
-            sex: "MALE",
+            sex: this.props.adminStore.formProps.child1.gender,
             time: "11:01",
             weight: 2
         };
@@ -186,7 +186,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             fatherCode: this.props.adminStore.formProps.father.personId,
             height: 30,
             motherCode: this.props.adminStore.formProps.mother.personId,
-            sex: "MALE",
+            sex: this.props.adminStore.formProps.child2.gender,
             time: "11:01",
             weight: 2
         };
@@ -209,7 +209,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             familyName: this.props.adminStore.formProps.toMarry.lastName,
             givenName: this.props.adminStore.formProps.toMarry.firstName,
             personCode: this.props.adminStore.formProps.toMarry.personId,
-            sex: "FEMALE",
+            sex: this.props.adminStore.formProps.toMarry.gender,
         };
         await this.registerPerson(data);
     };
@@ -221,7 +221,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             familyName: this.props.adminStore.formProps.toCompany.lastName,
             givenName: this.props.adminStore.formProps.toCompany.firstName,
             personCode: this.props.adminStore.formProps.toCompany.personId,
-            sex: "MALE",
+            sex: this.props.adminStore.formProps.toCompany.gender,
         };
         await this.registerPerson(data);
     };
