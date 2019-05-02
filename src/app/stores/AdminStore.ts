@@ -17,6 +17,27 @@ export class AdminPersonProperties {
     brideId: string;
     marriageDate: string;
     sureName: string;
+
+    constructor() {
+
+        this.personId = "";
+        this.dateOfBirth = "";
+        this.day = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.gender = "";
+        this.addressId = "";
+        this.motherId = "";
+        this.fatherId = "";
+        this.weight = "";
+        this.height = "";
+        this.groomId = "";
+        this.brideId = "";
+        this.marriageDate = "";
+        this.sureName = "";
+
+    }
+
 }
 
 export class AdminFormProperties {
