@@ -46,7 +46,32 @@ export class AdminFormProperties {
     child1: AdminPersonProperties;
     child2: AdminPersonProperties;
     toMarry: AdminPersonProperties;
-    toCompany: AdminPersonProperties
+    toCompany: AdminPersonProperties;
+
+    constructor() {
+
+        this.father = new AdminPersonProperties();
+        this.father.gender = "MALE";
+        this.father.dateOfBirth = "1980-05-09T21:00:00.00";
+        this.mother = new AdminPersonProperties();
+        this.mother.gender = "FEMALE";
+        this.mother.dateOfBirth = "1980-05-09T21:00:00.00";
+        this.child1 = new AdminPersonProperties();
+        this.child1.gender = "MALE";
+        this.child1.dateOfBirth = "2011-05-05T11:01:00";
+        this.child1.day = "2011-05-05T21:00:00.00";
+        this.child2 = new AdminPersonProperties();
+        this.child2.gender = "MALE";
+        this.child2.dateOfBirth = "2000-05-05T11:01:00";
+        this.child2.day = "2000-05-05T21:00:00.00";
+        this.toMarry = new AdminPersonProperties();
+        this.toMarry.gender = "FEMALE";
+        this.toMarry.dateOfBirth = "1980-05-09T21:00:00.00";
+        this.toCompany = new AdminPersonProperties();
+        this.toCompany.gender = "MALE";
+        this.toCompany.dateOfBirth = "1980-05-09T21:00:00.00";
+    }
+
 }
 
 export class AdminStore {
@@ -59,31 +84,8 @@ export class AdminStore {
     constructor() {
         let form = new AdminFormProperties();
 
-        form.father = new AdminPersonProperties();
-        form.father.gender = "MALE";
-        form.father.dateOfBirth = "1980-05-09T21:00:00.000Z";
+        console.log(form);
 
-        form.mother = new AdminPersonProperties();
-        form.mother.gender = "FEMALE";
-        form.mother.dateOfBirth = "1980-05-09T21:00:00.000Z";
-
-        form.child1 = new AdminPersonProperties();
-        form.child1.gender = "MALE";
-        form.child1.dateOfBirth = "2011-05-05T11:01:00";
-        form.child1.day = "2011-05-05T21:00:00.000Z";
-
-        form.child2 = new AdminPersonProperties();
-        form.child2.gender = "MALE";
-        form.child2.dateOfBirth = "2000-05-05T11:01:00";
-        form.child2.day = "2000-05-05T21:00:00.000Z";
-
-        form.toMarry = new AdminPersonProperties();
-        form.toMarry.gender = "FEMALE";
-        form.toMarry.dateOfBirth = "1980-05-09T21:00:00.000Z";
-
-        form.toCompany = new AdminPersonProperties();
-        form.toCompany.gender = "MALE";
-        form.toCompany.dateOfBirth = "1980-05-09T21:00:00.000Z";
 
         runInAction(() => {
             this.formProps = form;

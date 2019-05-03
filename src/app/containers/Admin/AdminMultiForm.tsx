@@ -27,7 +27,8 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
 
 
     handleChange = (who, value) => event => {
-
+        console.log(who + " " + value + " " + event.target.value);
+        console.log(event);
         runInAction(() => {
             this.props.adminStore.formProps[who][value] = event.target.value;
         });
@@ -284,13 +285,12 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
                     <Grid container justify="center" spacing={16}>
                         <Grid item xs={6}>
                             <Paper style={{padding: "10px"}}>
-
+                                {this.props.adminStore.formProps[who]['personId']}
                                 {!exclude.personId &&
                                 <TextField
                                     label="Person ID"
                                     fullWidth
                                     margin="normal"
-                                    value={this.props.adminStore.formProps[who]['personId']}
                                     onChange={this.handleChange(who, 'personId')}
                                 />
                                 }
@@ -298,14 +298,12 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
                                     label="Given name"
                                     fullWidth
                                     margin="normal"
-                                    value={this.props.adminStore.formProps[who]['firstName']}
                                     onChange={this.handleChange(who, 'firstName')}
                                 />
                                 <TextField
                                     label="Family name"
                                     fullWidth
                                     margin="normal"
-                                    value={this.props.adminStore.formProps[who]['lastName']}
                                     onChange={this.handleChange(who, 'lastName')}
                                 />
 
@@ -319,14 +317,12 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
                                     label="Gender"
                                     fullWidth
                                     margin="normal"
-                                    value={this.props.adminStore.formProps[who]['gender']}
                                     onChange={this.handleChange(who, 'gender')}
                                 />
                                 <TextField
                                     label="Date of birth"
                                     fullWidth
                                     margin="normal"
-                                    value={this.props.adminStore.formProps[who]['dateOfBirth']}
                                     onChange={this.handleChange(who, 'dateOfBirth')}
                                 />
                                 {!exclude.day &&
@@ -334,7 +330,6 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
                                     label="Day"
                                     fullWidth
                                     margin="normal"
-                                    value={this.props.adminStore.formProps[who]['day']}
                                     onChange={this.handleChange(who, 'day')}
                                 />
                                 }
@@ -342,7 +337,6 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
                                     label="Address ID"
                                     fullWidth
                                     margin="normal"
-                                    value={this.props.adminStore.formProps[who]['addressId']}
                                     onChange={this.handleChange(who, 'addressId')}
                                 />
 
