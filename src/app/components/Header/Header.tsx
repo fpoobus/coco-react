@@ -1,8 +1,10 @@
 import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar/AppBar';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
-import {Menu, MenuItem, Theme, Typography, WithStyles} from '@material-ui/core';
-import withStyles from '@material-ui/core/styles/withStyles';
+import Menu  from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
 import createStyles from '@material-ui/core/styles/createStyles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -10,6 +12,7 @@ import {Link} from 'react-router-dom';
 import {inject, observer} from 'mobx-react';
 import RouterStore from 'app/stores/RouterStore';
 import UserStore from "app/stores/UserStore";
+import {Theme} from '@material-ui/core/styles/createMuiTheme';
 
 
 export const styles = (theme: Theme) =>

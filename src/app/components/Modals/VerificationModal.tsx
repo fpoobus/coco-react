@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {WithStyles} from '@material-ui/core';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
 import {modalStyles} from "app/components/Modals/styles";
 import {observer} from "mobx-react";
 import UserStore from "app/stores/UserStore";

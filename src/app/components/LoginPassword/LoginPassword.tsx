@@ -9,8 +9,8 @@ import Checkbox from "@material-ui/core/Checkbox/Checkbox";
 import Button from "@material-ui/core/Button/Button";
 import UserStore from "app/stores/UserStore";
 import LockIcon from '@material-ui/icons/LockOutlined';
-import Snackbar from "@material-ui/core/es/Snackbar/Snackbar";
-import SnackbarContent from "@material-ui/core/es/SnackbarContent/SnackbarContent";
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent/SnackbarContent";
 import {observer} from "mobx-react";
 
 interface LoginPasswordProps {

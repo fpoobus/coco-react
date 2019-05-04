@@ -6,10 +6,10 @@ import ClaimsSubmitter from 'app/components/ClaimsSubmitter/ClaimsSubmitter';
 import RootContainer from 'app/components/Container/RootContainer';
 import ClientCases from 'app/components/ClientCases/ClientCases';
 import CalendarCard from 'app/components/Calendar/Calendar';
-import SnackbarContent from "../../../../node_modules/@material-ui/core/es/SnackbarContent/SnackbarContent";
-import Snackbar from "../../../../node_modules/@material-ui/core/es/Snackbar/Snackbar";
 import HearingStore from "app/stores/HearingStore";
 import {inject, observer} from "mobx-react";
+import Snackbar from '@material-ui/core/Snackbar/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent/SnackbarContent';
 
 interface DashboardProps extends WithStyles<typeof dashboardStyles> {
   hearingStore: HearingStore;

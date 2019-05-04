@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow/TableRow';
 import CaseStore from 'app/stores/CaseStore';
 import { inject, observer } from 'mobx-react';
 import Button from '@material-ui/core/Button/Button';
-import Typography from '@material-ui/core/es/Typography/Typography';
+import Typography from '@material-ui/core/Typography/Typography';
 import { Link } from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";

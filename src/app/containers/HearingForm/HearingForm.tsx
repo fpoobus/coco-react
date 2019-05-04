@@ -11,8 +11,8 @@ import HearingCalendar from "app/components/HearingCalender/HearingCalendar";
 import {inject, observer} from "mobx-react";
 import HearingStore from "app/stores/HearingStore";
 import {RouteComponentProps} from "react-router";
-import SnackbarContent from "../../../../node_modules/@material-ui/core/es/SnackbarContent/SnackbarContent";
-import Snackbar from "../../../../node_modules/@material-ui/core/es/Snackbar/Snackbar";
+import Snackbar from '@material-ui/core/Snackbar/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent/SnackbarContent';
 
 interface HearingFormProps extends WithStyles<typeof hearingFormStyles>, RouteComponentProps<any> {
     hearingStore?: HearingStore

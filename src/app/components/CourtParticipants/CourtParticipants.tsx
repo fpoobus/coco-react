@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {WithStyles} from '@material-ui/core';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
 import {inject, observer} from 'mobx-react';
 import {courtParticipantsStyles} from "./styles";
 import Table from "../../../../node_modules/@material-ui/core/Table/Table";

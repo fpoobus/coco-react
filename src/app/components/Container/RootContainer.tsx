@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Theme, WithStyles } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
 import Header from 'app/components/Header/Header';
 import Footer from 'app/components/Footer/Footer';
+import {Theme} from '@material-ui/core/styles/createMuiTheme';
 
 const styles = (theme: Theme) => createStyles({
   background: {
@@ -46,6 +46,7 @@ class RootContainer extends React.Component<RootContainerProps> {
             {children}
           </div>
         </div>
+        <div style={{height: '200px'}}></div>
         <Footer />
       </div>
     );

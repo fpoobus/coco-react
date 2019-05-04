@@ -10,8 +10,11 @@ var outPath = path.join(__dirname, './dist');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 module.exports = {
+  mode: "production",
   context: sourcePath,
   entry: {
     main: './main.tsx'
@@ -84,22 +87,17 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      name: true,
-      cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          minChunks: 2
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          chunks: 'all',
-          priority: -10
-        }
-      }
+      chunks: 'all',
     },
-    runtimeChunk: true
+    runtimeChunk: true,
+    minimize: true
   },
   plugins: [
+    new webpack.DefinePlugin({ // <-- key to reducing React's size
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
     new WebpackCleanupPlugin(),
     new ExtractTextPlugin({
       filename: 'styles.css',
@@ -107,7 +105,10 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'assets/index.html'
-    })
+    }),
+    new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  //  new BundleAnalyzerPlugin()
   ],
   devServer: {
     contentBase: sourcePath,
@@ -118,7 +119,7 @@ module.exports = {
     },
     stats: 'minimal'
   },
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
   node: {
     // workaround for webpack-dev-server issue
     // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179

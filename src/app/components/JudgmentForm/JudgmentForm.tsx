@@ -1,6 +1,5 @@
 import * as React from 'react';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import { Theme } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import RootContainer from 'app/components/Container/RootContainer';
 import Paper from '@material-ui/core/Paper/Paper';
@@ -21,6 +20,7 @@ import { judgmentSanctions, judgmentTypes } from 'app/model/JudgmentForm';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import { Link } from 'react-router-dom';
 import {runInAction} from "mobx";
+import {Theme} from '@material-ui/core/styles/createMuiTheme';
 
 const styles = (theme: Theme) => createStyles({
   root: {

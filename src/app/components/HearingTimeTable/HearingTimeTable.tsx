@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { WithStyles } from '@material-ui/core';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
 import Paper from "../../../../node_modules/@material-ui/core/Paper/Paper";
 import {courtHearingCalendarStyles} from "app/components/HearingTimeTable/styles";
 import Divider from "../../../../node_modules/@material-ui/core/Divider/Divider";

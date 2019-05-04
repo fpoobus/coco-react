@@ -27,13 +27,13 @@ export interface DefendantState {
 }
 
 const textfield = {
-    width: '94%'
+    width: 'calc(100% - 70px)'
 } as React.CSSProperties;
 
 const findbtn: CSSProperties = {
     bottom: '0.6rem',
     position: 'absolute',
-    marginLeft: '0.5rem',
+    width: '70px',
 } as React.CSSProperties;
 
 const fieldcontainer: CSSProperties = {
