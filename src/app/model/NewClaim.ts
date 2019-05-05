@@ -114,6 +114,12 @@ export class Fee {
     cw: string;
     card_owner: string;
     fee: string;
+    reference_number: string;
+
+    constructor() {
+        let referenceNumber = Math.floor(Math.random() * 999999999) + 999999999;
+        this.reference_number = ""+referenceNumber;
+    }
 
     static fromJson(json) {
         console.log("Fee", json);

@@ -28,8 +28,9 @@ export class Payment extends React.Component<PaymentProps, PaymentState> {
             <h2>
                 The payment will take place in a secure payment processor
             </h2>
+            <h2><strong>Payment Reference Number:</strong> {this.props.newClaimStore.newClaim.fee.reference_number}</h2>
             <Typography component="h2" variant="h6" gutterBottom>
-                Fee: {this.props.newClaimStore.newClaim.fee.fee} USD
+                <strong>Fee:</strong> {this.props.newClaimStore.newClaim.fee.fee} USD
             </Typography>
         </>
     }

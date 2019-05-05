@@ -85,6 +85,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
 
             <h1>Your claim has been submitted.</h1>
             <h2>State fee has been successful paid</h2>
+            <h2>Payment Reference Number: {this.props.newClaimStore.newClaim.fee.reference_number}</h2>
             <h2>Amount paid: {this.props.newClaimStore.newClaim.fee.fee}</h2>
             <hr/>
             <h2>Claim:</h2>

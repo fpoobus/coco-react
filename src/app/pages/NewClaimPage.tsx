@@ -23,6 +23,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Defendant from "app/components/NewClaim/StepDefendant/Defendant/Defendant";
 import UserStore from "app/stores/UserStore";
+import axios from "axios";
 
 export interface NewClaimPageProps extends RouteComponentProps<any> {
     newClaimStore: NewClaimStore,
@@ -218,14 +219,33 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
             this.props.newClaimStore.setLoading(false);
             this.props.newClaimStore.previousStep();
         }, 400);
-    }
+    };
 
-    proceedToPayment = () => {
+    executePaymentInbackGround = async (referenceNumber) => {
+
+        let currentTimeMillis = new Date().getTime();
+
+        let redirUrl = window.location.protocol + "//" + window.location.host + "/new-claim/payment-complete";
+        let paymentUrl = "https://rkdemo.aktors.ee/proto/pay?currency=USD&amount="+this.props.newClaimStore.newClaim.fee.fee +"&payerData="+ this.props.userStore.user.personalCode + "&referenceNumber=" + referenceNumber + "&paymentTime=" + currentTimeMillis +  "&returnUrl=" + redirUrl;
+
+        return axios.get(paymentUrl)
+            .then(res => {
+                return Promise.resolve();
+            }).catch(e => {
+        });
+    };
+
+    proceedToPayment = async () => {
+
         localStorage.setItem('newClaim', JSON.stringify(this.props.newClaimStore.newClaim));
         localStorage.setItem('step', "6");
-        let redirUrl = window.location.protocol + "//" + window.location.host + "/new-claim/payment-complete"
-        window.location.href = "https://rkdemo.aktors.ee/proto/bank?amount="+this.props.newClaimStore.newClaim.fee.fee +"&payerData="+ this.props.userStore.user.personalCode + "&returnUrl=" + redirUrl;
-    }
+
+        // https://rkdemo.aktors.ee/proto/pay?referenceNumber=2900077778&amount=100&currency=USD&payerData=5555555555555555&paymentTime=1556192294700&service=test&returnUrl=http://139.59.148.64/new-claim/payment-complete
+
+        await this.executePaymentInbackGround(this.props.newClaimStore.newClaim.fee.reference_number);
+        let redirUrl = window.location.protocol + "//" + window.location.host + "/new-claim/payment-complete";
+        window.location.href = "https://rkdemo.aktors.ee/proto/bank?amount="+this.props.newClaimStore.newClaim.fee.fee +"&payerData="+ this.props.userStore.user.personalCode + "&referenceNumber=" + this.props.newClaimStore.newClaim.fee.reference_number + "&returnUrl=" + redirUrl;
+    };
 
     render() {
 
