@@ -5,6 +5,7 @@ export default class NewClaim {
     claim: Claim;
     documents: ClaimDocument[];
     fee: Fee;
+    isLegalEntity: boolean;
 
     constructor() {
         this.documents = [];
@@ -13,6 +14,7 @@ export default class NewClaim {
         this.naturalPerson = new NaturalPerson();
         this.legalPerson = new LegalPerson();
         this.fee = new Fee();
+        this.isLegalEntity = false;
     }
 
     static fromJson(json) {
@@ -24,7 +26,7 @@ export default class NewClaim {
         claim.legalPerson = LegalPerson.fromJson(json['legalPerson']);
         claim.defendant = LegalPerson.fromJson(json['defendant']);
         claim.claim = Claim.fromJson(json['claim']);
-
+        claim.isLegalEntity = json['isLegalEntity'];
         if (json && json['documents']) {
             json['documents'].map(item => {
                 claim.documents.push(ClaimDocument.fromJson(item));

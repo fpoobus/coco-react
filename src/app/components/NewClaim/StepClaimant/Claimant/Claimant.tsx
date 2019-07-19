@@ -154,8 +154,10 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
     }
 
     setActiveLegalEntity = (entity: LegalEntityResponse) => {
+        console.log("setActiveLegalEntity", entity);
+        this.props.newClaimStore.newClaim.isLegalEntity = true;
         this.props.newClaimStore.newClaim.legalPerson.name = entity.name;
-        this.props.newClaimStore.newClaim.legalPerson.registry_code = entity.entityId;
+        this.props.newClaimStore.newClaim.legalPerson.registry_code = entity.registryCode;
         // this.nextStepWithLoader();
     };
 
@@ -165,6 +167,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
         let result = [];
 
         if (this.props.newClaimStore.personResponse) {
+            console.log("legalEntityFields", this.props.newClaimStore.personResponse.legalEntities);
             this.props.newClaimStore.personResponse.legalEntities.map((legalEntity, index) => {
                 /*
                 result.push(<Button onClick={() => this.setActiveLegalEntity(legalEntity)} variant="contained"
@@ -193,7 +196,6 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
             <Divider light/>
             {this.props.newClaimStore.isNaturalSection && this.naturalEntityFields()}
             {this.props.newClaimStore.isLegalSection && <>
-
                 <RadioGroup
                     aria-label="Gender"
                     name="gender1"
@@ -202,7 +204,6 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
                 >
                     {this.legalEntityFields()}
                 </RadioGroup>
-
             </>}
         </>;
     }

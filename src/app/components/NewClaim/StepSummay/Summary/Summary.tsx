@@ -56,12 +56,16 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
 
 
         let claimantId = "";
-        if( this.props.newClaimStore.newClaim.legalPerson) {
+        if( this.props.newClaimStore.newClaim.isLegalEntity && this.props.newClaimStore.newClaim.legalPerson) {
             claimantId =  this.props.newClaimStore.newClaim.legalPerson.registry_code;
         }
-        if( this.props.newClaimStore.newClaim.naturalPerson) {
+        if( !this.props.newClaimStore.newClaim.isLegalEntity  && this.props.newClaimStore.newClaim.naturalPerson) {
             claimantId =  this.props.newClaimStore.newClaim.naturalPerson.personId;
         }
+        console.log("this.props.newClaimStore.newClaim.isLegalEntity", this.props.newClaimStore.newClaim.isLegalEntity);
+        console.log("this.props.newClaimStore.isLegalSection", this.props.newClaimStore.isLegalSection);
+        console.log("this.props.newClaimStore.isNaturalSection", this.props.newClaimStore.isNaturalSection);
+        console.log("claimantId", claimantId);
 
         const data = {
             status: "PENDING",

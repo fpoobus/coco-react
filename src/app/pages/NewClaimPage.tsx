@@ -77,13 +77,15 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
     nextAndSetTypeNatural = () => {
         this.props.newClaimStore.setOpenSectionNatural();
+        this.props.newClaimStore.newClaim.isLegalEntity = false;
         this.nextStepWithLoader();
-    }
+    };
 
     nextAndSetTypeLegal = () => {
         this.props.newClaimStore.setOpenSectionLegal();
+        this.props.newClaimStore.newClaim.isLegalEntity = true;
         this.nextStepWithLoader();
-    }
+    };
 
     renderStep1() {
         return <>
