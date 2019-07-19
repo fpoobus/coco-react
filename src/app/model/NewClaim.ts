@@ -65,6 +65,7 @@ export class LegalPerson {
 
 
 export class NaturalPerson {
+    personId: string;
     first_name: string;
     middle_names: string;
     last_name: string;
@@ -135,6 +136,8 @@ export class PersonResponse {
     legalEntities: LegalEntityResponse[];
     firstName?: string;
     lastName?: string;
+    dateOfBirth: string;
+    address: string;
 
     static fromJson(json) {
         const person = Object.assign(new PersonResponse(), json);

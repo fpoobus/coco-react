@@ -54,10 +54,19 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
             user = this.props.userStore.personalCode;
         }
 
+
+        let claimantId = "";
+        if( this.props.newClaimStore.newClaim.legalPerson) {
+            claimantId =  this.props.newClaimStore.newClaim.legalPerson.registry_code;
+        }
+        if( this.props.newClaimStore.newClaim.naturalPerson) {
+            claimantId =  this.props.newClaimStore.newClaim.naturalPerson.personId;
+        }
+
         const data = {
             status: "PENDING",
             caseNumber: '1000000' + new Date().getMilliseconds().toString(),
-            claimantId: "100000003",
+            claimantId: claimantId,
             defendantId: this.props.newClaimStore.newClaim.defendant.registryCode,
             caseType: this.props.newClaimStore.newClaim.claim.case_type,
             description: this.props.newClaimStore.newClaim.claim.description,

@@ -3,7 +3,7 @@ import {inject, observer} from 'mobx-react';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import TextField from '@material-ui/core/TextField';
 import {runInAction} from 'mobx';
-import {LegalEntityResponse, PersonResponse} from 'app/model/NewClaim';
+import {LegalEntityResponse, NaturalPerson, PersonResponse} from 'app/model/NewClaim';
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
@@ -27,6 +27,13 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
     state = {
         value: '',
+        naturalPerson: {
+            first_name: '',
+            last_name: '',
+            address: '',
+            date_of_birth: '',
+            personId: ''
+        } as NaturalPerson,
     };
 
     handleRadioChange = event => {
@@ -49,7 +56,22 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
                         console.log(res.data);
                         this.props.newClaimStore.personResponse = PersonResponse.fromJson(res.data);
                         this.state.value = this.props.newClaimStore.newClaim.legalPerson.registry_code;
+
+                        this.props.newClaimStore.newClaim.naturalPerson = {
+                            first_name: this.props.newClaimStore.personResponse.firstName,
+                            last_name: this.props.newClaimStore.personResponse.lastName,
+                            address: this.props.newClaimStore.personResponse.address,
+                            date_of_birth: this.props.newClaimStore.personResponse.dateOfBirth,
+                            personId: this.props.newClaimStore.personResponse.personId
+                        } as NaturalPerson;
+
+                        this.state.naturalPerson =
+                            Object.assign({}, this.props.newClaimStore.newClaim.naturalPerson);
+
+                        console.log("Claim obj", this.props.newClaimStore.newClaim);
                         console.log(this.props.newClaimStore.personResponse);
+
+                        this.setState(this.state);
                     });
                     this.props.newClaimStore.setLoading(false);
                 }).catch(() => {
@@ -65,12 +87,13 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
     naturalEntityFields() {
         let newClaim = this.props.newClaimStore.newClaim;
+        console.log("naturalEntityFields", newClaim.naturalPerson);
         return <>
 
             <TextField
                 label="First Name"
                 fullWidth
-                value={newClaim.naturalPerson.first_name}
+                value={this.state.naturalPerson.first_name}
                 onChange={this.handleChange('first_name')}
                 margin="normal"
             />
@@ -78,7 +101,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
             <TextField
                 label="Middle Names"
                 fullWidth
-                value={newClaim.naturalPerson.middle_names}
+                value={this.state.naturalPerson.middle_names}
                 onChange={this.handleChange('middle_names')}
                 margin="normal"
             />
@@ -86,7 +109,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
             <TextField
                 label="Last Name"
                 fullWidth
-                value={newClaim.naturalPerson.last_name}
+                value={this.state.naturalPerson.last_name}
                 onChange={this.handleChange('last_name')}
                 margin="normal"
             />
@@ -95,7 +118,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
                 label="Date of Birth"
                 fullWidth
                 type="date"
-                value={newClaim.naturalPerson.date_of_birth}
+                value={this.state.naturalPerson.date_of_birth}
                 onChange={this.handleChange('date_of_birth')}
                 margin="normal"
                 InputLabelProps={{
@@ -104,9 +127,9 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
             />
 
             <TextField
-                label="Date of Birth"
+                label="Address"
                 fullWidth
-                value={newClaim.naturalPerson.address}
+                value={this.state.naturalPerson.address}
                 onChange={this.handleChange('address')}
                 margin="normal"
             />
@@ -116,6 +139,8 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
     handleChange = name => event => {
         runInAction(() => {
             this.props.newClaimStore.newClaim.naturalPerson[name] = event.target.value;
+            this.state.naturalPerson[name] = event.target.value;
+            this.setState(this.state);
         });
     };
 

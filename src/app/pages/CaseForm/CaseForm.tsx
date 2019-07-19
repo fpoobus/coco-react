@@ -25,7 +25,9 @@ import {inject, observer} from 'mobx-react';
 import CaseStore from 'app/stores/CaseStore';
 import {Link} from 'react-router-dom';
 import axios from "axios";
-import {action} from "mobx";
+import {action, runInAction} from "mobx";
+import {DefendantResponse, PersonResponse} from "app/model/NewClaim";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const judgesList = [
     ['Justice Foster Edward Abner', 49],
@@ -97,6 +99,76 @@ class CaseForm extends React.Component<DashboardProps> {
     homeLink = props => <Link to="/" {...props} />;
     caseLink = (props, id) => <Link to={'/hearing'} {...props} />;
 
+    fetchClaimantLegalEntity = (courtCase) => {
+        axios.get(`http://139.59.148.64/coco-api/legal-entities/` + courtCase.claimantId, {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+            .then(res => {
+                runInAction(() => {
+                    console.log("Got back response");
+                    courtCase.claimant = DefendantResponse.fromJson(res.data);
+                    console.log("CLAIMANT INFO", courtCase.claimant);
+                });
+
+            }).catch(e => {
+            console.error(e);
+        });
+    };
+
+    fetchPersonClaimantInfo = (courtCase) => {
+        axios.get(`http://139.59.148.64/coco-api/persons/` + courtCase.claimantId, {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+            .then(res => {
+                runInAction(() => {
+                    console.log("Got back response");
+                    courtCase.claimant = PersonResponse.fromJson(res.data);
+                    console.log("CLAIMANT INFO", courtCase.claimant);
+                });
+
+            }).catch(e => {
+            console.error(e);
+        });
+
+    };
+
+    fetchDefendantInfo = (courtCase) => {
+        axios.get(`http://139.59.148.64/coco-api/legal-entities/` + courtCase.defendantId, {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+            .then(res => {
+                runInAction(() => {
+                    console.log("Got back response");
+                    courtCase.defendant = DefendantResponse.fromJson(res.data);
+                    console.log("DEFENDANT INFO", courtCase.defendant);
+                });
+
+            }).catch(e => {
+            console.error(e);
+        });
+    };
+
+    handleMissingData = (courtCase) => {
+        if (courtCase && !courtCase.claimant) {
+            console.log("No claimant info so fetching");
+            if (courtCase.claimantId.length !== 11) {
+                this.fetchClaimantLegalEntity(courtCase);
+            } else {
+                this.fetchPersonClaimantInfo(courtCase);
+            }
+        }
+        if (courtCase && !courtCase.defendant) {
+            console.log("No defendant so fetching");
+            this.fetchDefendantInfo(courtCase);
+        }
+    };
+
     render() {
         const {classes, caseStore} = this.props;
         const {anchorEl} = this.state;
@@ -106,7 +178,9 @@ class CaseForm extends React.Component<DashboardProps> {
             return c.id === parseInt(caseId);
         });
 
-        if(!courtCase) {
+        this.handleMissingData(courtCase);
+
+        if (!courtCase) {
             alert("Valid data is missing!");
             courtCase = {
                 claimant: {
@@ -124,6 +198,7 @@ class CaseForm extends React.Component<DashboardProps> {
                 status: ""
             }
         }
+
 
         return (
             <RootContainer>
@@ -197,14 +272,17 @@ class CaseForm extends React.Component<DashboardProps> {
                                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                                     Claimant
                                 </Typography>
-                                <Typography variant="h5" component="h2">
-                                    {courtCase.claimant.name} {courtCase.claimant.registryCode}
-
-                                </Typography>
-                                <Typography component="p">
-                                    {courtCase.claimant.activities[0]}
-                                    <br/>
-                                </Typography>
+                                {courtCase.claimant && <>
+                                    <Typography variant="h5" component="h2">
+                                        {courtCase.claimant.name}
+                                        {courtCase.claimant.firstName} {courtCase.claimant.lastName} {courtCase.claimantId}
+                                    </Typography>
+                                    {courtCase.claimant.activities && < Typography component="p">
+                                        {courtCase.claimant.activities[0]}
+                                        <br/>
+                                    </Typography>}
+                                </>}
+                                {!courtCase.claimant && <CircularProgress size={50}/>}
                             </CardContent>
                             <CardActions>
                                 <Button size="small">Learn More</Button>
@@ -214,18 +292,21 @@ class CaseForm extends React.Component<DashboardProps> {
                     <Grid item xs={6}>
                         <Card>
                             <CardContent>
-                                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                    Defendant
-                                </Typography>
-                                <Typography variant="h5" component="h2">
-                                    {courtCase.defendant.name} {courtCase.defendant.registryCode}
-                                </Typography>
+                                {courtCase.defendant && <>
+                                    <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                        Defendant
+                                    </Typography>
+                                    <Typography variant="h5" component="h2">
+                                        {courtCase.defendant.name} {courtCase.defendant.registryCode}
+                                    </Typography>
 
-                                <Typography component="p">
-                                    {courtCase.defendant.activities[0]}
-                                    <br/>
+                                    {courtCase.defendant.activities && <Typography component="p">
+                                        {courtCase.defendant.activities[0]}
+                                        <br/>
 
-                                </Typography>
+                                    </Typography>}
+                                </>}
+                                {!courtCase.defendant && <CircularProgress size={50}/>}
                             </CardContent>
                             <CardActions>
                                 <Button size="small">Learn More</Button>
@@ -236,7 +317,8 @@ class CaseForm extends React.Component<DashboardProps> {
                     <Grid container spacing={24}>
                         <Grid item xs={12}>
                             <Button variant="contained" color="primary" className={classes.button}
-                                    onClick={this.registerCase} component={props => this.caseLink(props, caseStore.selectedCaseId)}>
+                                    onClick={this.registerCase}
+                                    component={props => this.caseLink(props, caseStore.selectedCaseId)}>
                                 Register
                                 <Send className={classes.rightIcon}/>
                             </Button>
