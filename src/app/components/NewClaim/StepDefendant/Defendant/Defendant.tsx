@@ -75,7 +75,7 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
   };
 
   getAllLegalEntities = () => {
-    axios.get(`http://africa.nortal.com/company-registry/api/v1/companies`, {
+    axios.get(`http://139.59.148.64/coco-api/legal-entities`, {
       headers: {}
     }).then(res => this.setState({ open: true, allLegalEntitiesResult: res.data }))
       .catch(() => {

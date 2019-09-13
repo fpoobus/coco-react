@@ -13,7 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 type Props = {
   onClose: () => void;
   onEntityPick: (regNumber: string) => void;
-  legalEntities: { name: string, regNumber: string }[];
+  legalEntities: { name: string, registryCode: string }[];
   open: boolean;
 }
 
@@ -24,8 +24,8 @@ const DefendantFinderModal = (props: Props): ReactElement<any> => {
       <>
         {props.legalEntities.map((legalEntity) =>
           <ListItem button>
-            <ListItemText onClick={() => props.onEntityPick(legalEntity.regNumber)}
-                          primary={legalEntity.regNumber + ' - ' + legalEntity.name} />
+            <ListItemText onClick={() => props.onEntityPick(legalEntity.registryCode)}
+                          primary={legalEntity.registryCode + ' - ' + legalEntity.name} />
           </ListItem>
         )}
       </>
