@@ -3,21 +3,19 @@ import { hot } from 'react-hot-loader';
 import { Route, Router, Switch } from 'react-router';
 import { Root } from 'app/containers/Root';
 import Dashboard from 'app/containers/Dashboard/dashboard';
-import { NewClaimPage } from 'app/pages/NewClaimPage';
-
 import Login from 'app/containers/Login/Login';
 import Hearing from 'app/containers/HearingForm/HearingForm';
 import CaseForm from 'app/pages/CaseForm/CaseForm';
-
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { NewClaimPaymentCompletePage } from 'app/pages/NewClaimPaymentCompletePage';
 import JudgmentForm from 'app/components/JudgmentForm/JudgmentForm';
-import Admin from "app/containers/Admin/Admin";
-import AdminMultiForm from "app/containers/Admin/AdminMultiForm";
-import AdminPersonList from "app/containers/Admin/AdminPersonList";
-import Header from "app/components/Header/Header";
-import { History } from "history";
+import Admin from 'app/containers/Admin/Admin';
+import AdminMultiForm from 'app/containers/Admin/AdminMultiForm';
+import AdminPersonList from 'app/containers/Admin/AdminPersonList';
+import Header from 'app/components/Header/Header';
+import { History } from 'history';
+import NewClaimPage from 'app/pages/NewClaimPage';
 
 export const theme = createMuiTheme({
   palette: {

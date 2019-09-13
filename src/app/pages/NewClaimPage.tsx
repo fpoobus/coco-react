@@ -21,8 +21,26 @@ import Defendant from 'app/components/NewClaim/StepDefendant/Defendant/Defendant
 import UserStore from 'app/stores/UserStore';
 import axios, { AxiosResponse } from 'axios';
 import CaseFormFirstStep from 'app/pages/CaseForm/first-step/FirstStep';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import { createStyles } from '@material-ui/core';
 
-export interface NewClaimPageProps extends RouteComponentProps<any> {
+const newClaimPageStyles = () => createStyles({
+  buttonProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+  wrapper: {
+    position: 'relative',
+  },
+});
+
+export interface NewClaimPageProps extends RouteComponentProps<any>, WithStyles<typeof newClaimPageStyles> {
   newClaimStore: NewClaimStore,
   userStore: UserStore
 }
@@ -38,7 +56,7 @@ const centerAlign = {
 
 @inject('routerStore', 'newClaimStore', 'userStore')
 @observer
-export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
+class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
   constructor(props: NewClaimPageProps, context: any) {
     super(props, context);
 
@@ -63,13 +81,14 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
     return this.props.newClaimStore.step >= 6;
   }
 
+  get isFirstStep(): boolean {
+    return this.props.newClaimStore.step == 0
+  };
+
   lastPreStep() {
     return this.props.newClaimStore.step >= 5;
   }
 
-  firstStep() {
-    return this.props.newClaimStore.step == 0;
-  }
 
   nextStepWithLoader = () => {
     this.props.newClaimStore.setLoading(true);
@@ -179,26 +198,24 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
                 </CardContent>
                 <CardActions>
-                  {!this.isLastStep && !this.firstStep() && !this.props.newClaimStore.loading &&
-                  <Button onClick={this.previousStepWithLoader} variant="text"
-                          color="secondary">
+                  {!this.isLastStep && !this.isFirstStep &&
+                  <Button onClick={this.previousStepWithLoader} variant="text" color="secondary">
                     Back
-                  </Button>
-                  }
-                  {!this.isLastStep && !this.lastPreStep() && !this.firstStep() && !this.props.newClaimStore.loading &&
-                  <Button disabled={this.props.newClaimStore.nextButtonDisabled}
-                          onClick={this.nextStepWithLoader} variant="contained"
-                          color="primary">
-                    Continue
-                  </Button>
-                  }
+                  </Button>}
+                  <div className={this.props.classes.wrapper}>
+                    {!this.isLastStep && !this.lastPreStep() && !this.isFirstStep &&
+                    <Button disabled={this.props.newClaimStore.nextButtonDisabled}
+                            onClick={this.nextStepWithLoader} variant="contained"
+                            color="primary">
+                      Continue
+                    </Button>}
+                    {this.props.newClaimStore.isLoading && !this.isFirstStep &&
+                    <CircularProgress size={24} className={this.props.classes.buttonProgress} />}
+                  </div>
                   {this.lastPreStep() && !this.isLastStep && !this.props.newClaimStore.loading &&
-                  <Button onClick={this.proceedToPayment} variant="contained"
-                          color="primary"
-                  >
+                  <Button onClick={this.proceedToPayment} variant="contained" color="primary">
                     Proceed to Payment
-                  </Button>
-                  }
+                  </Button>}
                 </CardActions>
               </Card>
             </Grid>
@@ -208,3 +225,5 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
     );
   }
 }
+
+export default withStyles(newClaimPageStyles)(NewClaimPage);
