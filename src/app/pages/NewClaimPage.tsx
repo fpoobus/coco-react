@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import Claimant from 'app/components/NewClaim/StepClaimant/Claimant/Claimant';
-import NewClaim from 'app/model/NewClaim';
+import NewClaim, { PersonResponse } from 'app/model/NewClaim';
 import { ClaimInformation } from 'app/components/NewClaim/StepClaimInfo/ClaimInformation/ClaimInformation';
 import Button from '@material-ui/core/Button';
 import Stepper from '@material-ui/core/Stepper';
@@ -17,10 +17,9 @@ import Documents from 'app/components/NewClaim/StepDocuments/Documents/Documents
 import Payment from 'app/components/NewClaim/StepPayment/Payment/Payment';
 import Summary from 'app/components/NewClaim/StepSummay/Summary/Summary';
 import RootContainer from 'app/components/Container/RootContainer';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Defendant from 'app/components/NewClaim/StepDefendant/Defendant/Defendant';
 import UserStore from 'app/stores/UserStore';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import CaseFormFirstStep from 'app/pages/CaseForm/first-step/FirstStep';
 
 export interface NewClaimPageProps extends RouteComponentProps<any> {
@@ -60,41 +59,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
     }
   }
 
-  renderClaimantStep() {
-    return <Claimant newClaimStore={this.props.newClaimStore} />
-  }
-
-  renderDefendantStep() {
-    return <>
-      <Defendant newClaimStore={this.props.newClaimStore} />
-    </>
-  }
-
-  renderClaimInformationStep() {
-    return <>
-      <ClaimInformation newClaimStore={this.props.newClaimStore} />
-    </>
-  }
-
-  renderDocumentsStep() {
-    return <>
-      <Documents newClaimStore={this.props.newClaimStore} />
-    </>
-  }
-
-  renderPaymentStep() {
-    return <>
-      <Payment newClaimStore={this.props.newClaimStore} />
-    </>
-  }
-
-  renderSummaryStep() {
-    return <>
-      <Summary history={this.props.history} location={this.props.location} match={this.props.match} />
-    </>
-  }
-
-  lastStep() {
+  get isLastStep(): boolean {
     return this.props.newClaimStore.step >= 6;
   }
 
@@ -148,86 +113,86 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
     window.location.href = 'https://rkdemo.aktors.ee/proto/bank?amount=' + this.props.newClaimStore.newClaim.fee.fee + '&payerData=' + this.props.userStore.user.personalCode + '&referenceNumber=' + this.props.newClaimStore.newClaim.fee.reference_number + '&returnUrl=' + redirUrl;
   };
 
-  render() {
+  setUser = async (): Promise<void> => {
+    this.props.newClaimStore.setLoading(true);
+    axios.get(`http://139.59.148.64/coco-api/persons/` + this.props.userStore.personalCode, {
+      headers: { 'Access-Control-Allow-Origin': '*' }
+    }).then((res: AxiosResponse<PersonResponse>) => {
+      this.props.newClaimStore.setPerson(res.data);
+    }).finally(() => {
+    })
+    await setTimeout(() => {
+      this.props.newClaimStore.setLoading(false);
+      this.props.newClaimStore.nextStep();
+    }, 3000);
+  };
 
-    let dynamicClass = {
-      'display': this.props.newClaimStore.loading ? 'none' : 'block'
+  renderByStep = () => {
+    switch (this.props.newClaimStore.step) {
+      case 0:
+        return <CaseFormFirstStep newClaimStore={this.props.newClaimStore} nextStepClick={this.setUser} />;
+      case 1:
+        return <Claimant newClaimStore={this.props.newClaimStore} />;
+      case 2:
+        return <Defendant newClaimStore={this.props.newClaimStore} />;
+      case 3:
+        return <ClaimInformation newClaimStore={this.props.newClaimStore} />;
+      case 4:
+        return <Documents newClaimStore={this.props.newClaimStore} />;
+      case 5:
+        return <Payment newClaimStore={this.props.newClaimStore} />;
+      case 6:
+        return <Summary history={this.props.history} location={this.props.location} match={this.props.match} />;
+    }
+  };
+
+  render() {
+    const dynamicClass = {
+      padding: 20
     };
+
+    const STEPS = ['Claim Type', 'Claimant', 'Defendant', 'Claim', 'Documents', 'State Fee'];
 
     return (
       <RootContainer>
         <div style={centerAlign}>
           <Grid justify="space-between" container spacing={10}>
-            <Grid justify="center" item xs={12}>
+            <Grid item xs={12}>
               <Card>
                 <CardContent>
-                  {!this.lastStep() &&
+                  {!this.isLastStep &&
                   <Stepper activeStep={this.props.newClaimStore.step} alternativeLabel>
-
-                    <Step>
-                      <StepLabel>Claim Type</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>Claimant</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>Defendant</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>Claim</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>Documents</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>State Fee</StepLabel>
-                    </Step>
+                    {STEPS.map((step: string) => <Step key={step}><StepLabel>{step}</StepLabel></Step>)}
                   </Stepper>
                   }
-                  <div>
-
-                  </div>
-
                   <div style={dynamicClass}>
-                    {this.props.newClaimStore.step === 0 && <CaseFormFirstStep
-                      newClaimStore={this.props.newClaimStore}
-                      nextStepClick={this.nextStepWithLoader}
-                    />}
-                    {this.props.newClaimStore.step === 1 && this.renderClaimantStep()}
-                    {this.props.newClaimStore.step === 2 && this.renderDefendantStep()}
-                    {this.props.newClaimStore.step === 3 && this.renderClaimInformationStep()}
-                    {this.props.newClaimStore.step === 4 && this.renderDocumentsStep()}
-                    {this.props.newClaimStore.step === 5 && this.renderPaymentStep()}
-                    {this.props.newClaimStore.step === 6 && this.renderSummaryStep()}
+                    {this.renderByStep()}
                   </div>
 
-                  {this.props.newClaimStore.loading && <>
+                  {/*                  {this.props.newClaimStore.loading && <>
                     <Grid container justify="center">
                       <Grid item>
-
                         <CircularProgress size={50} />
-
                       </Grid>
                     </Grid>
-                  </>}
-
+                  </>}*/}
 
                 </CardContent>
                 <CardActions>
-                  {!this.lastStep() && !this.firstStep() && !this.props.newClaimStore.loading &&
+                  {!this.isLastStep && !this.firstStep() && !this.props.newClaimStore.loading &&
                   <Button onClick={this.previousStepWithLoader} variant="text"
                           color="secondary">
                     Back
                   </Button>
                   }
-                  {!this.lastStep() && !this.lastPreStep() && !this.firstStep() && !this.props.newClaimStore.loading &&
+                  {!this.isLastStep && !this.lastPreStep() && !this.firstStep() && !this.props.newClaimStore.loading &&
                   <Button disabled={this.props.newClaimStore.nextButtonDisabled}
                           onClick={this.nextStepWithLoader} variant="contained"
                           color="primary">
                     Continue
                   </Button>
                   }
-                  {this.lastPreStep() && !this.lastStep() && !this.props.newClaimStore.loading &&
+                  {this.lastPreStep() && !this.isLastStep && !this.props.newClaimStore.loading &&
                   <Button onClick={this.proceedToPayment} variant="contained"
                           color="primary"
                   >

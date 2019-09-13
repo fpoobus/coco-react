@@ -32,7 +32,8 @@ module.exports = {
     // (jsnext:main directs not usually distributable es6 format, but es6 sources)
     mainFields: ['module', 'browser', 'main'],
     alias: {
-      'app': path.resolve(__dirname, 'src/app/')
+      'app': path.resolve(__dirname, 'src/app/'),
+      'react-dom': '@hot-loader/react-dom'
     }
   },
   module: {
@@ -85,7 +86,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({ // <-- key to reducing React's size
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
+        'NODE_ENV': JSON.stringify('development')
       }
     }),
     new WebpackCleanupPlugin(),
@@ -107,7 +108,7 @@ module.exports = {
     historyApiFallback: {
       disableDotRule: true
     },
-    stats: 'minimal'
+    stats: 'normal'
   },
   devtool: 'source-map',
   node: {

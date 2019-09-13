@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { CSSProperties } from 'react';
 import { inject, observer } from 'mobx-react';
 import NewClaimStore from 'app/stores/NewClaimStore';
-import TextField from '@material-ui/core/TextField';
 import { runInAction } from 'mobx';
 import axios, { AxiosResponse } from 'axios';
 import Button from '@material-ui/core/Button';
@@ -18,20 +16,6 @@ export interface DefendantProps {
 export interface DefendantState {
   /* empty */
 }
-
-const textfield = {
-  width: 'calc(100% - 70px)'
-};
-
-const findbtn: CSSProperties = {
-  bottom: '0.6rem',
-  position: 'absolute',
-  width: '70px',
-};
-
-const fieldContainer: CSSProperties = {
-  position: 'relative'
-};
 
 @inject('routerStore', 'newClaimStore')
 @observer
@@ -51,18 +35,6 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
 
     });
   }
-
-  handleChange = (name) => event => {
-    this.props.newClaimStore.setDefendantRegistryCode(event.target.value);
-
-    runInAction(() => {
-      console.log(event.target.value);
-      this.props.newClaimStore.newClaim.defendant[name] = event.target.value;
-
-    });
-
-
-  };
 
   getDefendantInto = () => {
     const regCode = this.props.newClaimStore.newClaim.defendant.registryCode;
@@ -96,43 +68,26 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
 
   renderDefendantInput() {
 
-    return <>
-      <h1>Choose the defendant by searching or selecting from list</h1>
-      <Divider light />
-      <div>
-        <h3>Select defendant from list:</h3>
+    return (
+      <>
+        <h1>Choose the defendant by searching or selecting from list</h1>
         <Divider light />
+        <div>
+          <h3>Select defendant from list:</h3>
+          <Divider light />
+          <br />
+          <Button variant="contained" onClick={this.getAllLegalEntities}>Click to choose from list</Button>
+          <DefendantOverView defendant={this.props.newClaimStore.defendantResponse} />
+        </div>
         <br />
-        <Button variant="contained" onClick={this.getAllLegalEntities}>Click to choose from list</Button>
-        <DefendantOverView defendant={this.props.newClaimStore.defendantResponse} />
-      </div>
-      <br />
-      <h3>Search defendant by Registry code:</h3>
-      <Divider light />
-      <div style={fieldContainer}>
-        <TextField
-          label="Defendant registry code"
-          fullWidth
-          value={this.props.newClaimStore.defendantRegistryCode}
-          onChange={this.handleChange('registryCode')}
-          margin="normal"
-          style={textfield}
+        <DefendantFinderModal
+          onClose={this.handleClose}
+          onEntityPick={this.searchByEntityId}
+          legalEntities={this.state.allLegalEntitiesResult}
+          open={this.state.open}
         />
-        <Button
-          variant="contained"
-          onClick={this.getDefendantInto}
-          style={findbtn}>
-          Find
-        </Button>
-      </div>
-      <br />
-      <DefendantFinderModal
-        onClose={this.handleClose}
-        onEntityPick={this.searchByEntityId}
-        legalEntities={this.state.allLegalEntitiesResult}
-        open={this.state.open}
-      />
-    </>;
+      </>
+    );
   }
 
 
