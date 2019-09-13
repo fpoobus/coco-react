@@ -3,11 +3,12 @@ import { inject, observer } from 'mobx-react';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import { runInAction } from 'mobx';
 import axios, { AxiosResponse } from 'axios';
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import DefendantFinderModal from 'app/components/NewClaim/StepDefendant/Defendant/DefendantFinderModal';
 import { DefendantResponse } from 'app/model/NewClaim';
 import DefendantOverView from 'app/components/NewClaim/StepDefendant/Defendant/DefendantOverView';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider/Divider';
 
 export interface DefendantProps {
   newClaimStore: NewClaimStore
@@ -17,7 +18,7 @@ export interface DefendantState {
   /* empty */
 }
 
-@inject('routerStore', 'newClaimStore')
+@inject('routerStore')
 @observer
 export class Defendant extends React.Component<DefendantProps, DefendantState> {
   state = {
@@ -70,14 +71,27 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
 
     return (
       <>
-        <h1>Choose the defendant by searching or selecting from list</h1>
-        <Divider light />
         <div>
-          <h3>Select defendant from list:</h3>
-          <Divider light />
-          <br />
-          <Button variant="contained" onClick={this.getAllLegalEntities}>Click to choose from list</Button>
-          <DefendantOverView defendant={this.props.newClaimStore.defendantResponse} />
+          <Grid container justify="center">
+            {/*<Button variant="contained" onClick={this.getAllLegalEntities}>Click to choose from list</Button>*/}
+            <Grid item xs={12}>
+              <h1>Defendant information</h1>
+              <Divider light />
+              <br />
+            </Grid>
+            <Grid item>
+              <Button
+                size="large"
+                variant="contained"
+                onClick={this.getAllLegalEntities}>
+                Select defendant
+              </Button>
+              <br />
+            </Grid>
+            <Grid item xs={12}>
+              <DefendantOverView defendant={this.props.newClaimStore.defendantResponse} />
+            </Grid>
+          </Grid>
         </div>
         <br />
         <DefendantFinderModal

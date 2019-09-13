@@ -21,7 +21,7 @@ export interface ClaimantState {
 }
 
 
-@inject('routerStore', 'userStore')
+@inject('userStore')
 @observer
 export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
