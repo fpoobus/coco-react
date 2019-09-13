@@ -120,8 +120,8 @@ export class Fee {
     reference_number: string;
 
     constructor() {
-        let referenceNumber = Math.floor(Math.random() * 999999999) + 999999999;
-        this.reference_number = ""+referenceNumber;
+        // Ministry of Justice - State fee for Civil Procedure - Court information system
+        this.reference_number = "2900082322";
     }
 
     static fromJson(json) {
