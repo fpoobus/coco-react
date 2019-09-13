@@ -1,29 +1,27 @@
 import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import NewClaimStore from "app/stores/NewClaimStore";
-import Claimant from "app/components/NewClaim/StepClaimant/Claimant/Claimant";
-import NewClaim from "app/model/NewClaim";
-import { ClaimInformation } from "app/components/NewClaim/StepClaimInfo/ClaimInformation/ClaimInformation";
-import Button from "@material-ui/core/Button";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Grid from "@material-ui/core/Grid";
-import CardActions from "@material-ui/core/CardActions";
+import NewClaimStore from 'app/stores/NewClaimStore';
+import Claimant from 'app/components/NewClaim/StepClaimant/Claimant/Claimant';
+import NewClaim from 'app/model/NewClaim';
+import { ClaimInformation } from 'app/components/NewClaim/StepClaimInfo/ClaimInformation/ClaimInformation';
+import Button from '@material-ui/core/Button';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Grid from '@material-ui/core/Grid';
+import CardActions from '@material-ui/core/CardActions';
 import Card from '@material-ui/core/Card';
-import CardContent from "@material-ui/core/CardContent";
-import Documents from "app/components/NewClaim/StepDocuments/Documents/Documents";
-import Payment from "app/components/NewClaim/StepPayment/Payment/Payment";
-import Summary from "app/components/NewClaim/StepSummay/Summary/Summary";
-import Paper from "@material-ui/core/Paper";
-import RootContainer from "app/components/Container/RootContainer";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import Defendant from "app/components/NewClaim/StepDefendant/Defendant/Defendant";
-import UserStore from "app/stores/UserStore";
-import axios from "axios";
+import CardContent from '@material-ui/core/CardContent';
+import Documents from 'app/components/NewClaim/StepDocuments/Documents/Documents';
+import Payment from 'app/components/NewClaim/StepPayment/Payment/Payment';
+import Summary from 'app/components/NewClaim/StepSummay/Summary/Summary';
+import RootContainer from 'app/components/Container/RootContainer';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Defendant from 'app/components/NewClaim/StepDefendant/Defendant/Defendant';
+import UserStore from 'app/stores/UserStore';
+import axios from 'axios';
+import CaseFormFirstStep from 'app/pages/CaseForm/first-step/FirstStep';
 
 export interface NewClaimPageProps extends RouteComponentProps<any> {
   newClaimStore: NewClaimStore,
@@ -34,21 +32,10 @@ export interface IndexPageState {
 }
 
 const centerAlign = {
-
   marginLeft: 'auto',
   marginRight: 'auto'
-
 };
 
-let padding = {
-  padding: "20px",
-  margin: "10px",
-  height: "100px"
-}
-
-let iconScale = {
-  height: '72px'
-}
 
 @inject('routerStore', 'newClaimStore', 'userStore')
 @observer
@@ -59,104 +46,18 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
     let claim = new URLSearchParams(window.location.search).get('claim');
     this.props.newClaimStore.reset();
     if (claim) {
-      console.log("Claim from JSON");
+      console.log('Claim from JSON');
       this.props.newClaimStore.setClaim(NewClaim.fromJson(claim));
-      console.log("Newclaim", this.props.newClaimStore.newClaim)
+      console.log('Newclaim', this.props.newClaimStore.newClaim)
     } else {
       this.props.newClaimStore.setClaim(new NewClaim());
     }
 
     let step = new URLSearchParams(window.location.search).get('step');
     if (step) {
-      console.log("found step")
+      console.log('found step')
       this.props.newClaimStore.step = parseInt(step);
     }
-  }
-
-  nextAndSetTypeNatural = () => {
-    this.props.newClaimStore.setOpenSectionNatural();
-    this.props.newClaimStore.newClaim.isLegalEntity = false;
-    this.nextStepWithLoader();
-  };
-
-  nextAndSetTypeLegal = () => {
-    this.props.newClaimStore.setOpenSectionLegal();
-    this.props.newClaimStore.newClaim.isLegalEntity = true;
-    this.nextStepWithLoader();
-  };
-
-  renderStep1() {
-    return <>
-
-      <Grid container spacing={8}>
-        <Grid item xs={12}>
-          <Grid container justify="center">
-
-            <Grid container justify="center">
-              <Grid item>
-                <Typography component="h2" variant="h4" gutterBottom>
-                  Please choose who you are <strong>representing</strong>
-                </Typography>
-                <Divider light />
-                <br /><br />
-              </Grid>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-
-              <Paper style={padding} elevation={1}>
-
-                <Grid container justify="center">
-                  <Grid item>
-                    <img style={iconScale} src="../../../assets/icons/shop-cashier-man.svg"></img>
-                    <br /><br /><br />
-                  </Grid>
-                </Grid>
-
-                <Grid container justify="center">
-                  <Grid item>
-
-                    <Button variant="contained"
-                            color="primary"
-                            onClick={this.nextAndSetTypeNatural}>
-                      Yourself
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Paper>
-
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-
-              <Paper style={padding} elevation={1}>
-
-                <Grid container justify="center">
-                  <Grid item>
-                    <img style={iconScale} src="../../../assets/icons/building-modern-1.svg"></img>
-                    <br /><br /><br />
-                  </Grid>
-                </Grid>
-
-                <Grid container justify="center">
-                  <Grid item>
-
-                    <Button variant="contained"
-                            color="primary"
-                            onClick={this.nextAndSetTypeLegal}>
-                      Legal Entity
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Paper>
-
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-
-
-    </>
   }
 
   renderClaimantStep() {
@@ -211,7 +112,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
       this.props.newClaimStore.setLoading(false);
       this.props.newClaimStore.nextStep();
     }, 800);
-  }
+  };
 
   previousStepWithLoader = () => {
     this.props.newClaimStore.setLoading(true);
@@ -225,8 +126,8 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
 
     let currentTimeMillis = new Date().getTime();
 
-    let redirUrl = window.location.protocol + "//" + window.location.host + "/new-claim/payment-complete";
-    let paymentUrl = "https://rkdemo.aktors.ee/proto/pay?currency=USD&amount=" + this.props.newClaimStore.newClaim.fee.fee + "&payerData=" + this.props.userStore.user.personalCode + "&referenceNumber=" + referenceNumber + "&paymentTime=" + currentTimeMillis + "&returnUrl=" + redirUrl;
+    let redirUrl = window.location.protocol + '//' + window.location.host + '/new-claim/payment-complete';
+    let paymentUrl = 'https://rkdemo.aktors.ee/proto/pay?currency=USD&amount=' + this.props.newClaimStore.newClaim.fee.fee + '&payerData=' + this.props.userStore.user.personalCode + '&referenceNumber=' + referenceNumber + '&paymentTime=' + currentTimeMillis + '&returnUrl=' + redirUrl;
 
     return axios.get(paymentUrl)
       .then(res => {
@@ -238,13 +139,13 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
   proceedToPayment = async () => {
 
     localStorage.setItem('newClaim', JSON.stringify(this.props.newClaimStore.newClaim));
-    localStorage.setItem('step', "6");
+    localStorage.setItem('step', '6');
 
     // https://rkdemo.aktors.ee/proto/pay?referenceNumber=2900077778&amount=100&currency=USD&payerData=5555555555555555&paymentTime=1556192294700&service=test&returnUrl=http://139.59.148.64/new-claim/payment-complete
 
     await this.executePaymentInbackGround(this.props.newClaimStore.newClaim.fee.reference_number);
-    let redirUrl = window.location.protocol + "//" + window.location.host + "/new-claim/payment-complete";
-    window.location.href = "https://rkdemo.aktors.ee/proto/bank?amount=" + this.props.newClaimStore.newClaim.fee.fee + "&payerData=" + this.props.userStore.user.personalCode + "&referenceNumber=" + this.props.newClaimStore.newClaim.fee.reference_number + "&returnUrl=" + redirUrl;
+    let redirUrl = window.location.protocol + '//' + window.location.host + '/new-claim/payment-complete';
+    window.location.href = 'https://rkdemo.aktors.ee/proto/bank?amount=' + this.props.newClaimStore.newClaim.fee.fee + '&payerData=' + this.props.userStore.user.personalCode + '&referenceNumber=' + this.props.newClaimStore.newClaim.fee.reference_number + '&returnUrl=' + redirUrl;
   };
 
   render() {
@@ -259,11 +160,7 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
           <Grid justify="space-between" container spacing={10}>
             <Grid justify="center" item xs={12}>
               <Card>
-
-
                 <CardContent>
-
-
                   {!this.lastStep() &&
                   <Stepper activeStep={this.props.newClaimStore.step} alternativeLabel>
 
@@ -292,7 +189,10 @@ export class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageSt
                   </div>
 
                   <div style={dynamicClass}>
-                    {this.props.newClaimStore.step === 0 && this.renderStep1()}
+                    {this.props.newClaimStore.step === 0 && <CaseFormFirstStep
+                      newClaimStore={this.props.newClaimStore}
+                      nextStepClick={this.nextStepWithLoader}
+                    />}
                     {this.props.newClaimStore.step === 1 && this.renderClaimantStep()}
                     {this.props.newClaimStore.step === 2 && this.renderDefendantStep()}
                     {this.props.newClaimStore.step === 3 && this.renderClaimInformationStep()}

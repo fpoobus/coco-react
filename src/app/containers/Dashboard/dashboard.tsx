@@ -39,7 +39,7 @@ class Dashboard extends React.Component<DashboardProps> {
       <RootContainer>
         <>
           {this.renderHearingSuccess()}
-          <Grid container spacing={8}>
+          <Grid container spacing={5}>
             <Grid item xs={12} md={6}>
               <ClaimsSubmitter />
             </Grid>

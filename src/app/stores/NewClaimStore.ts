@@ -72,6 +72,11 @@ export class NewClaimStore {
         this.openSection = NewClaimStore.NATURAL;
     };
 
+    @action
+    setDefendant = (defendant: DefendantResponse) => {
+        this.defendantResponse = defendant;
+    };
+
     @computed
     get isLegalSection() {
         return this.openSection === NewClaimStore.LEGAL;
