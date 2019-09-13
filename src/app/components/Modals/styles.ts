@@ -4,9 +4,9 @@ import createStyles from '@material-ui/core/styles/createStyles';
 export const modalStyles = (theme: Theme) => createStyles({
     paper: {
         position: 'absolute',
-        width: theme.spacing.unit * 50,
+        width: theme.spacing(50),
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
+        padding: theme.spacing(4),
     },
 });

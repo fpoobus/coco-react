@@ -61,7 +61,7 @@ class HearingForm extends React.Component<HearingFormProps> {
                                 message={this.props.hearingStore.getErrorMessageByHearingField()}
                             />
                         </Snackbar>
-                        <Grid container spacing={16}>
+                        <Grid container spacing={8}>
                             <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                 <div>
                                     <h1 className={classes.hearingTitle}>Register hearing</h1>

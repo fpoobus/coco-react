@@ -47,7 +47,7 @@ class Login extends React.Component<LoginProps> {
                             onChange={this.handleChange}
                             indicatorColor="primary"
                             textColor="primary"
-                            fullWidth
+                            variant="fullWidth"
                         >
                             <Tab label="Password Login" />
                             <Tab label="SmartID Login" />

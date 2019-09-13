@@ -280,9 +280,9 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
     renderFormFields = (who, exclude) => {
         return <>
 
-            <Grid container spacing={16}>
+            <Grid container spacing={8}>
                 <Grid item xs={12}>
-                    <Grid container justify="center" spacing={16}>
+                    <Grid container justify="center" spacing={8}>
                         <Grid item xs={6}>
                             <Paper style={{padding: "10px"}}>
                                 {this.props.adminStore.formProps[who]['personId']}
@@ -362,13 +362,13 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
         return (
             <React.Fragment>
                 <div style={{margin: "30px"}}>
-                <Grid container spacing={16}>
+                <Grid container spacing={8}>
                     <Grid item xs={12}>
-                        <Grid container justify="center" spacing={16}>
+                        <Grid container justify="center" spacing={8}>
 
                             {this.renderLoading()}
 
-                            <Grid container justify="center" spacing={16}>
+                            <Grid container justify="center" spacing={8}>
                             <h1>Demo data set creator utility</h1>
 
                             </Grid>

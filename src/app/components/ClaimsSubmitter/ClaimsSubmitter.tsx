@@ -4,7 +4,7 @@ import CardHeader from '@material-ui/core/CardHeader/CardHeader';
 import CardContent from '@material-ui/core/CardContent/CardContent';
 import Button from '@material-ui/core/Button/Button';
 import { claimsSubmitterStyles } from 'app/components/ClaimsSubmitter/styles';
-import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography/Typography';
 import ClaimsDataStore from 'app/stores/ClaimsDataStore';
 import { inject, observer } from 'mobx-react';
@@ -34,7 +34,6 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
   };
 
 
-
   render() {
     const { classes } = this.props;
     return (
@@ -45,7 +44,7 @@ class ClaimsSubmitter extends React.Component<ClaimsSubmitterProps> {
             {this.renderClaimsContent()}
           </CardContent>
           <CardActions className={classes.justifyCenter}>
-          <img className={classes.claimIcon} src="../../../assets/icons/email-action-receive.svg"></img>
+            <img className={classes.claimIcon} src="../../../assets/icons/email-action-receive.svg" />
             <Button variant="contained" component={this.newClaimLink} color="primary" className={classes.btnHover}>
               Submit a claim
             </Button>

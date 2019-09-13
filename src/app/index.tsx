@@ -16,6 +16,8 @@ import JudgmentForm from 'app/components/JudgmentForm/JudgmentForm';
 import Admin from "app/containers/Admin/Admin";
 import AdminMultiForm from "app/containers/Admin/AdminMultiForm";
 import AdminPersonList from "app/containers/Admin/AdminPersonList";
+import Header from "app/components/Header/Header";
+import { History } from "history";
 
 export const theme = createMuiTheme({
   palette: {
@@ -27,24 +29,29 @@ export const theme = createMuiTheme({
 document.body.style.backgroundColor = theme.palette.primary.light;
 
 // render react DOM
-export const App = hot(module)(({ history }) => (
+export const App = hot(module)(({ history }) => {
 
-  <MuiThemeProvider theme={theme}>
-    <Root>
-      <Router history={history}>
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route exact path="/" component={Dashboard} />
-          <Route exact path="/new-claim" component={NewClaimPage} />
-          <Route exact path="/new-claim/payment-complete" component={NewClaimPaymentCompletePage} />
-          <Route path="/case" component={CaseForm} />
-          <Route path="/judgment-form" component={JudgmentForm} />
-          <Route path="/hearing" component={Hearing} />
-          <Route exact path="/admin" component={Admin} />
-          <Route exact path="/admin/persons" component={AdminPersonList} />
-          <Route exact path="/admin/multiform" component={AdminMultiForm} />
-        </Switch>
-      </Router>
-    </Root>
-  </MuiThemeProvider>
-));
+  const showHeader = (history: History): boolean => !['/login'].includes(history.location.pathname);
+
+  return (
+    <MuiThemeProvider theme={theme}>
+      <Root>
+        <Router history={history}>
+          {showHeader(history) && <Header />}
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/case" component={CaseForm} />
+            <Route exact path="/judgment-form" component={JudgmentForm} />
+            <Route exact path="/hearing" component={Hearing} />
+            <Route exact path="/new-claim" component={NewClaimPage} />
+            <Route exact path="/new-claim/payment-complete" component={NewClaimPaymentCompletePage} />
+            <Route exact path="/admin" component={Admin} />
+            <Route exact path="/admin/persons" component={AdminPersonList} />
+            <Route exact path="/admin/multiform" component={AdminMultiForm} />
+          </Switch>
+        </Router>
+      </Root>
+    </MuiThemeProvider>
+  );
+});

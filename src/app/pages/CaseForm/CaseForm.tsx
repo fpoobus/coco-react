@@ -202,7 +202,7 @@ class CaseForm extends React.Component<DashboardProps> {
 
         return (
             <RootContainer>
-                <Grid container spacing={24}>
+                <Grid container spacing={10}>
                     {this.getHeader(classes, courtCase)}
                     <Grid item xs={12}>
                         <Paper className={classes.paper}>
@@ -273,13 +273,13 @@ class CaseForm extends React.Component<DashboardProps> {
                                     Claimant
                                 </Typography>
                                 {courtCase.claimant && <>
-                                    <Typography variant="h5" component="h2">
-                                        {courtCase.claimant.name}
-                                        {courtCase.claimant.firstName} {courtCase.claimant.lastName} {courtCase.claimantId}
-                                    </Typography>
+                                  <Typography variant="h5" component="h2">
+                                      {courtCase.claimant.name}
+                                      {courtCase.claimant.firstName} {courtCase.claimant.lastName} {courtCase.claimantId}
+                                  </Typography>
                                     {courtCase.claimant.activities && < Typography component="p">
                                         {courtCase.claimant.activities[0]}
-                                        <br/>
+                                      <br/>
                                     </Typography>}
                                 </>}
                                 {!courtCase.claimant && <CircularProgress size={50}/>}
@@ -293,16 +293,16 @@ class CaseForm extends React.Component<DashboardProps> {
                         <Card>
                             <CardContent>
                                 {courtCase.defendant && <>
-                                    <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                        Defendant
-                                    </Typography>
-                                    <Typography variant="h5" component="h2">
-                                        {courtCase.defendant.name} {courtCase.defendant.registryCode}
-                                    </Typography>
+                                  <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    Defendant
+                                  </Typography>
+                                  <Typography variant="h5" component="h2">
+                                      {courtCase.defendant.name} {courtCase.defendant.registryCode}
+                                  </Typography>
 
                                     {courtCase.defendant.activities && <Typography component="p">
                                         {courtCase.defendant.activities[0]}
-                                        <br/>
+                                      <br/>
 
                                     </Typography>}
                                 </>}
@@ -314,7 +314,7 @@ class CaseForm extends React.Component<DashboardProps> {
                         </Card>
                     </Grid>
 
-                    <Grid container spacing={24}>
+                    <Grid container spacing={10}>
                         <Grid item xs={12}>
                             <Button variant="contained" color="primary" className={classes.button}
                                     onClick={this.registerCase}
