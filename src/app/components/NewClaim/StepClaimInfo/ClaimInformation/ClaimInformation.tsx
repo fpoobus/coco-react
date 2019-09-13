@@ -80,7 +80,7 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
                                 onChange={this.setCaseType}
                             >
                                 <FormControlLabel value={claim.type} control={<Radio/>}
-                                                  label={claim.name}/>
+                                                  label={claim.name} checked={this.isChecked(claim.type)}/>
                             </RadioGroup>
 
                             <Typography variant="subtitle1" gutterBottom>
@@ -159,6 +159,10 @@ export class ClaimInformation extends React.Component<ClaimInformationProps, Cla
 
     render() {
         return this.renderClaimInfo();
+    }
+
+    private isChecked(type: string) {
+        return this.props.newClaimStore.newClaim.claim.case_type === type;
     }
 }
 
