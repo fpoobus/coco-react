@@ -22,6 +22,22 @@ export const caseFormStyles = (theme: Theme) => createStyles({
         },
         pos: {
             marginBottom: 12,
+        },
+        alignLeft: {
+            textAlign: 'left'
+        },
+        alignRight: {
+            marginLeft: 'auto'
+        },
+        marginBetween: {
+            marginRight: '20px',
+            marginLeft: '20px'
+        },
+        matchParentHeight: {
+            height: '100%'
+        },
+        marginBottom: {
+            marginBottom: '20px'
         }
     }
 );
