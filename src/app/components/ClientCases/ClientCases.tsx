@@ -1,6 +1,6 @@
 import * as React from 'react';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import { clientCasesStyles } from 'app/components/ClientCases/styles';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
+import {clientCasesStyles} from 'app/components/ClientCases/styles';
 import Paper from '@material-ui/core/Paper/Paper';
 import Table from '@material-ui/core/Table/Table';
 import TableHead from '@material-ui/core/TableHead/TableHead';
@@ -8,19 +8,22 @@ import TableCell from '@material-ui/core/TableCell/TableCell';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import CaseStore from 'app/stores/CaseStore';
-import { inject, observer } from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import Button from '@material-ui/core/Button/Button';
 import Typography from '@material-ui/core/Typography/Typography';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import UserStore from "app/stores/UserStore";
+import {ROLES} from "app/models/User";
 
 
 interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
   caseStore?: CaseStore;
+  userStore?: UserStore;
 }
 
-@inject('caseStore')
+@inject('caseStore', 'userStore')
 @observer
 class ClientCases extends React.Component<ClientCasesProps> {
   newClaimLink = (props, id) => <Link to={'/case?id=' + id} {...props} />;
@@ -28,7 +31,13 @@ class ClientCases extends React.Component<ClientCasesProps> {
   renderTableBody = () => {
     const { caseStore } = this.props;
 
-    const caseData = caseStore.casesData;
+    let caseData = caseStore.casesData;
+
+    if(this.props.userStore.user.role === ROLES.USER)  {
+      let code = this.props.userStore.user.personalCode;
+      caseData = caseData.filter(caseItem => caseItem.claimantId ===  code || caseItem.defendantId === code);
+    }
+
     return (
       caseData.map((courtCase, idx) => {
           return <TableRow key={idx}>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import TextField from '@material-ui/core/TextField';
-import {observe, runInAction} from 'mobx';
+import {reaction, runInAction} from 'mobx';
 import {LegalEntityResponse, NaturalPerson, PersonResponse} from 'app/model/NewClaim';
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -45,7 +45,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
     componentDidMount() {
         this.prefillUser();
-        this.disposer = observe(this.props.userStore, "user", (change) => {
+        this.disposer = reaction(() => this.props.userStore.user, (change) => {
             this.prefillUser();
         });
     }

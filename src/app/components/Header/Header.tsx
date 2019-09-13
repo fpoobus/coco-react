@@ -24,6 +24,8 @@ import axios from "axios";
 import {runInAction} from "mobx";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import User, {ROLES} from "app/models/User";
+import Divider from '@material-ui/core/Divider';
 
 
 export const styles = (theme: Theme) =>
@@ -149,6 +151,79 @@ class Header extends React.Component<HeaderProps> {
                 }} primary={item}/>
             </ListItem>);
         });
+
+        elements.push(<ListItem button>
+            <Divider />
+        </ListItem>);
+
+        const judges = [];
+        judges.push({
+            firstName: "Foster",
+            middleName: "Edward",
+            lastName: "Abner",
+            personalCode: "11",
+            role: ROLES.JUDGE
+        } as User);
+
+        judges.push({
+            firstName: "Roy",
+            middleName: "John",
+            lastName: "Jayce",
+            personalCode: "12",
+            role: ROLES.JUDGE
+        } as User);
+
+        judges.push({
+            firstName: "Bert",
+            middleName: "",
+            lastName: "Alfred",
+            personalCode: "13",
+            role: ROLES.JUDGE
+        } as User);
+
+        judges.push({
+            firstName: "Jefferson",
+            middleName: "Archer",
+            lastName: "Alfred",
+            personalCode: "14",
+            role: ROLES.JUDGE
+        } as User);
+
+        judges.push({
+            firstName: "Garth",
+            middleName: "",
+            lastName: "Beau",
+            personalCode: "15",
+            role: ROLES.JUDGE
+        } as User);
+
+        judges.push({
+            firstName: "Wyatt",
+            middleName: "",
+            lastName: "Edwin",
+            personalCode: "16",
+            role: ROLES.JUDGE
+        } as User);
+
+        judges.push({
+            firstName: "Samson",
+            middleName: "Chauncey",
+            lastName: "Lee",
+            personalCode: "17",
+            role: ROLES.JUDGE
+        } as User);
+
+        judges.forEach((user:User) => {
+            let item = "JUDGE" + " - " + user.firstName + " "+ user.middleName + " " + user.lastName;
+            elements.push(<ListItem button>
+                <ListItemText onClick={() => {
+                    this.props.userStore.setUser(user);
+                    this.handleChooseUser(false);
+                }} primary={item}/>
+            </ListItem>);
+        });
+
+
         return elements;
     }
 

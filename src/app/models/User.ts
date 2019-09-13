@@ -1,8 +1,16 @@
+export enum ROLES {
+    JUDGE = "JUDGE",
+    CLERK = "CLERK",
+    USER = "USER"
+}
+
 export default class User {
     firstName?: string;
+    middleName?: string;
     lastName?: string;
     personalCode: string;
     password?: string;
+    role: string = ROLES.USER;
 
     userFromRaw(rawUser: RawUser) {
         this.firstName = rawUser.givenName;
