@@ -1,16 +1,16 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
 
 // variables
-var isProduction = process.argv.indexOf('-p') >= 0;
-var sourcePath = path.join(__dirname, './src');
-var outPath = path.join(__dirname, './dist');
+const isProduction = process.argv.indexOf('-p') >= 0;
+const sourcePath = path.join(__dirname, './src');
+const outPath = path.join(__dirname, './dist');
 
 // plugins
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 module.exports = {
@@ -49,35 +49,25 @@ module.exports = {
       // css
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              query: {
-                modules: true,
-                sourceMap: !isProduction,
-                importLoaders: 1,
-                localIdentName: '[local]__[hash:base64:5]'
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: [
-                  require('postcss-import')({ addDependencyTo: webpack }),
-                  require('postcss-url')(),
-                  require('postcss-cssnext')(),
-                  require('postcss-reporter')(),
-                  require('postcss-browser-reporter')({
-                    disabled: isProduction
-                  })
-                ]
-              }
+        use: [
+          MiniCssExtractPlugin.loader,
+          { loader: 'css-loader', options: { sourceMap: !isProduction, importLoaders: 1 } },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: [
+                require('postcss-import')({ addDependencyTo: webpack }),
+                require('postcss-url')(),
+                require('postcss-cssnext')(),
+                require('postcss-reporter')(),
+                require('postcss-browser-reporter')({
+                  disabled: isProduction
+                })
+              ]
             }
-          ]
-        })
+          }
+        ]
       },
       // static assets
       { test: /\.html$/, use: 'html-loader' },
@@ -99,8 +89,8 @@ module.exports = {
       }
     }),
     new WebpackCleanupPlugin(),
-    new ExtractTextPlugin({
-      filename: 'styles.css',
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
       disable: !isProduction
     }),
     new HtmlWebpackPlugin({
@@ -108,7 +98,7 @@ module.exports = {
     }),
     new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-  //  new BundleAnalyzerPlugin()
+    //  new BundleAnalyzerPlugin()
   ],
   devServer: {
     contentBase: sourcePath,

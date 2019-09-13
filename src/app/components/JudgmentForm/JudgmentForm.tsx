@@ -25,14 +25,14 @@ import {Theme} from '@material-ui/core/styles/createMuiTheme';
 const styles = (theme: Theme) => createStyles({
   root: {
     ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2)
   },
   margin: {
     marginTop: 20
   },
   formControl: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     minWidth: 120
   }
 });

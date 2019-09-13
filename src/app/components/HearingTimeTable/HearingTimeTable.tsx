@@ -15,13 +15,13 @@ import CaseStore from "app/stores/CaseStore";
 interface CourtHearingCalendarProps extends WithStyles<typeof courtHearingCalendarStyles> {
     hearingStore?: HearingStore
     caseStore?: CaseStore
-    activeDate: string;
+    activeDate?: string;
 }
 
 @inject('hearingStore', 'caseStore')
 @observer
 class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {};
         this.acceptTime = this.acceptTime.bind(this);
@@ -40,19 +40,19 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
     loaderTimetable() {
         this.stopLoading();
         return this.props.hearingStore.timetableLoading && <>
-            <Grid container justify="center">
-                <Grid item>
+          <Grid container justify="center">
+            <Grid item>
 
-                    <CircularProgress size={50}/>
+              <CircularProgress size={50}/>
 
-                </Grid>
             </Grid>
+          </Grid>
         </>;
     }
 
 
     renderTimetableData = () => {
-        const { classes } = this.props;
+        const {classes} = this.props;
         return (
             <>
                 <div>
@@ -64,7 +64,7 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
                             Lecture
                         </div>
                     </div>
-                    <Divider />
+                    <Divider/>
                     <div className={classes.timetableBackground}>
                         <div className={classes.chooseDateContainer}>
                             10:00 - 12:00
@@ -73,7 +73,7 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
                             Hearing
                         </div>
                     </div>
-                    <Divider />
+                    <Divider/>
                     <div className={classes.timetableBackground}>
                         <div className={classes.chooseDateContainer}>
                             12:00 - 13:00
@@ -82,7 +82,7 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
                             Lunch
                         </div>
                     </div>
-                    <Divider />
+                    <Divider/>
                     <div onClick={() => this.acceptTime('13:00 - 15:00')} className={classes.pointer}>
                         <div className={classes.chooseDateContainer}>
                             13:00 - 15:00
@@ -91,7 +91,7 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
 
                         </div>
                     </div>
-                    <Divider />
+                    <Divider/>
                     <div className={classes.timetableBackground}>
                         <div className={classes.chooseDateContainer}>
                             15:00 - 16:30
@@ -105,37 +105,37 @@ class HearingTimeTable extends React.Component<CourtHearingCalendarProps> {
         );
     };
 
-  render() {
+    render() {
 
-      const { classes } = this.props;
-    return (
-      <>
-          {!!this.props.hearingStore.judge &&
-          <Paper className={classes.card}>
-              <div className={classes.justifyCenter}>
-                  <div className={classes.calendarHeader}>
-                      {this.props.hearingStore.activeDate ? this.props.hearingStore.activeDate.toString().split(' ').slice(0, 4).join(' ') : ''}
+        const {classes} = this.props;
+        return (
+            <>
+                {!!this.props.hearingStore.judge &&
+                <Paper className={classes.card}>
+                  <div className={classes.justifyCenter}>
+                    <div className={classes.calendarHeader}>
+                        {this.props.hearingStore.activeDate ? this.props.hearingStore.activeDate.toString().split(' ').slice(0, 4).join(' ') : ''}
+                    </div>
                   </div>
-              </div>
-              <Divider light={false} className={classes.slash}/>
-              <div className={classes.judgeBackground}>
-                  <div className={classes.center}>
+                  <Divider light={false} className={classes.slash}/>
+                  <div className={classes.judgeBackground}>
+                    <div className={classes.center}>
                       <Avatar className={classes.avatar}>
-                          <PersonIcon/>
+                        <PersonIcon/>
                       </Avatar>
                       <Typography component="h1" variant="h6">
                           {this.props.caseStore.judge}
                       </Typography>
+                    </div>
                   </div>
-              </div>
-              <Divider light={false} className={classes.slash}/>
-              {this.loaderTimetable()}
-              {!this.props.hearingStore.timetableLoading && this.renderTimetableData()}
-          </Paper>
-          }
-      </>
-    );
-  }
+                  <Divider light={false} className={classes.slash}/>
+                    {this.loaderTimetable()}
+                    {!this.props.hearingStore.timetableLoading && this.renderTimetableData()}
+                </Paper>
+                }
+            </>
+        );
+    }
 }
 
 export default withStyles(courtHearingCalendarStyles)(HearingTimeTable);
