@@ -2,7 +2,7 @@ import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import TextField from '@material-ui/core/TextField';
-import {runInAction} from 'mobx';
+import {observe, runInAction} from 'mobx';
 import {LegalEntityResponse, NaturalPerson, PersonResponse} from 'app/model/NewClaim';
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -25,6 +25,8 @@ export interface ClaimantState {
 @observer
 export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
+    disposer = null;
+
     state = {
         value: '',
         naturalPerson: {
@@ -37,11 +39,22 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
     };
 
     handleRadioChange = event => {
-        console.log("Setting value to " + event.target.value)
+        console.log("Setting value to " + event.target.value);
         this.setState({value: event.target.value});
     };
 
     componentDidMount() {
+        this.prefillUser();
+        this.disposer = observe(this.props.userStore, "user", (change) => {
+            this.prefillUser();
+        });
+    }
+
+    componentWillUnmount(): void {
+        this.disposer();
+    }
+
+    prefillUser() {
         this.props.newClaimStore.setLoading(true);
         let personId = this.props.userStore.personalCode;
         if (personId) {
@@ -82,7 +95,6 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
             this.props.newClaimStore.setNoLeglaEntities(true);
             this.props.newClaimStore.setLoading(false);
         }
-
     }
 
     naturalEntityFields() {

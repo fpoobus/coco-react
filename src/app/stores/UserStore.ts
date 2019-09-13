@@ -1,6 +1,6 @@
 import {action, observable} from 'mobx';
 import axios from 'axios';
-import User from "app/models/User";
+import User, {RawUser} from "app/models/User";
 import * as moment from 'moment';
 
 class UserStore {
@@ -38,6 +38,12 @@ class UserStore {
     public setUser(user: User) {
         this.user = user;
         this.personalCode = user.personalCode;
+    }
+
+    @action
+    public setUseFromRaw(rawUser: RawUser) {
+        this.user = new User().userFromRaw(rawUser);
+        this.personalCode = rawUser.code;
     }
 
     @action
