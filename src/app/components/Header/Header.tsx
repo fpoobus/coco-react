@@ -17,15 +17,32 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import List from "@material-ui/core/List";
 import DialogActions from "@material-ui/core/DialogActions";
 import axios from "axios";
 import {runInAction} from "mobx";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import User, {ROLES} from "app/models/User";
-import Divider from '@material-ui/core/Divider';
+import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import TextField from "@material-ui/core/TextField";
+
+export const TabPanel = (props) => {
+    const {children, value, index, ...other} = props;
+
+    return (
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {children}
+        </Typography>
+    );
+};
 
 
 export const styles = (theme: Theme) =>
@@ -77,7 +94,9 @@ class Header extends React.Component<HeaderProps> {
         value: '/',
         allUsers: [],
         chooseUser: false,
-        chooseUserLoading: false
+        chooseUserLoading: false,
+        activeTab: 0,
+        filterUsers: ''
     };
 
     resize = () => {
@@ -122,6 +141,10 @@ class Header extends React.Component<HeaderProps> {
         routerStore.setCurrentTab(value);
     };
 
+    handleTabChange = (event, index) => {
+        this.setState({activeTab: index})
+    };
+
     logout = () => {
         this.props.userStore.doLogout();
         window.location.href = "/login"
@@ -142,20 +165,29 @@ class Header extends React.Component<HeaderProps> {
 
     renderAllUsers() {
         let elements = [];
-        this.state.allUsers.forEach(user => {
-            let item = user.code + " - " + user.givenName + " "+ user.middleNames.join(" ") + user.givenName;
-            elements.push(<ListItem button>
-                <ListItemText onClick={() => {
-                    this.props.userStore.setUseFromRaw(user);
-                    this.handleChooseUser(false);
-                }} primary={item}/>
+
+        let filteredUsers = this.state.allUsers;
+        if (this.state.filterUsers && this.state.filterUsers !== '') {
+            filteredUsers = filteredUsers.filter((user => {
+                let item = user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName;
+                return item.toUpperCase().includes(this.state.filterUsers.toUpperCase());
+            }))
+        }
+
+        filteredUsers.forEach(user => {
+            let item = user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName;
+            elements.push(<ListItem onClick={() => {
+                this.props.userStore.setUseFromRaw(user);
+                this.handleChooseUser(false);
+            }} button>
+                <ListItemText primary={item}/>
             </ListItem>);
         });
 
-        elements.push(<ListItem button>
-            <Divider />
-        </ListItem>);
+        return elements;
+    }
 
+    renderJudges() {
         const judges = [];
         judges.push({
             firstName: "Foster",
@@ -213,43 +245,88 @@ class Header extends React.Component<HeaderProps> {
             role: ROLES.JUDGE
         } as User);
 
-        judges.forEach((user:User) => {
-            let item = "JUDGE" + " - " + user.firstName + " "+ user.middleName + " " + user.lastName;
-            elements.push(<ListItem button>
-                <ListItemText onClick={() => {
-                    this.props.userStore.setUser(user);
-                    this.handleChooseUser(false);
-                }} primary={item}/>
+        const elements = [];
+        judges.forEach((user: User) => {
+            let item = "JUDGE" + " - " + user.firstName + " " + user.middleName + " " + user.lastName;
+            elements.push(<ListItem onClick={() => {
+                this.props.userStore.setUser(user);
+                this.handleChooseUser(false);
+            }} button>
+                <ListItemText primary={item}/>
             </ListItem>);
         });
-
 
         return elements;
     }
 
+
+    a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+
+    handleFieldChange = name => event => {
+        this.setState({filterUsers: event.target.value})
+    };
+
     renderFindAllModalAndButton() {
         return <>
             <Dialog
-                fullScreen={false}
+                fullScreen={true}
                 open={this.state.chooseUser}
                 onClose={() => this.handleChooseUser(false)}
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle
-                    id="responsive-dialog-title">{"Select User to login with"}</DialogTitle>
+                <br/>
+                <br/>
+                <br/>
+                <DialogTitle id="responsive-dialog-title">{"Select User to login with"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        {this.renderAllUsers()}
-                    </DialogContentText>
 
-                    <List component="nav">
+                    {this.state.chooseUserLoading && <>
+                        <Grid container justify="center">
+                            <Grid item>
 
-                    </List>
+                                <CircularProgress size={50}/>
 
+                            </Grid>
+                        </Grid>
+                    </>}
+
+                    {!this.state.chooseUserLoading && <>
+                        <AppBar position="static">
+                            <div style={{position: "absolute", top: "0", width: "100%"}}>
+                                <Tabs centered value={this.state.activeTab} onChange={this.handleTabChange}
+                                      aria-label="simple tabs example">
+                                    <Tab label="Users" {...this.a11yProps(0)} />
+                                    <Tab label="Judges" {...this.a11yProps(1)} />
+                                </Tabs>
+                            </div>
+                        </AppBar>
+                        <TabPanel value={this.state.activeTab} index={0}>
+                            <TextField
+                                label="Search"
+                                variant="filled"
+                                fullWidth
+                                value={this.state.filterUsers}
+                                onChange={this.handleFieldChange(this.state.filterUsers)}
+                                margin="normal"
+                            />
+                            {this.renderAllUsers()}
+                        </TabPanel>
+                        <TabPanel value={this.state.activeTab} index={1}>
+                            {this.renderJudges()}
+                        </TabPanel>
+                    </>}
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.handleClose} color="primary" autoFocus>
+                    <Button onClick={() => this.logout()} variant="contained" color="secondary" autoFocus>
+                        Log Out
+                    </Button>
+                    <Button onClick={() => this.handleChooseUser(false)} variant="contained" color="primary" autoFocus>
                         Close
                     </Button>
                 </DialogActions>

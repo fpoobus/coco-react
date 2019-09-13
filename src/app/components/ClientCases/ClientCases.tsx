@@ -19,81 +19,104 @@ import {ROLES} from "app/models/User";
 
 
 interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
-  caseStore?: CaseStore;
-  userStore?: UserStore;
+    caseStore?: CaseStore;
+    userStore?: UserStore;
 }
 
 @inject('caseStore', 'userStore')
 @observer
 class ClientCases extends React.Component<ClientCasesProps> {
-  newClaimLink = (props, id) => <Link to={'/case?id=' + id} {...props} />;
+    newClaimLink = (props, id) => <Link to={'/case?id=' + id} {...props} />;
 
-  renderTableBody = () => {
-    const { caseStore } = this.props;
+    renderTableBody = () => {
+        const {caseStore} = this.props;
 
-    let caseData = caseStore.casesData;
+        let caseData = caseStore.casesData;
 
-    if(this.props.userStore.user.role === ROLES.USER)  {
-      let code = this.props.userStore.user.personalCode;
-      caseData = caseData.filter(caseItem => caseItem.claimantId ===  code || caseItem.defendantId === code);
+        if (this.props.userStore.user.role === ROLES.USER) {
+            let code = this.props.userStore.user.personalCode;
+            caseData = caseData.filter(caseItem => caseItem.claimantId === code || caseItem.defendantId === code);
+        }
+
+        return (
+            caseData.map((courtCase, idx) => {
+                    return <TableRow key={idx}>
+                        <TableCell>{courtCase.status}</TableCell>
+                        <TableCell>{courtCase.caseType}</TableCell>
+                        <TableCell>{courtCase.claimantId}</TableCell>
+                        <TableCell>{courtCase.defendantId}</TableCell>
+                        <TableCell>{courtCase.description}</TableCell>
+                        <TableCell>
+                            <Button variant="contained" component={props => this.newClaimLink(props, courtCase.id)}
+                                    color="primary">
+                                Go to case
+                            </Button>
+                        </TableCell>
+                    </TableRow>;
+                }
+            )
+        );
+    };
+
+    renderCaseTable() {
+        const {caseStore, classes} = this.props;
+        let noCasesTitle = "No cases found";
+        let caseData = caseStore.casesData;
+        if (this.props.userStore.user.role === ROLES.USER) {
+            let code = this.props.userStore.user.personalCode;
+            noCasesTitle = "You have no associated cases";
+            caseData = caseData.filter(caseItem => caseItem.claimantId === code || caseItem.defendantId === code);
+        }
+        if (caseData.length === 0) {
+            return (<>
+                <Typography variant="h6" className={classes.title}>{noCasesTitle}</Typography>
+                <br/>
+            </>);
+        }
+        return <Table>
+            <TableHead>
+                <TableRow>
+                    {['Status', 'Type', 'Claimant', 'Defendant', 'Description', '']
+                        .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {this.renderTableBody()}
+            </TableBody>
+        </Table>
     }
 
-    return (
-      caseData.map((courtCase, idx) => {
-          return <TableRow key={idx}>
-            <TableCell>{courtCase.status}</TableCell>
-            <TableCell>{courtCase.caseType}</TableCell>
-            <TableCell>{courtCase.claimantId}</TableCell>
-            <TableCell>{courtCase.defendantId}</TableCell>
-            <TableCell>{courtCase.description}</TableCell>
-            <TableCell>
-              <Button variant="contained" component={props => this.newClaimLink(props, courtCase.id)} color="primary">
-                Go to case
-              </Button>
-            </TableCell>
-          </TableRow>;
+    constructor(props: ClientCasesProps) {
+        super(props);
+        this.props.caseStore.loadCases();
+    }
+
+    render() {
+        const {classes} = this.props;
+        let title = "New cases";
+
+        if (this.props.userStore.user.role === ROLES.USER) {
+            title = "Your cases";
         }
-      )
-    );
-  };
 
-  constructor(props: ClientCasesProps) {
-    super(props);
-    this.props.caseStore.loadCases();
-  }
+        return (
+            <Paper className={classes.root}>
+                <Typography variant="h5" gutterBottom className={classes.title}>{title}</Typography>
+                {this.props.caseStore.loading ? <>
+                    <br/>
+                    <Grid container justify="center">
+                        <Grid item>
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <Paper className={classes.root}>
-        <Typography variant="h5" gutterBottom className={classes.title}>
-          New cases
-        </Typography>
-        {this.props.caseStore.loading ? <>
-          <br/>
-          <Grid container justify="center">
-            <Grid item>
+                            <CircularProgress size={50}/>
 
-              <CircularProgress size={50}/>
+                        </Grid>
+                    </Grid>
+                    <br/>
+                </> : this.renderCaseTable()}
 
-            </Grid>
-          </Grid>
-          <br/>
-        </>: <Table>
-          <TableHead>
-            <TableRow>
-              {['Status', 'Type', 'Claimant', 'Defendant', 'Description', '']
-                  .map((title, idx) => <TableCell key={title + idx.toString()}>{title}</TableCell>)}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.renderTableBody()}
-          </TableBody>
-        </Table>}
-
-      </Paper>
-    );
-  }
+            </Paper>
+        );
+    }
 }
 
 export default withStyles(clientCasesStyles)(ClientCases);
