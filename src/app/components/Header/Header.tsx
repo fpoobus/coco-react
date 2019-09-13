@@ -169,13 +169,15 @@ class Header extends React.Component<HeaderProps> {
         let filteredUsers = this.state.allUsers;
         if (this.state.filterUsers && this.state.filterUsers !== '') {
             filteredUsers = filteredUsers.filter((user => {
-                let item = user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName;
+                let item = (user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName).replace(/\s\s+/g, ' ');
+
                 return item.toUpperCase().includes(this.state.filterUsers.toUpperCase());
             }))
         }
 
         filteredUsers.forEach(user => {
-            let item = user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName;
+            let item = (user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName).replace(/\s\s+/g, ' ');
+
             elements.push(<ListItem onClick={() => {
                 this.props.userStore.setUseFromRaw(user);
                 this.handleChooseUser(false);
