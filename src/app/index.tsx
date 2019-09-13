@@ -17,6 +17,7 @@ import Admin from "app/containers/Admin/Admin";
 import AdminMultiForm from "app/containers/Admin/AdminMultiForm";
 import AdminPersonList from "app/containers/Admin/AdminPersonList";
 import Header from "app/components/Header/Header";
+import { History } from "history";
 
 export const theme = createMuiTheme({
   palette: {
@@ -29,11 +30,14 @@ document.body.style.backgroundColor = theme.palette.primary.light;
 
 // render react DOM
 export const App = hot(module)(({ history }) => {
+
+  const showHeader = (history: History): boolean => !['/login'].includes(history.location.pathname);
+
   return (
     <MuiThemeProvider theme={theme}>
       <Root>
         <Router history={history}>
-          {history.location.pathname !== '/login' && <Header />}
+          {showHeader(history) && <Header />}
           <Switch>
             <Route path="/login" component={Login} />
             <Route exact path="/" component={Dashboard} />
