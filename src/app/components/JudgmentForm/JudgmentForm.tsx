@@ -12,7 +12,6 @@ import CaseStore from 'app/stores/CaseStore';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import Radio from '@material-ui/core/Radio/Radio';
 import Button from '@material-ui/core/Button/Button';
-import axios from 'axios';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import Select from '@material-ui/core/Select/Select';
 import OutlinedInput from '@material-ui/core/OutlinedInput/OutlinedInput';
@@ -21,6 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import { Link } from 'react-router-dom';
 import {runInAction} from "mobx";
 import {Theme} from '@material-ui/core/styles/createMuiTheme';
+import cocoAxios from "app/axiosConfig";
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -150,7 +150,7 @@ class JudgmentForm extends React.Component<JudgmentFormProps> {
       data.sanction = this.props.caseStore.judgmentForm.sanction;
       data.judgmentDescription = this.props.caseStore.judgmentForm.description;
 
-      axios.put('http://139.59.148.64/coco-api/cases/' + this.props.caseStore.selectedCaseId, data)
+      cocoAxios.put('/coco-api/cases/' + this.props.caseStore.selectedCaseId, data)
           .then(res => {
           })
           .catch(error => {

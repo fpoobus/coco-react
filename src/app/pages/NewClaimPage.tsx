@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import NewClaimStore from 'app/stores/NewClaimStore';
@@ -21,10 +22,11 @@ import Defendant from 'app/components/NewClaim/StepDefendant/Defendant/Defendant
 import UserStore from 'app/stores/UserStore';
 import axios, { AxiosResponse } from 'axios';
 import CaseFormFirstStep from 'app/pages/CaseForm/first-step/FirstStep';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { createStyles } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import cocoAxios from "app/axiosConfig";
 
 const newClaimPageStyles = () => createStyles({
   buttonProgress: {
@@ -85,10 +87,9 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
     return this.props.newClaimStore.step == 0
   };
 
-  lastPreStep() {
+  get isLastPreStep(): boolean {
     return this.props.newClaimStore.step >= 5;
   }
-
 
   nextStepWithLoader = () => {
     this.props.newClaimStore.setLoading(true);
@@ -134,12 +135,12 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
 
   setUser = async (): Promise<void> => {
     this.props.newClaimStore.setLoading(true);
-    axios.get(`http://139.59.148.64/coco-api/persons/` + this.props.userStore.personalCode, {
+    cocoAxios.get(`/coco-api/persons/` + this.props.userStore.personalCode, {
       headers: { 'Access-Control-Allow-Origin': '*' }
     }).then((res: AxiosResponse<PersonResponse>) => {
       this.props.newClaimStore.setPerson(res.data);
     }).finally(() => {
-    })
+    });
     await setTimeout(() => {
       this.props.newClaimStore.setLoading(false);
       this.props.newClaimStore.nextStep();
@@ -165,6 +166,35 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
     }
   };
 
+  renderStepButtons = (): ReactElement<any> => {
+    const showBackButton = () => !this.isLastStep && !this.isFirstStep;
+    const showContinueButton = () => !this.isLastStep && !this.isLastPreStep && !this.isFirstStep;
+    const showPaymentButton = () => this.isLastPreStep && !this.isLastStep && !this.props.newClaimStore.loading;
+
+    return (
+      <>
+        {showBackButton() &&
+        <Button onClick={this.previousStepWithLoader} variant="text" color="secondary">
+          Back
+        </Button>}
+        {showContinueButton() &&
+        <div className={this.props.classes.wrapper}>
+          <Button
+            disabled={this.props.newClaimStore.isLoading || this.props.newClaimStore.nextButtonDisabled}
+            onClick={this.nextStepWithLoader} variant="contained"
+            color="primary"> Continue
+          </Button>
+          {this.props.newClaimStore.isLoading && !this.isFirstStep &&
+          <CircularProgress size={24} className={this.props.classes.buttonProgress} />}
+        </div>}
+        {showPaymentButton() &&
+        <Button onClick={this.proceedToPayment} variant="contained" color="primary">
+          Proceed to Payment
+        </Button>}
+      </>
+    )
+  };
+
   render() {
     const dynamicClass = {
       padding: 20
@@ -187,35 +217,9 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
                   <div style={dynamicClass}>
                     {this.renderByStep()}
                   </div>
-
-                  {/*                  {this.props.newClaimStore.loading && <>
-                    <Grid container justify="center">
-                      <Grid item>
-                        <CircularProgress size={50} />
-                      </Grid>
-                    </Grid>
-                  </>}*/}
-
                 </CardContent>
                 <CardActions>
-                  {!this.isLastStep && !this.isFirstStep &&
-                  <Button onClick={this.previousStepWithLoader} variant="text" color="secondary">
-                    Back
-                  </Button>}
-                  <div className={this.props.classes.wrapper}>
-                    {!this.isLastStep && !this.lastPreStep() && !this.isFirstStep &&
-                    <Button disabled={this.props.newClaimStore.nextButtonDisabled}
-                            onClick={this.nextStepWithLoader} variant="contained"
-                            color="primary">
-                      Continue
-                    </Button>}
-                    {this.props.newClaimStore.isLoading && !this.isFirstStep &&
-                    <CircularProgress size={24} className={this.props.classes.buttonProgress} />}
-                  </div>
-                  {this.lastPreStep() && !this.isLastStep && !this.props.newClaimStore.loading &&
-                  <Button onClick={this.proceedToPayment} variant="contained" color="primary">
-                    Proceed to Payment
-                  </Button>}
+                  {this.renderStepButtons()}
                 </CardActions>
               </Card>
             </Grid>

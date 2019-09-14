@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
-import axios from 'axios';
 import { Hearing } from 'app/model/Hearing';
 import * as moment from 'moment';
+import cocoAxios from "app/axiosConfig";
 
 class HearingsDataStore {
   @observable hearingDates = observable.array<Date>();
@@ -24,7 +24,7 @@ class HearingsDataStore {
   }
 
   public async loadHearings(personId: number): Promise<Array<Hearing>> {
-    const response = await axios.get(`http://139.59.148.64/coco-api/hearings/byPerson/${personId}`,
+    const response = await cocoAxios.get(`/coco-api/hearings/byPerson/${personId}`,
       { headers: { 'Access-Control-Allow-Origin': '*' } });
     return response.data;
   }
