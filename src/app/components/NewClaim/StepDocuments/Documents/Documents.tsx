@@ -65,8 +65,8 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
     }];
 
     return files.map((file, index: number) => (
-      <ListItem key={`file-${index}`} button>
-        <ListItemText onClick={() => this.attachFile(file)} primary={file.name} />
+      <ListItem key={`file-${index}`} button onClick={() => this.attachFile(file)}>
+        <ListItemText primary={file.name} />
       </ListItem>
     ));
   }
@@ -78,50 +78,42 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
   }
 
   renderButton() {
-    return <><Button variant="contained" onClick={this.handleClickOpen}>Click To Attach Documents</Button>
+    return <>
+      <Button variant="contained" onClick={this.handleClickOpen}>Click To Attach Documents</Button>
       <Dialog
         fullScreen={false}
         open={this.state.open}
         onClose={this.handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle
-          id="responsive-dialog-title">{'Please attach the documents relevant to the claim being submitted.'}</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">
+          Please attach the documents relevant to the claim being submitted.
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-
           </DialogContentText>
-
           <List component="nav">
             {this.renderFiles()}
           </List>
-
-
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary" autoFocus>
-            Close
-          </Button>
+          <Button onClick={this.handleClose} color="primary" autoFocus> Close </Button>
         </DialogActions>
       </Dialog></>
   }
 
   attachedFiles() {
-    let result = [];
-    this.props.newClaimStore.attachedFiles.forEach(item => {
-      result.push(<>
-        <TableRow>
-          <TableCell>{item.name}</TableCell>
-          <TableCell>{item.modified}</TableCell>
-          <TableCell>
-            <Button onClick={() => this.removeItem(item)} color="primary" autoFocus>
-              Remove
-            </Button>
-          </TableCell>
-        </TableRow>
-      </>);
-    })
-    return result;
+    return this.props.newClaimStore.attachedFiles.map((item, index: number) => (
+      <TableRow key={`item-${index}`}>
+        <TableCell>{item.name}</TableCell>
+        <TableCell>{item.modified}</TableCell>
+        <TableCell>
+          <Button onClick={() => this.removeItem(item)} color="primary" autoFocus>
+            Remove
+          </Button>
+        </TableCell>
+      </TableRow>
+    ));
   }
 
   removeItem(item) {
