@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const cocoAxios = axios.create({
-    baseURL: 'https://commercialcourt.eu'
+    baseURL: 'http://commercialcourt.eu'
 });
 
 // Where you would set stuff like your 'Authorization' header, etc ...
