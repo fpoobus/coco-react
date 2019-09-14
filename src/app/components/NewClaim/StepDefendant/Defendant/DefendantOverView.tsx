@@ -33,7 +33,7 @@ const DefendantOverView = (props: Props): ReactElement<any> => {
 
   const renderDefendant = (): ReactElement<any> => (
     <>
-      <Typography component="h2" variant="h5" gutterBottom>Found the following legal entity:</Typography>
+      <Typography component="h2" variant="h5" gutterBottom>Found the following legal entity</Typography>
       <Divider light />
       <br />
       <List>
