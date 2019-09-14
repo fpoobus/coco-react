@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import Claimant from 'app/components/NewClaim/StepClaimant/Claimant/Claimant';
 import NewClaim, { PersonResponse } from 'app/model/NewClaim';
-import { ClaimInformation } from 'app/components/NewClaim/StepClaimInfo/ClaimInformation/ClaimInformation';
+import ClaimInformation from 'app/components/NewClaim/StepClaimInfo/ClaimInformation/ClaimInformation';
 import Button from '@material-ui/core/Button';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';

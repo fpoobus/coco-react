@@ -18,7 +18,7 @@ export const caseFormStyles = (theme: Theme) => createStyles({
             marginLeft: theme.spacing(1),
         },
         title: {
-            fontSize: 14,
+            fontSize: 24,
         },
         pos: {
             marginBottom: 12,

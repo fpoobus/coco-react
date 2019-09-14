@@ -44,6 +44,7 @@ class UserStore {
     public setUseFromRaw(rawUser: RawUser) {
         this.user = new User().userFromRaw(rawUser);
         this.personalCode = rawUser.code;
+        this.loginWithUser(this.user);
     }
 
     @action
@@ -76,7 +77,7 @@ class UserStore {
                     window.location.href = "/"
                 }
             }).catch(() => {
-                this.setLoginError(true);
+            this.setLoginError(true);
         })
     };
 
@@ -117,6 +118,13 @@ class UserStore {
         localStorage.setItem('firstName', user.firstName);
         localStorage.setItem('lastName', user.lastName);
     };
+
+    public loginWithUser(user: User) {
+        this.user = user;
+        localStorage.setItem('personalCode', user.personalCode);
+        localStorage.setItem('firstName', user.firstName);
+        localStorage.setItem('lastName', user.lastName);
+    }
 
     public fillUserInfoSmartId = (data: any) => {
         let user = new User();

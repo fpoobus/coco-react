@@ -175,10 +175,14 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
         result.push(<br/>);
         */
 
-        result.push(<FormControlLabel onClick={() => this.setActiveLegalEntity(legalEntity)}
-                                      value={'' + legalEntity.registryCode}
-                                      control={<Radio onClick={() => this.setActiveLegalEntity(legalEntity)} />}
-                                      label={legalEntity.registryCode + ' ' + legalEntity.name} />)
+        result.push(
+          <FormControlLabel
+            key={`legal-entity-${index}`}
+            onClick={() => this.setActiveLegalEntity(legalEntity)}
+            value={'' + legalEntity.registryCode}
+            control={<Radio onClick={() => this.setActiveLegalEntity(legalEntity)} />}
+            label={legalEntity.registryCode + ' ' + legalEntity.name}
+          />)
       })
     }
     if (this.props.newClaimStore.noLegalEntities) {
