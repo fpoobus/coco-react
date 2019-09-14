@@ -7,18 +7,10 @@ import Avatar from '@material-ui/core/Avatar/Avatar';
 import Typography from '@material-ui/core/Typography/Typography';
 import Button from '@material-ui/core/Button/Button';
 import RootContainer from 'app/components/Container/RootContainer';
-import Send from '@material-ui/icons/Send';
-import SettingsBackupRestore from '@material-ui/icons/SettingsBackupRestore';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import CardContent from '@material-ui/core/CardContent/CardContent';
 import Card from '@material-ui/core/Card/Card';
-import ListItem from '@material-ui/core/ListItem/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import CheckIcon from '@material-ui/icons/Check';
 import EditOutlinedIcon from '@material-ui/icons/Edit';
-import MenuItem from '@material-ui/core/MenuItem/MenuItem';
-import Menu from '@material-ui/core/Menu/Menu';
 import {inject, observer} from 'mobx-react';
 import CaseStore from 'app/stores/CaseStore';
 import {Link} from 'react-router-dom';
@@ -27,12 +19,19 @@ import {DefendantResponse, PersonResponse} from "app/model/NewClaim";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {Tooltip} from "@material-ui/core";
-import Divider from "@material-ui/core/es/Divider";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import cocoAxios from "app/axiosConfig";
+import {ROLES} from "app/models/User";
+import UserStore from "app/stores/UserStore";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Divider from "@material-ui/core/Divider";
+import {KeyboardArrowLeft, Send, SettingsBackupRestore} from "@material-ui/icons";
 
 const judgesList = [
     ['Justice Foster Edward Abner', 49, 'busy'],
@@ -50,6 +49,7 @@ const padding = {
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
     caseStore?: CaseStore;
+    userStore?: UserStore;
 }
 
 function getAvatar(option, classes: any) {
@@ -76,7 +76,7 @@ function getJudgeStatusIcon(status, classes: any) {
     }
 }
 
-@inject('caseStore')
+@inject('caseStore', 'userStore')
 @observer
 class CaseForm extends React.Component<DashboardProps> {
     judgmentFormLink = props => <Link to="/judgment-form" {...props} />;
@@ -87,8 +87,20 @@ class CaseForm extends React.Component<DashboardProps> {
         selectedIndex: -1
     };
 
+    componentDidMount(): void {
+        if (!this.props.caseStore.cases || this.props.caseStore.cases.length === 0) {
+            this.getCaseData();
+        }
+    }
+
+    getCaseData() {
+        this.props.caseStore.loadCases();
+    }
+
     handleClickListItem = event => {
-        this.setState({anchorEl: event.currentTarget});
+        if (this.props.userStore.user.role !== ROLES.USER) {
+            this.setState({anchorEl: event.currentTarget});
+        }
     };
 
     handleMenuItemClick = (event, index) => {
@@ -116,6 +128,16 @@ class CaseForm extends React.Component<DashboardProps> {
                 console.log(error)
             })
     };
+
+    isJudgeSelected() {
+        const {caseStore} = this.props;
+        const courtCase = getCase(caseStore);
+
+        if (courtCase && courtCase.judge) {
+            return true;
+        }
+        return false;
+    }
 
     homeLink = props => <Link to="/" {...props} />;
     caseLink = (props, id) => <Link to={'/hearing'} {...props} />;
@@ -191,6 +213,19 @@ class CaseForm extends React.Component<DashboardProps> {
     };
 
     render() {
+
+        if (!this.props.caseStore.cases || this.props.caseStore.cases.length === 0) {
+            return <>
+                <Grid container justify="center">
+                    <Grid item>
+
+                        <CircularProgress size={50}/>
+
+                    </Grid>
+                </Grid>
+            </>;
+        }
+
         const {classes, caseStore} = this.props;
         const {anchorEl} = this.state;
         let caseId = new URLSearchParams(window.location.search).get('id');
@@ -199,7 +234,6 @@ class CaseForm extends React.Component<DashboardProps> {
             return c.id === parseInt(caseId);
         });
 
-        this.handleMissingData(courtCase);
 
         if (!courtCase) {
 
@@ -222,6 +256,8 @@ class CaseForm extends React.Component<DashboardProps> {
             }
         }
 
+
+        this.handleMissingData(courtCase);
 
         return (
             <RootContainer>
@@ -285,7 +321,7 @@ class CaseForm extends React.Component<DashboardProps> {
                                     <Table>
                                         <TableBody>
                                             <TableRow key={"row1"}>
-                                                <TableCell style={{ width: "50px" }}>
+                                                <TableCell style={{width: "50px"}}>
                                                     <Avatar>
                                                         <CheckIcon/>
                                                     </Avatar>
@@ -293,40 +329,53 @@ class CaseForm extends React.Component<DashboardProps> {
                                                 <TableCell><strong>Status:</strong> {courtCase.status}</TableCell>
                                             </TableRow>
                                             <TableRow key={"row2"}>
-                                                <TableCell style={{ width: "50px" }}>
+                                                <TableCell style={{width: "50px"}}>
                                                     <Avatar>
                                                         <CheckIcon/>
                                                     </Avatar>
                                                 </TableCell>
-                                                <TableCell><strong>Fee:</strong> {courtCase.fee + ' - ' + courtCase.paymentStatus}</TableCell>
+                                                <TableCell><strong>Fee:</strong> {courtCase.fee + ' - ' + courtCase.paymentStatus}
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow key={"row2"}>
+                                                <TableCell style={{width: "50px"}}>
+                                                    <Avatar>
+                                                        {this.state.selectedIndex < 0 &&
+                                                        <Tooltip title="This judge has a busy time schedule">
+                                                            <ErrorOutlineIcon color='error'/>
+                                                        </Tooltip>}
+                                                        {this.state.selectedIndex > 0 && <CheckIcon/>}
+                                                    </Avatar>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {(this.props.userStore.user.role !== ROLES.USER && this.state.selectedIndex < 0) ?
+                                                        <Button variant="contained"
+                                                                className={classes.button}
+                                                                onClick={this.handleClickListItem}>
+                                                            Choose a judge
+                                                        </Button> : <React.Fragment/>}
+                                                    {this.state.selectedIndex < 0 ? <React.Fragment/> :
+                                                        <ListItem button onClick={this.handleClickListItem}>
+                                                            <ListItemText>
+                                                                {this.state.selectedIndex < 0 ?
+                                                                    '' :
+                                                                    <React.Fragment>
+                                                                        <span>{'Judge - ' + judgesList[this.state.selectedIndex][0]}</span>
+                                                                        {this.props.userStore.user.role !== ROLES.USER &&
+                                                                        <EditOutlinedIcon color='primary'
+                                                                                          className={classes.marginBetween}/>}
+                                                                    </React.Fragment>
+                                                                }
+                                                            </ListItemText>
+                                                        </ListItem>}
+                                                </TableCell>
                                             </TableRow>
                                         </TableBody>
                                     </Table>
 
                                     <div className={classes.alignLeft}>
-                                        {this.state.selectedIndex < 0 ?
-                                            <Button variant="contained"
-                                                    className={classes.button}
-                                                    onClick={this.handleClickListItem}>
-                                                Choose a judge
-                                            </Button> : <React.Fragment/>}
-                                        {this.state.selectedIndex < 0 ? <React.Fragment/> :
-                                            <ListItem button onClick={this.handleClickListItem}>
-                                                <ListItemIcon>
-                                                    {this.state.selectedIndex < 0 ? <React.Fragment/> :
-                                                        <CheckIcon/>}
-                                                </ListItemIcon>
-                                                <ListItemText>
-                                                    {this.state.selectedIndex < 0 ?
-                                                        '' :
-                                                        <React.Fragment>
-                                                            <span>{'Judge - ' + judgesList[this.state.selectedIndex][0]}</span>
-                                                            <EditOutlinedIcon color='primary'
-                                                                              className={classes.marginBetween}/>
-                                                        </React.Fragment>
-                                                    }
-                                                </ListItemText>
-                                            </ListItem>}
+
+
                                     </div>
                                     <Menu id="lock-menu" anchorEl={anchorEl} open={Boolean(anchorEl)}
                                           onClose={this.handleClose}>
@@ -360,7 +409,8 @@ class CaseForm extends React.Component<DashboardProps> {
 
                     <Grid container spacing={10}>
                         <Grid item xs={12}>
-                            <Button variant="contained" color="primary" className={classes.button}
+                            <Button disabled={!this.isJudgeSelected()} variant="contained" color="primary"
+                                    className={classes.button}
                                     onClick={this.registerCase}
                                     component={props => this.caseLink(props, caseStore.selectedCaseId)}>
                                 Register
@@ -413,15 +463,17 @@ class CaseForm extends React.Component<DashboardProps> {
             </Grid>
             <Grid container item justify="flex-end" alignItems={'flex-end'} alignContent={'flex-end'}>
                 <Grid item>
+                    {this.props.userStore.user.role === ROLES.JUDGE &&
                     <Button variant="contained" color="primary" component={this.judgmentFormLink}
                             className={classes.button}>
                         Judgment
-                    </Button>
+                    </Button>}
                 </Grid>
                 <Grid item>
+                    {this.props.userStore.user.role !== ROLES.USER &&
                     <Button variant="contained" color="primary" component={this.hearingLink} className={classes.button}>
                         Hearing
-                    </Button>
+                    </Button>}
                 </Grid>
                 <Grid item>
                     <Button variant="contained" color="primary" className={classes.button}>

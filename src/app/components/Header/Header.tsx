@@ -330,11 +330,11 @@ class Header extends React.Component<HeaderProps> {
     renderFindAllModalAndButton() {
         return <>
             <Dialog
-                fullScreen={true}
+                fullScreen={false}
                 open={this.state.chooseUser}
                 onClose={() => this.handleChooseUser(false)}
                 aria-labelledby="responsive-dialog-title"
-            >
+                className={'heading-dialog'}>
                 <br/>
                 <br/>
                 <br/>

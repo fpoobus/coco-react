@@ -80,6 +80,9 @@ class Dashboard extends React.Component<DashboardProps> {
     if(this.props.userStore.user.role === ROLES.JUDGE) {
       return this.renderJudge();
     }
+    if(this.props.userStore.user.role === ROLES.CLERK) {
+      return this.renderJudge();
+    }
     if(this.props.userStore.user.role === ROLES.USER) {
       return this.renderUser();
     }

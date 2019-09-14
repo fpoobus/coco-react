@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { inject, observer } from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import TextField from '@material-ui/core/TextField';
-import { reaction, runInAction } from 'mobx';
-import { LegalEntityResponse, NaturalPerson, PersonResponse } from 'app/model/NewClaim';
+import {reaction, runInAction} from 'mobx';
+import {LegalEntityResponse, NaturalPerson, PersonResponse} from 'app/model/NewClaim';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import UserStore from 'app/stores/UserStore';
 import Divider from '@material-ui/core/Divider';
+import cocoAxios from "app/axiosConfig";
+import {AxiosResponse} from "axios";
 
 export interface ClaimantProps {
   newClaimStore: NewClaimStore,
@@ -46,7 +48,13 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
   componentDidMount() {
     this.prefillUser();
     this.disposer = reaction(() => this.props.userStore.user, (change) => {
-      this.prefillUser();
+      cocoAxios.get(`/coco-api/persons/` + this.props.userStore.personalCode, {
+        headers: { 'Access-Control-Allow-Origin': '*' }
+      }).then((res: AxiosResponse<PersonResponse>) => {
+        this.props.newClaimStore.setPerson(res.data);
+        this.prefillUser();
+      }).finally(() => {
+      });
     });
   }
 
@@ -76,8 +84,6 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
       this.state.naturalPerson = Object.assign({}, this.props.newClaimStore.newClaim.naturalPerson);
     });
 
-    console.log('Claim obj', this.props.newClaimStore.newClaim);
-    console.log(this.props.newClaimStore.personResponse);
 
     this.setState(this.state);
   }
@@ -90,22 +96,25 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
       <TextField
         label="First Name"
         fullWidth
+        disabled
         value={this.state.naturalPerson.first_name}
         onChange={this.handleChange('first_name')}
         margin="normal"
       />
 
-      <TextField
+      {/*<TextField
         label="Middle Names"
         fullWidth
+        disabled
         value={this.state.naturalPerson.middle_names}
         onChange={this.handleChange('middle_names')}
         margin="normal"
-      />
+      />*/}
 
       <TextField
         label="Last Name"
         fullWidth
+        disabled
         value={this.state.naturalPerson.last_name}
         onChange={this.handleChange('last_name')}
         margin="normal"
@@ -114,6 +123,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
       <TextField
         label="Date of Birth"
         fullWidth
+        disabled
         type="date"
         value={this.state.naturalPerson.date_of_birth}
         onChange={this.handleChange('date_of_birth')}
@@ -126,6 +136,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
       <TextField
         label="Address"
         fullWidth
+        disabled
         value={this.state.naturalPerson.address}
         onChange={this.handleChange('address')}
         margin="normal"
