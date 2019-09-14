@@ -8,7 +8,7 @@ import { DefendantResponse } from 'app/model/NewClaim';
 import DefendantOverView from 'app/components/NewClaim/StepDefendant/Defendant/DefendantOverView';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider/Divider';
-import cocoAxios from "app/axiosConfig";
+import cocoAxios from 'app/axiosConfig';
 
 export interface DefendantProps {
   newClaimStore: NewClaimStore
@@ -22,8 +22,7 @@ export interface DefendantState {
 @observer
 export class Defendant extends React.Component<DefendantProps, DefendantState> {
   state = {
-    open: false,
-    allLegalEntitiesResult: []
+    modalOpen: false
   };
 
   componentDidMount() {
@@ -47,22 +46,10 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
     this.props.newClaimStore.setNextButtonDisabled(false);
   };
 
-  getAllLegalEntities = () => {
-    cocoAxios.get(`/coco-api/legal-entities`, {
-      headers: {}
-    }).then(res => this.setState({ open: true, allLegalEntitiesResult: res.data }))
-      .catch(() => {
-      });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   searchByEntityId = (code: string) => {
     runInAction(() => {
       this.props.newClaimStore.newClaim.defendant.registryCode = code;
-      this.setState({ open: false });
+      this.setState({ modalOpen: false });
       this.getDefendantInto();
     })
   };
@@ -81,7 +68,7 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
             </Grid>
             <Grid item xs={12}>
               <DefendantOverView
-                onModalOpen={this.getAllLegalEntities}
+                onModalOpen={() => this.setState({ modalOpen: true })}
                 defendant={this.props.newClaimStore.defendantResponse}
               />
             </Grid>
@@ -89,10 +76,9 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
         </div>
         <br />
         <DefendantFinderModal
-          onClose={this.handleClose}
+          onClose={() => this.setState({ modalOpen: false })}
           onEntityPick={this.searchByEntityId}
-          legalEntities={this.state.allLegalEntitiesResult}
-          open={this.state.open}
+          open={this.state.modalOpen}
         />
       </>
     );

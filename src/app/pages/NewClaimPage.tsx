@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import NewClaimStore from 'app/stores/NewClaimStore';
@@ -139,7 +140,7 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
     }).then((res: AxiosResponse<PersonResponse>) => {
       this.props.newClaimStore.setPerson(res.data);
     }).finally(() => {
-    })
+    });
     await setTimeout(() => {
       this.props.newClaimStore.setLoading(false);
       this.props.newClaimStore.nextStep();
@@ -165,7 +166,7 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
     }
   };
 
-  renderStepButtons = () => {
+  renderStepButtons = (): ReactElement<any> => {
     const showBackButton = () => !this.isLastStep && !this.isFirstStep;
     const showContinueButton = () => !this.isLastStep && !this.isLastPreStep && !this.isFirstStep;
     const showPaymentButton = () => this.isLastPreStep && !this.isLastStep && !this.props.newClaimStore.loading;

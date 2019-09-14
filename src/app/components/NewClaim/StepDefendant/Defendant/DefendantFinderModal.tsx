@@ -5,7 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import List from '@material-ui/core/List';
 import DialogActions from '@material-ui/core/DialogActions';
 import * as React from 'react';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import makeStyles from '@material-ui/styles/makeStyles/makeStyles';
@@ -14,13 +14,14 @@ import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import Search from '@material-ui/icons/Search';
-import Typography from '@material-ui/core/Typography';
+import cocoAxios from 'app/axiosConfig';
 
 type LegalEntity = { name: string, registryCode: string };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
+    searchButtonRoot: {
+      marginTop: 10,
       padding: '2px 4px',
       display: 'flex',
       alignItems: 'center',
@@ -42,21 +43,31 @@ const useStyles = makeStyles((theme: Theme) =>
 type Props = {
   onClose: () => void;
   onEntityPick: (regNumber: string) => void;
-  legalEntities: LegalEntity[];
   open: boolean;
 }
 
 const DefendantFinderModal = (props: Props): ReactElement<any> => {
   const classes = useStyles({});
   const [query, setQuery] = useState<string>('');
+  const [legalEntities, setLegalEntities] = useState<LegalEntity[]>([]);
+
+  useEffect(() => {
+    getAllLegalEntities()
+  }, []);
+
+  const getAllLegalEntities = () => {
+    cocoAxios.get(`/coco-api/legal-entities`, {
+      headers: {}
+    }).then(res => setLegalEntities(res.data));
+  };
 
   const renderLegalEntities = (): ReactElement<any> => {
     return (
       <>
-        {props.legalEntities.filter((legalEntity: LegalEntity) =>
+        {legalEntities.filter((legalEntity: LegalEntity) =>
           legalEntity.name.toLowerCase().includes(query) || legalEntity.registryCode.toLowerCase().includes(query)
-        ).map((legalEntity) =>
-          <ListItem button onClick={() => props.onEntityPick(legalEntity.registryCode)}>
+        ).map((legalEntity, index) =>
+          <ListItem key={`legal-entity-${index}`} button onClick={() => props.onEntityPick(legalEntity.registryCode)}>
             <ListItemText primary={legalEntity.registryCode + ' - ' + legalEntity.name} />
           </ListItem>
         )}
@@ -73,9 +84,8 @@ const DefendantFinderModal = (props: Props): ReactElement<any> => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          <Typography variant="h5">Choose from the options below</Typography>
-          <br />
-          <Paper className={classes.root}>
+          Choose from the options below
+          <Paper className={classes.searchButtonRoot}>
             <InputBase
               className={classes.input}
               value={query}
