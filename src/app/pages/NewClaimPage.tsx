@@ -26,7 +26,7 @@ import { green } from '@material-ui/core/colors';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { createStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import cocoAxios from "app/axiosConfig";
+import cocoAxios from 'app/axiosConfig';
 
 const newClaimPageStyles = () => createStyles({
   buttonProgress: {
@@ -59,6 +59,11 @@ const centerAlign = {
 @inject('routerStore', 'newClaimStore', 'userStore')
 @observer
 class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
+
+  componentDidMount(): void {
+    this.setUser();
+  }
+
   constructor(props: NewClaimPageProps, context: any) {
     super(props, context);
 
@@ -133,24 +138,19 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
     window.location.href = 'https://rkdemo.aktors.ee/proto/bank?amount=' + this.props.newClaimStore.newClaim.fee.fee + '&payerData=' + this.props.userStore.user.personalCode + '&referenceNumber=' + this.props.newClaimStore.newClaim.fee.reference_number + '&returnUrl=' + redirUrl;
   };
 
-  setUser = async (): Promise<void> => {
+  private setUser = async (): Promise<void> => {
     this.props.newClaimStore.setLoading(true);
     cocoAxios.get(`/coco-api/persons/` + this.props.userStore.personalCode, {
       headers: { 'Access-Control-Allow-Origin': '*' }
     }).then((res: AxiosResponse<PersonResponse>) => {
       this.props.newClaimStore.setPerson(res.data);
-    }).finally(() => {
-    });
-    await setTimeout(() => {
-      this.props.newClaimStore.setLoading(false);
-      this.props.newClaimStore.nextStep();
-    }, 3000);
+    }).finally(() => this.props.newClaimStore.setLoading(false));
   };
 
   renderByStep = () => {
     switch (this.props.newClaimStore.step) {
       case 0:
-        return <CaseFormFirstStep newClaimStore={this.props.newClaimStore} nextStepClick={this.setUser} />;
+        return <CaseFormFirstStep newClaimStore={this.props.newClaimStore} nextStepClick={this.nextStepWithLoader} />;
       case 1:
         return <Claimant newClaimStore={this.props.newClaimStore} />;
       case 2:

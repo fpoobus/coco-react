@@ -59,11 +59,75 @@ const CaseFormFirstStep = (props: Props): ReactElement<any> => {
     props.nextStepClick();
   };
 
+  const getElevation = (currentSection: boolean): number => (props.newClaimStore.openSection && currentSection) ? 24 : 1;
+  const showSpinner = (currentSection: boolean): boolean => props.newClaimStore.isLoading &&
+    (!props.newClaimStore.personResponse || currentSection);
+  const renderYourCard = (): ReactElement<any> => {
+    const USER_IMG = '../../../../assets/icons/shop-cashier-man.svg';
+    return (
+      <Grid item xs={12} sm={6}>
+        <Paper style={padding} elevation={getElevation(props.newClaimStore.isNaturalSection)}>
+          <Grid container justify="center" className={classes.wrapper}>
+            <Grid item>
+              <img style={iconScale} src={USER_IMG} alt="No image" />
+              <br /><br /><br />
+            </Grid>
+            {showSpinner(props.newClaimStore.isNaturalSection) &&
+            <CircularProgress size={24} className={classes.buttonProgress} />}
+          </Grid>
+
+          <Grid container justify="center">
+            <Grid item hidden={props.newClaimStore.isLoading}>
+              <Button
+                disabled={!props.newClaimStore.personResponse}
+                variant="contained"
+                color="primary"
+                onClick={nextAndSetTypeNatural}>
+                Yourself
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+
+      </Grid>
+    );
+  };
+
+  const renderLegalCard = (): ReactElement<any> => {
+    const LEGAL_IMG = '../../../../assets/icons/building-modern-1.svg';
+    return (
+      <Grid item xs={12} sm={6}>
+        <Paper style={padding} elevation={getElevation(props.newClaimStore.isLegalSection)}>
+          <Grid container justify="center" className={classes.wrapper}>
+            <Grid item>
+              <img style={iconScale} src={LEGAL_IMG} alt="No image" />
+              <br /><br /><br />
+            </Grid>
+            {showSpinner(props.newClaimStore.isLegalSection) &&
+            <CircularProgress size={24} className={classes.buttonProgress} />}
+          </Grid>
+
+          <Grid container justify="center">
+            <Grid item className={classes.wrapper} hidden={props.newClaimStore.isLoading}>
+              <Button
+                disabled={!props.newClaimStore.personResponse || !props.newClaimStore.personResponse.legalEntities.length}
+                variant="contained"
+                color="primary"
+                onClick={nextAndSetTypeLegal}>
+                Legal Entity
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+
+      </Grid>
+    );
+  };
+
   return (
     <Grid container spacing={8}>
       <Grid item xs={12}>
         <Grid container justify="center">
-
           <Grid container justify="center">
             <Grid item>
               <Typography variant="h4" gutterBottom>
@@ -73,62 +137,8 @@ const CaseFormFirstStep = (props: Props): ReactElement<any> => {
               <br /><br />
             </Grid>
           </Grid>
-
-          <Grid item xs={12} sm={6}>
-
-            <Paper style={padding}
-                   elevation={(props.newClaimStore.openSection && props.newClaimStore.isNaturalSection) ? 24 : 1}>
-
-              <Grid container justify="center" className={classes.wrapper}>
-                <Grid item>
-                  <img style={iconScale} src="../../../../assets/icons/shop-cashier-man.svg" alt="No image" />
-                  <br /><br /><br />
-                </Grid>
-                {props.newClaimStore.isLoading && props.newClaimStore.isNaturalSection &&
-                <CircularProgress size={24} className={classes.buttonProgress} />}
-              </Grid>
-
-              <Grid container justify="center">
-                <Grid item hidden={props.newClaimStore.isLoading}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={nextAndSetTypeNatural}>
-                    Yourself
-                  </Button>
-                </Grid>
-              </Grid>
-            </Paper>
-
-          </Grid>
-
-          <Grid item xs={12} sm={6}>
-
-            <Paper style={padding}
-                   elevation={(props.newClaimStore.openSection && props.newClaimStore.isLegalSection) ? 24 : 1}>
-
-              <Grid container justify="center" className={classes.wrapper}>
-                <Grid item>
-                  <img style={iconScale} src="../../../../assets/icons/building-modern-1.svg" alt="No image" />
-                  <br /><br /><br />
-                </Grid>
-                {props.newClaimStore.isLoading && props.newClaimStore.isLegalSection &&
-                <CircularProgress size={24} className={classes.buttonProgress} />}
-              </Grid>
-
-              <Grid container justify="center">
-                <Grid item className={classes.wrapper} hidden={props.newClaimStore.isLoading}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={nextAndSetTypeLegal}>
-                    Legal Entity
-                  </Button>
-                </Grid>
-              </Grid>
-            </Paper>
-
-          </Grid>
+          {renderYourCard()}
+          {renderLegalCard()}
         </Grid>
       </Grid>
     </Grid>

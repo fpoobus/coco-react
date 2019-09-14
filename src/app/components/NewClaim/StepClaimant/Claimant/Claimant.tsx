@@ -56,9 +56,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
   prefillUser() {
     if (this.props.newClaimStore.personResponse) {
-      this.setPerson(this.props.newClaimStore.personResponse)
-    } else {
-      this.props.newClaimStore.setNoLegalEntities(true);
+      this.setPerson(this.props.newClaimStore.personResponse);
     }
   }
 
@@ -152,36 +150,29 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
     });
   };
 
-
   legalEntityFields() {
-
-    let result = [];
-
     if (this.props.newClaimStore.personResponse) {
       console.log('legalEntityFields', this.props.newClaimStore.personResponse.legalEntities);
-      this.props.newClaimStore.personResponse.legalEntities.map((legalEntity, index) => {
-        /*
-        result.push(<Button onClick={() => this.setActiveLegalEntity(legalEntity)} variant="contained"
-                            color="primary">
+    }
 
-        </Button>);
-        result.push(<br/>);
-        */
-
-        result.push(
+    return (
+      <RadioGroup
+        aria-label="Gender"
+        name="gender1"
+        value={this.state.value}
+        onChange={this.handleRadioChange}
+      >
+        {this.props.newClaimStore.personResponse.legalEntities.map((legalEntity, index) => (
           <FormControlLabel
             key={`legal-entity-${index}`}
             onClick={() => this.setActiveLegalEntity(legalEntity)}
             value={'' + legalEntity.registryCode}
             control={<Radio onClick={() => this.setActiveLegalEntity(legalEntity)} />}
             label={legalEntity.registryCode + ' ' + legalEntity.name}
-          />)
-      })
-    }
-    if (this.props.newClaimStore.noLegalEntities) {
-      result.push(<p>No legal entities found</p>);
-    }
-    return result;
+          />
+        ))}
+      </RadioGroup>
+    );
   }
 
 
@@ -190,16 +181,7 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
       <h1>Claimant Information</h1>
       <Divider light />
       {this.props.newClaimStore.isNaturalSection && this.naturalEntityFields()}
-      {this.props.newClaimStore.isLegalSection && <>
-        <RadioGroup
-          aria-label="Gender"
-          name="gender1"
-          value={this.state.value}
-          onChange={this.handleRadioChange}
-        >
-          {this.legalEntityFields()}
-        </RadioGroup>
-      </>}
+      {this.props.newClaimStore.isLegalSection && this.legalEntityFields()}
     </>;
   }
 

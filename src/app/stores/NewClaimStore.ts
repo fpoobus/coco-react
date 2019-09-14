@@ -134,11 +134,6 @@ export class NewClaimStore {
   setNextButtonDisabled = (disabled) => {
     this.nextButtonDisabled = disabled;
   };
-
-  @action
-  setNoLegalEntities = (disabled) => {
-    this.noLegalEntities = disabled;
-  };
 }
 
 export default NewClaimStore;
