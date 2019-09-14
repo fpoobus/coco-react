@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import { FormControl } from '@material-ui/core';
 
 export interface ClaimInformationProps {
   newClaimStore: NewClaimStore
@@ -56,40 +57,44 @@ const claims = [
   }
 ];
 
+type ClaimType = typeof claims[0];
+
 @inject('routerStore')
 @observer
 class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInformationState> {
 
   state = {
-    value: ''
+    value: 'bankruptcy'
   };
 
   componentDidMount(): void {
-    this.props.newClaimStore.setNextButtonDisabled(true)
+    runInAction(() => this.props.newClaimStore.newClaim.claim.case_type = 'bankruptcy')
   }
 
   renderClaimTypes() {
-    let result = [];
-
-    claims.forEach((claim, index) => result.push(
-      <Grid item xs={8} sm={6} md={4} key={`claim-${index}`}>
-        <Paper style={gridItem} elevation={1}>
+    //const isChecked = (type: string) => this.props.newClaimStore.newClaim.claim.case_type === type;
+    return (
+      <FormControl component="fieldset">
+        <RadioGroup name="claim-type" value={this.state.value || 'bankruptcy'} onChange={this.setCaseType}>
           <Grid container justify="center">
-            <Grid item>
-              <RadioGroup name="claim-type" value={this.state.value} onChange={this.setCaseType}>
-                <FormControlLabel value={claim.type} control={<Radio />}
-                                  label={claim.name} checked={this.isChecked(claim.type)} />
-              </RadioGroup>
-              <Typography variant="subtitle1" gutterBottom>
-                State Fee: {claim.fee} USD
-              </Typography>
-            </Grid>
+            {claims.map((claim: ClaimType, index) => (
+              <Grid item xs={8} sm={6} md={4} key={`claim-${index}`}>
+                <Paper style={gridItem} elevation={1}>
+                  <Grid container justify="center">
+                    <Grid item>
+                      <FormControlLabel value={claim.type} control={<Radio />} label={claim.name} />
+                      <Typography variant="subtitle1" gutterBottom>
+                        State Fee: {claim.fee} USD
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              </Grid>
+            ))}
           </Grid>
-        </Paper>
-      </Grid>)
+        </RadioGroup>
+      </FormControl>
     );
-
-    return result;
   }
 
   renderClaimInfo() {
@@ -113,9 +118,10 @@ class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInfor
         </Grid>
       </Grid>
 
-
       <Grid container justify="center">
-        {this.renderClaimTypes()}
+        <Grid item>
+          {this.renderClaimTypes()}
+        </Grid>
       </Grid>
 
       <h2>Claim Summary</h2>
@@ -131,7 +137,6 @@ class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInfor
         margin="normal"
         variant="outlined"
       />
-
     </>;
   }
 
@@ -142,25 +147,19 @@ class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInfor
   };
 
   setCaseType = event => {
-    this.props.newClaimStore.setNextButtonDisabled(false);
-
-    let claim = claims.find(claim => claim.type === event.target.value);
+    const caseType = event.target.value;
+    const claim: ClaimType = claims.find(claim => claim.type === caseType);
 
     this.props.newClaimStore.newClaim.fee.fee = claim.fee;
 
-    this.setState({ value: event.target.value });
+    this.setState({ value: caseType });
     runInAction(() => {
-      this.props.newClaimStore.newClaim.claim.case_type = event.target.value;
-      console.log(this.props.newClaimStore.newClaim.claim.case_type);
+      this.props.newClaimStore.newClaim.claim.case_type = caseType;
     });
   };
 
   render() {
     return this.renderClaimInfo();
-  }
-
-  private isChecked(type: string) {
-    return this.props.newClaimStore.newClaim.claim.case_type === type;
   }
 }
 
