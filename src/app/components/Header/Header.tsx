@@ -18,7 +18,6 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import axios from "axios";
 import {runInAction} from "mobx";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -26,6 +25,7 @@ import User, {ROLES} from "app/models/User";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
+import cocoAxios from "app/axiosConfig";
 
 export const TabPanel = (props) => {
     const {children, value, index, ...other} = props;
@@ -153,7 +153,7 @@ class Header extends React.Component<HeaderProps> {
 
     getUserList = () => {
         this.setState({chooseUserLoading: true});
-        axios.get(`http://africa.nortal.com/person-registry/api/v1/persons?dateFrom=1900-05-01T19%3A15%3A41.617Z`, {
+        cocoAxios.get(`/person/api/v1/persons?dateFrom=1900-05-01T19%3A15%3A41.617Z`, {
             headers: {}
         })
             .then(res => {

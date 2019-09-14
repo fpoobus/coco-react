@@ -6,13 +6,13 @@ import {runInAction} from "mobx";
 import {inject, observer} from "mobx-react";
 import AdminStore from "app/stores/AdminStore";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Paper} from "@material-ui/core";
+import cocoAxios from "app/axiosConfig";
 
 
 interface AdminMultiFormProps extends WithStyles<typeof loginStyles> {
@@ -20,7 +20,6 @@ interface AdminMultiFormProps extends WithStyles<typeof loginStyles> {
 }
 
 
-const proxy = "https://commercialcourt.eu:3500/";
 @inject('adminStore')
 @observer
 class AdminMultiForm extends React.Component<AdminMultiFormProps> {
@@ -45,7 +44,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             personCode: 11000000001
             sex: "FEMALE"
          */
-        return axios.post(proxy + 'http://africa.nortal.com/person-registry/api/v1/persons', data, {
+        return cocoAxios.post('/person/api/v1/persons', data, {
             headers: {}
         })
             .then(res => {
@@ -71,7 +70,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
         // Code from location header
 
 
-        return axios.post(proxy + 'http://africa.nortal.com/person-registry/api/v1/birth', data
+        return cocoAxios.post('/person/api/v1/birth', data
         )
             .then(res => {
                 return Promise.resolve(res.headers);
@@ -87,7 +86,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
         givenName: "Karl"
         personCode: "71805050005"
          */
-        return axios.put(proxy + 'http://africa.nortal.com/person-registry/api/v1/persons/' + code, data, {
+        return cocoAxios.put('/person/api/v1/persons/' + code, data, {
             headers: {}
         })
             .then(res => {
@@ -108,7 +107,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             surnameType: "TAKE_HUSBAND"
          */
         // Response location header: http://africa.nortal.com/person-registry/api/v1/marriage/d09efee7-b9a5-4812-806f-18f327b30396
-        return axios.post(proxy + 'http://africa.nortal.com/person-registry/api/v1/marriage', data, {
+        return cocoAxios.post('/person/api/v1/marriage', data, {
             headers: {}
         })
             .then(res => {

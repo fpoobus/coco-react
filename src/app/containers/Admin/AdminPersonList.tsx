@@ -3,8 +3,8 @@ import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
 import {loginStyles} from 'app/containers/Login/styles';
 import {inject, observer} from "mobx-react";
 import AdminStore from "app/stores/AdminStore";
-import axios from "axios";
 import {runInAction} from "mobx";
+import cocoAxios from "app/axiosConfig";
 
 
 interface AdminPersonListProps extends WithStyles<typeof loginStyles> {
@@ -26,7 +26,7 @@ class AdminPersonList extends React.Component<AdminPersonListProps> {
 
     getEntities = () => {
 
-        axios.get(`http://africa.nortal.com/person-registry/api/v1/persons?dateFrom=1900-05-01T19%3A15%3A41.617Z`, {
+        cocoAxios.get(`/person/api/v1/persons?dateFrom=1900-05-01T19%3A15%3A41.617Z`, {
             headers: {}
         })
             .then(res => {
