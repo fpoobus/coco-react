@@ -39,16 +39,16 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
     };
 
     handleClickOpen = () => {
-        this.setState({ modalOpen: true });
+        this.setState({ open: true });
     };
 
     handleClose = () => {
-        this.setState({ modalOpen: false });
+        this.setState({ open: false });
     };
 
     attachFile(file) {
         runInAction(() => {
-            //this.props.newClaimStore.attachedFiles.push(file);
+            this.props.newClaimStore.attachedFiles.push(file);
             this.props.newClaimStore.newClaim.documents.push(file)
         })
         this.handleClose();
