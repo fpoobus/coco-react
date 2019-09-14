@@ -12,7 +12,6 @@ import SettingsBackupRestore from '@material-ui/icons/SettingsBackupRestore';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import CardContent from '@material-ui/core/CardContent/CardContent';
 import Card from '@material-ui/core/Card/Card';
-import List from '@material-ui/core/List/List';
 import ListItem from '@material-ui/core/ListItem/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
@@ -29,6 +28,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {Tooltip} from "@material-ui/core";
 import Divider from "@material-ui/core/es/Divider";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
 import cocoAxios from "app/axiosConfig";
 
 const judgesList = [
@@ -40,6 +43,10 @@ const judgesList = [
     ['Justice Wyatt Edwin', 91],
     ['Justice Samson Chauncey Lee', 17, 'busy']
 ];
+
+const padding = {
+    padding: '10px'
+};
 
 interface DashboardProps extends WithStyles<typeof caseFormStyles> {
     caseStore?: CaseStore;
@@ -195,7 +202,9 @@ class CaseForm extends React.Component<DashboardProps> {
         this.handleMissingData(courtCase);
 
         if (!courtCase) {
-            alert("Valid data is missing!");
+
+            // TODO: Fetch manually
+            //alert("Valid data is missing!");
             courtCase = {
                 claimant: {
                     name: "",
@@ -216,12 +225,14 @@ class CaseForm extends React.Component<DashboardProps> {
 
         return (
             <RootContainer>
-                <Grid container spacing={10}>
+
+                <Grid container spacing={2}>
                     <Grid container className={classes.marginBottom}>
                         {this.getHeader(classes, courtCase)}
                     </Grid>
-                    <Grid container xs={12} spacing={10}>
-                        <Grid item xs={6} className={classes.matchParentHeight}>
+
+                    <Grid container>
+                        <Grid style={padding} item className={classes.matchParentHeight} xs={6}>
                             <Card className={classes.matchParentHeight}>
                                 <CardContent>
                                     <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -241,7 +252,7 @@ class CaseForm extends React.Component<DashboardProps> {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item xs={6} className={classes.matchParentHeight}>
+                        <Grid style={padding} item className={classes.matchParentHeight} xs={6}>
                             <Card className={classes.matchParentHeight}>
                                 <CardContent>
                                     {courtCase.defendant && <>
@@ -263,26 +274,35 @@ class CaseForm extends React.Component<DashboardProps> {
                             </Card>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Paper className={classes.paper}>
-                            <div className={classes.root}>
-                                <List component="nav">
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <CheckIcon/>
-                                        </ListItemIcon>
-                                        <ListItemText>
-                                            Status - {courtCase.status}
-                                        </ListItemText>
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <CheckIcon/>
-                                        </ListItemIcon>
-                                        <ListItemText>
-                                            Fee - {courtCase.fee} {courtCase.paymentStatus}
-                                        </ListItemText>
-                                    </ListItem>
+
+
+                    <Grid style={padding} container>
+                        <Grid item xs={12}>
+                            <Paper className={classes.paper}>
+                                <div className={classes.root}>
+
+
+                                    <Table>
+                                        <TableBody>
+                                            <TableRow key={"row1"}>
+                                                <TableCell style={{ width: "50px" }}>
+                                                    <Avatar>
+                                                        <CheckIcon/>
+                                                    </Avatar>
+                                                </TableCell>
+                                                <TableCell><strong>Status:</strong> {courtCase.status}</TableCell>
+                                            </TableRow>
+                                            <TableRow key={"row2"}>
+                                                <TableCell style={{ width: "50px" }}>
+                                                    <Avatar>
+                                                        <CheckIcon/>
+                                                    </Avatar>
+                                                </TableCell>
+                                                <TableCell><strong>Fee:</strong> {courtCase.fee + ' - ' + courtCase.paymentStatus}</TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+
                                     <div className={classes.alignLeft}>
                                         {this.state.selectedIndex < 0 ?
                                             <Button variant="contained"
@@ -321,25 +341,22 @@ class CaseForm extends React.Component<DashboardProps> {
                                             </MenuItem>
                                         ))}
                                     </Menu>
-                                </List>
-                                <div>
 
                                 </div>
-                            </div>
-                            <br/>
-                            <Divider/>
-                            <br/>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom align={'left'}>
-                                Claim description
-                            </Typography>
+                                <br/>
+                                <Divider/>
+                                <br/>
+                                <Typography className={classes.title} color="textSecondary" gutterBottom align={'left'}>
+                                    Claim description
+                                </Typography>
 
-                            <Typography component="p" align={'left'}>
-                                {courtCase.description}
-                            </Typography>
+                                <Typography component="p" align={'left'}>
+                                    {courtCase.description}
+                                </Typography>
 
-                        </Paper>
+                            </Paper>
+                        </Grid>
                     </Grid>
-
 
                     <Grid container spacing={10}>
                         <Grid item xs={12}>
@@ -360,7 +377,9 @@ class CaseForm extends React.Component<DashboardProps> {
                             </Button>
                         </Grid>
                     </Grid>
+
                 </Grid>
+
             </RootContainer>
         );
     }
@@ -370,7 +389,7 @@ class CaseForm extends React.Component<DashboardProps> {
             <Grid item xs={6}>
                 <Grid container direction="row" alignItems="flex-start">
 
-                    <Grid container item xs={12} justify="flex-start">
+                    <Grid container item justify="flex-start">
                         <Typography variant="h5" gutterBottom>Case: {courtCase.caseNumber}</Typography>
                     </Grid>
                     {/*<Grid container item xs={5} justify="flex-end">*/}
@@ -392,7 +411,7 @@ class CaseForm extends React.Component<DashboardProps> {
                 </Grid>
 
             </Grid>
-            <Grid container item xs={6} justify="flex-end" alignItems={'flex-end'} alignContent={'flex-end'}>
+            <Grid container item justify="flex-end" alignItems={'flex-end'} alignContent={'flex-end'}>
                 <Grid item>
                     <Button variant="contained" color="primary" component={this.judgmentFormLink}
                             className={classes.button}>

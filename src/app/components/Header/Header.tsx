@@ -128,6 +128,7 @@ class Header extends React.Component<HeaderProps> {
             this.getUserList();
         }
         this.setState({chooseUser: isOpen});
+
     };
 
     toNewClaim = props => <Link to="/new-claim" {...props} />;
@@ -175,10 +176,10 @@ class Header extends React.Component<HeaderProps> {
             }))
         }
 
-        filteredUsers.forEach(user => {
+        filteredUsers.forEach((user, index) => {
             let item = (user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName).replace(/\s\s+/g, ' ');
-
-            elements.push(<ListItem onClick={() => {
+            let key = "curUser" + index;
+            elements.push(<ListItem key={key} onClick={() => {
                 this.props.userStore.setUseFromRaw(user);
                 this.handleChooseUser(false);
             }} button>
@@ -248,9 +249,11 @@ class Header extends React.Component<HeaderProps> {
         } as User);
 
         const elements = [];
-        judges.forEach((user: User) => {
+
+        judges.forEach((user: User, index) => {
+            let key = "judge" + index;
             let item = "JUDGE" + " - " + user.firstName + " " + user.middleName + " " + user.lastName;
-            elements.push(<ListItem onClick={() => {
+            elements.push(<ListItem key={key} onClick={() => {
                 this.props.userStore.setUser(user);
                 this.handleChooseUser(false);
             }} button>
@@ -261,6 +264,57 @@ class Header extends React.Component<HeaderProps> {
         return elements;
     }
 
+    renderClerks() {
+
+        const clerks = [];
+        clerks.push({
+            firstName: "Ural",
+            middleName: "Sandra",
+            lastName: "Eustache",
+            personalCode: "111",
+            role: ROLES.CLERK
+        } as User);
+
+        clerks.push({
+            firstName: "Marduk",
+            middleName: "Ishtar",
+            lastName: "Ralph",
+            personalCode: "121",
+            role: ROLES.CLERK
+        } as User);
+
+        clerks.push({
+            firstName: "Iosephus",
+            middleName: "",
+            lastName: "Roar",
+            personalCode: "131",
+            role: ROLES.CLERK
+        } as User);
+
+        clerks.push({
+            firstName: "Vijaya",
+            middleName: "",
+            lastName: "Meklit",
+            personalCode: "141",
+            role: ROLES.CLERK
+        } as User);
+
+
+        const elements = [];
+
+        clerks.forEach((user: User, index) => {
+            let key = "clerk" + index;
+            let item = "CLERK" + " - " + user.firstName + " " + user.middleName + " " + user.lastName;
+            elements.push(<ListItem key={key} onClick={() => {
+                this.props.userStore.setUser(user);
+                this.handleChooseUser(false);
+            }} button>
+                <ListItemText primary={item}/>
+            </ListItem>);
+        });
+
+        return elements;
+    }
 
     a11yProps(index) {
         return {
@@ -284,7 +338,8 @@ class Header extends React.Component<HeaderProps> {
                 <br/>
                 <br/>
                 <br/>
-                <DialogTitle id="responsive-dialog-title">{"Select User to login with"}</DialogTitle>
+                {!this.state.chooseUserLoading &&
+                <DialogTitle id="responsive-dialog-title">{"Select User to login as"}</DialogTitle>}
                 <DialogContent>
 
                     {this.state.chooseUserLoading && <>
@@ -304,6 +359,7 @@ class Header extends React.Component<HeaderProps> {
                                       aria-label="simple tabs example">
                                     <Tab label="Users" {...this.a11yProps(0)} />
                                     <Tab label="Judges" {...this.a11yProps(1)} />
+                                    <Tab label="Clerks" {...this.a11yProps(2)} />
                                 </Tabs>
                             </div>
                         </AppBar>
@@ -320,6 +376,9 @@ class Header extends React.Component<HeaderProps> {
                         </TabPanel>
                         <TabPanel value={this.state.activeTab} index={1}>
                             {this.renderJudges()}
+                        </TabPanel>
+                        <TabPanel value={this.state.activeTab} index={2}>
+                            {this.renderClerks()}
                         </TabPanel>
                     </>}
 
