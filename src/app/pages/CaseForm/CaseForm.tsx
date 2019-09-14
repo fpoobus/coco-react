@@ -6,6 +6,17 @@ import CardContent from '@material-ui/core/CardContent/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid/Grid';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import DescriptionIcon from '@material-ui/icons/Description';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import {Tooltip} from '@material-ui/core';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import cocoAxios from 'app/axiosConfig';
+import {ROLES} from 'app/models/User';
+import UserStore from 'app/stores/UserStore';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
@@ -330,7 +341,7 @@ class CaseForm extends React.Component<DashboardProps> {
 											<TableRow key={'row2'}>
 												<TableCell style={{ width: '50px' }}>
 													<Avatar>
-														<CheckIcon />
+														<AttachMoneyIcon />
 													</Avatar>
 												</TableCell>
 												<TableCell>
