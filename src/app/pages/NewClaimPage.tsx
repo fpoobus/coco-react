@@ -150,9 +150,8 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
 
   private setUser = async (): Promise<void> => {
     this.props.newClaimStore.setLoading(true);
-    cocoAxios.get(`/coco-api/persons/` + this.props.userStore.personalCode, {
-      headers: { 'Access-Control-Allow-Origin': '*' }
-    }).then((res: AxiosResponse<PersonResponse>) => {
+    cocoAxios.get(`/coco-api/persons/` + this.props.userStore.personalCode)
+        .then((res: AxiosResponse<PersonResponse>) => {
       this.props.newClaimStore.setPerson(res.data);
     }).finally(() => this.props.newClaimStore.setLoading(false));
   };

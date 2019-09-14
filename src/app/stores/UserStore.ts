@@ -1,7 +1,8 @@
 import {action, observable} from 'mobx';
-import User, {RawUser} from "app/models/User";
+import User from "app/models/User";
 import * as moment from 'moment';
 import cocoAxios from "app/axiosConfig";
+import {PersonResponse} from "app/model/NewClaim";
 
 class UserStore {
 
@@ -43,9 +44,9 @@ class UserStore {
     }
 
     @action
-    public setUseFromRaw(rawUser: RawUser) {
-        this.user = new User().userFromRaw(rawUser);
-        this.personalCode = rawUser.code;
+    public setUserFromPersonResponse(personResponse: PersonResponse) {
+        this.user = new User().userFromPersonResponse(personResponse);
+        this.personalCode = personResponse.personId;
         this.loginWithUser(this.user);
     }
 
@@ -68,10 +69,6 @@ class UserStore {
         cocoAxios.post(`/coco-api/login`, {
             identityCode: params.identityCode,
             password: params.password
-        }, {
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            }
         })
             .then(res => {
                 if (res.status == 200) {

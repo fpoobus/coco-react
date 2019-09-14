@@ -26,6 +26,8 @@ import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
 import cocoAxios from "app/axiosConfig";
+import {PersonResponse} from "app/model/NewClaim";
+import {AxiosResponse} from "axios";
 
 export const TabPanel = (props) => {
     const {children, value, index, ...other} = props;
@@ -153,10 +155,8 @@ class Header extends React.Component<HeaderProps> {
 
     getUserList = () => {
         this.setState({chooseUserLoading: true});
-        cocoAxios.get(`/person/api/v1/persons?dateFrom=1900-05-01T19%3A15%3A41.617Z`, {
-            headers: {}
-        })
-            .then(res => {
+        cocoAxios.get(`/coco-api/persons`)
+            .then((res: AxiosResponse<PersonResponse[]>) => {
                 runInAction(() => {
                     this.setState({chooseUserLoading: false, allUsers: res.data});
                 });
@@ -167,20 +167,20 @@ class Header extends React.Component<HeaderProps> {
     renderAllUsers() {
         let elements = [];
 
-        let filteredUsers = this.state.allUsers;
+        let filteredUsers: PersonResponse[] = this.state.allUsers;
         if (this.state.filterUsers && this.state.filterUsers !== '') {
             filteredUsers = filteredUsers.filter((user => {
-                let item = (user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName).replace(/\s\s+/g, ' ');
+                let item = (user.personId + " - " + user.firstName + " " + user.lastName).replace(/\s\s+/g, ' ');
 
                 return item.toUpperCase().includes(this.state.filterUsers.toUpperCase());
             }))
         }
 
         filteredUsers.forEach((user, index) => {
-            let item = (user.code + " - " + user.givenName + " " + user.middleNames.join(" ") + user.familyName).replace(/\s\s+/g, ' ');
+            let item = (user.personId + " - " + user.firstName + " " +  user.lastName).replace(/\s\s+/g, ' ');
             let key = "curUser" + index;
             elements.push(<ListItem key={key} onClick={() => {
-                this.props.userStore.setUseFromRaw(user);
+                this.props.userStore.setUserFromPersonResponse(user);
                 this.handleChooseUser(false);
             }} button>
                 <ListItemText primary={item}/>

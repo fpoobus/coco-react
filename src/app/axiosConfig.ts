@@ -5,7 +5,7 @@ const cocoAxios = axios.create({
 });
 
 // Where you would set stuff like your 'Authorization' header, etc ...
-// cocoAxios.defaults.headers.common['Authorization'] = 'AUTH TOKEN FROM INSTANCE';
+cocoAxios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 // Also add/ configure interceptors && all the other cool stuff
 

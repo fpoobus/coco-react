@@ -1,3 +1,5 @@
+import {PersonResponse} from "app/model/NewClaim";
+
 export enum ROLES {
     JUDGE = "JUDGE",
     CLERK = "CLERK",
@@ -16,10 +18,10 @@ export default class User {
         this.role = ROLES.USER;
     }
 
-    userFromRaw(rawUser: RawUser) {
-        this.firstName = rawUser.givenName;
-        this.lastName = rawUser.familyName;
-        this.personalCode = rawUser.code;
+    userFromPersonResponse(personResponse: PersonResponse) {
+        this.firstName = personResponse.firstName;
+        this.lastName = personResponse.lastName;
+        this.personalCode = personResponse.personId;
         return this;
     };
 };
