@@ -66,7 +66,7 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
     this.setUser();
     this.disposer = reaction(() => this.props.userStore.user, () => {
       this.props.newClaimStore.reset();
-      this.setUser()
+      this.setUser();
     });
   }
 
