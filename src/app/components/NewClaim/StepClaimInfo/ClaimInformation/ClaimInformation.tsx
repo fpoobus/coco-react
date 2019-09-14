@@ -68,11 +68,10 @@ class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInfor
   };
 
   componentDidMount(): void {
-    runInAction(() => this.props.newClaimStore.newClaim.claim.case_type = 'bankruptcy')
+    runInAction(() => this.setCaseType({ target: { value: 'bankruptcy' } }))
   }
 
   renderClaimTypes() {
-    //const isChecked = (type: string) => this.props.newClaimStore.newClaim.claim.case_type === type;
     return (
       <FormControl component="fieldset">
         <RadioGroup name="claim-type" value={this.state.value || 'bankruptcy'} onChange={this.setCaseType}>
