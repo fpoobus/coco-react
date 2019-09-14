@@ -64,7 +64,10 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
 
   componentDidMount(): void {
     this.setUser();
-    this.disposer = reaction(() => this.props.userStore.user, () => this.setUser());
+    this.disposer = reaction(() => this.props.userStore.user, () => {
+      this.props.newClaimStore.reset();
+      this.setUser()
+    });
   }
 
   componentWillUnmount(): void {
@@ -74,7 +77,7 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
   constructor(props: NewClaimPageProps, context: any) {
     super(props, context);
 
-    let claim = new URLSearchParams(window.location.search).get('claim');
+    const claim = new URLSearchParams(window.location.search).get('claim');
     this.props.newClaimStore.reset();
     if (claim) {
       console.log('Claim from JSON');
@@ -84,7 +87,7 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
       this.props.newClaimStore.setClaim(new NewClaim());
     }
 
-    let step = new URLSearchParams(window.location.search).get('step');
+    const step = new URLSearchParams(window.location.search).get('step');
     if (step) {
       console.log('found step')
       this.props.newClaimStore.step = parseInt(step);

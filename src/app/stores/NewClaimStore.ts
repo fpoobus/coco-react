@@ -44,6 +44,7 @@ export class NewClaimStore {
     this.attachedFiles = [];
   }
 
+  @action
   reset() {
     this.step = 0;
     this.newClaim = new NewClaim();
