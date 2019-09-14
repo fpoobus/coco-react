@@ -64,6 +64,10 @@ class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInfor
     value: ''
   };
 
+  componentDidMount(): void {
+    this.props.newClaimStore.setNextButtonDisabled(true)
+  }
+
   renderClaimTypes() {
     let result = [];
 
@@ -72,11 +76,7 @@ class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInfor
         <Paper style={gridItem} elevation={1}>
           <Grid container justify="center">
             <Grid item>
-              <RadioGroup
-                name="claim-type"
-                value={this.state.value}
-                onChange={this.setCaseType}
-              >
+              <RadioGroup name="claim-type" value={this.state.value} onChange={this.setCaseType}>
                 <FormControlLabel value={claim.type} control={<Radio />}
                                   label={claim.name} checked={this.isChecked(claim.type)} />
               </RadioGroup>
@@ -142,6 +142,7 @@ class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInfor
   };
 
   setCaseType = event => {
+    this.props.newClaimStore.setNextButtonDisabled(false);
 
     let claim = claims.find(claim => claim.type === event.target.value);
 
