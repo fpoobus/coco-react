@@ -75,7 +75,8 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
             caseType: this.props.newClaimStore.newClaim.claim.case_type,
             description: this.props.newClaimStore.newClaim.claim.description,
             value: user,
-            fee: this.props.newClaimStore.newClaim.fee.fee
+            fee: this.props.newClaimStore.newClaim.fee.fee,
+            documents: this.props.newClaimStore.newClaim.documents
         };
         console.log(data);
 

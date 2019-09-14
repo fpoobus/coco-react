@@ -103,7 +103,7 @@ export class Claim {
 
 export class ClaimDocument {
   name: string;
-  added_by: string;
+  addedBy: string;
   modified: string;
 
   static fromJson(json) {

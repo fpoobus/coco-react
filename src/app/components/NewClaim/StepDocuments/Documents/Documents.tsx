@@ -48,7 +48,8 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
 
     attachFile(file) {
         runInAction(() => {
-            this.props.newClaimStore.attachedFiles.push(file);
+            //this.props.newClaimStore.attachedFiles.push(file);
+            this.props.newClaimStore.newClaim.documents.push(file)
         })
         this.handleClose();
     }
@@ -57,17 +58,17 @@ export class Documents extends React.Component<DocumentsProps, DocumentsState> {
         let files = [];
         files.push({
             name: 'Proof of claim.pdf',
-            added_by: '',
+            addedBy: '',
             modified: '2017.10.11 14:15'
         } as ClaimDocument);
         files.push({
             name: 'Evidence1.png',
-            added_by: '',
+            addedBy: '',
             modified: '2017.10.30 12:33'
         } as ClaimDocument);
         files.push({
             name: 'Copy of emails.pdf',
-            added_by: '',
+            addedBy: '',
             modified: '2018.09.30 20:55'
         } as ClaimDocument);
 
