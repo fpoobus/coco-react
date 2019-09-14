@@ -64,18 +64,19 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
 
   private setPerson(person: PersonResponse) {
     console.log(person);
-    this.props.newClaimStore.personResponse = person;
-    this.state.value = this.props.newClaimStore.newClaim.legalPerson.registry_code;
+    runInAction(() => {
+      this.props.newClaimStore.personResponse = person;
+      this.state.value = this.props.newClaimStore.newClaim.legalPerson.registry_code;
+      this.props.newClaimStore.newClaim.naturalPerson = {
+        first_name: this.props.newClaimStore.personResponse.firstName,
+        last_name: this.props.newClaimStore.personResponse.lastName,
+        address: this.props.newClaimStore.personResponse.address,
+        date_of_birth: this.props.newClaimStore.personResponse.dateOfBirth,
+        personId: this.props.newClaimStore.personResponse.personId
+      } as NaturalPerson;
 
-    this.props.newClaimStore.newClaim.naturalPerson = {
-      first_name: this.props.newClaimStore.personResponse.firstName,
-      last_name: this.props.newClaimStore.personResponse.lastName,
-      address: this.props.newClaimStore.personResponse.address,
-      date_of_birth: this.props.newClaimStore.personResponse.dateOfBirth,
-      personId: this.props.newClaimStore.personResponse.personId
-    } as NaturalPerson;
-
-    this.state.naturalPerson = Object.assign({}, this.props.newClaimStore.newClaim.naturalPerson);
+      this.state.naturalPerson = Object.assign({}, this.props.newClaimStore.newClaim.naturalPerson);
+    });
 
     console.log('Claim obj', this.props.newClaimStore.newClaim);
     console.log(this.props.newClaimStore.personResponse);
@@ -142,21 +143,13 @@ export class Claimant extends React.Component<ClaimantProps, ClaimantState> {
     });
   };
 
-
-  nextStepWithLoader = () => {
-    this.props.newClaimStore.setLoading(true);
-    setTimeout(() => {
-      this.props.newClaimStore.setLoading(false);
-      this.props.newClaimStore.nextStep();
-    }, 800);
-  }
-
   setActiveLegalEntity = (entity: LegalEntityResponse) => {
     console.log('setActiveLegalEntity', entity);
-    this.props.newClaimStore.newClaim.isLegalEntity = true;
-    this.props.newClaimStore.newClaim.legalPerson.name = entity.name;
-    this.props.newClaimStore.newClaim.legalPerson.registry_code = entity.registryCode;
-    // this.nextStepWithLoader();
+    runInAction(() => {
+      this.props.newClaimStore.newClaim.isLegalEntity = true;
+      this.props.newClaimStore.newClaim.legalPerson.name = entity.name;
+      this.props.newClaimStore.newClaim.legalPerson.registry_code = entity.registryCode;
+    });
   };
 
 
