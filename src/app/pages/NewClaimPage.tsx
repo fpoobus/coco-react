@@ -27,6 +27,7 @@ import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { createStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import cocoAxios from 'app/axiosConfig';
+import { reaction } from 'mobx';
 
 const newClaimPageStyles = () => createStyles({
   buttonProgress: {
@@ -59,9 +60,15 @@ const centerAlign = {
 @inject('routerStore', 'newClaimStore', 'userStore')
 @observer
 class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
+  private disposer = null;
 
   componentDidMount(): void {
     this.setUser();
+    this.disposer = reaction(() => this.props.userStore.user, () => this.setUser());
+  }
+
+  componentWillUnmount(): void {
+    this.disposer();
   }
 
   constructor(props: NewClaimPageProps, context: any) {
