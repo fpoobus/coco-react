@@ -11,6 +11,7 @@ class UserStore {
             user.firstName = localStorage.getItem("firstName");
             user.lastName = localStorage.getItem("lastName");
             user.personalCode = localStorage.getItem("personalCode");
+            user.role = localStorage.getItem("role");
             console.log(user);
         }
         this.setUser(user)
@@ -38,6 +39,7 @@ class UserStore {
     public setUser(user: User) {
         this.user = user;
         this.personalCode = user.personalCode;
+        this.loginWithUser(user);
     }
 
     @action
@@ -88,7 +90,6 @@ class UserStore {
             }
         })
             .then(res => {
-                console.log('AAAAAA');
                 this.setVerificationCode(res.data.verificationCode);
                 this.setSessionId(res.data.sessionId);
             })
@@ -117,6 +118,7 @@ class UserStore {
         localStorage.setItem('personalCode', user.personalCode);
         localStorage.setItem('firstName', user.firstName);
         localStorage.setItem('lastName', user.lastName);
+        localStorage.setItem('role', user.role)
     };
 
     public loginWithUser(user: User) {
@@ -124,6 +126,7 @@ class UserStore {
         localStorage.setItem('personalCode', user.personalCode);
         localStorage.setItem('firstName', user.firstName);
         localStorage.setItem('lastName', user.lastName);
+        localStorage.setItem('role', user.role)
     }
 
     public fillUserInfoSmartId = (data: any) => {
@@ -135,6 +138,7 @@ class UserStore {
         localStorage.setItem('personalCode', user.personalCode);
         localStorage.setItem('firstName', user.firstName);
         localStorage.setItem('lastName', user.lastName);
+        localStorage.setItem('role', user.role);
     };
 
     public get currentTime() {

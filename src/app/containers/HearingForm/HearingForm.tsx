@@ -1,13 +1,11 @@
 import * as React from 'react';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
 import {hearingFormStyles} from "app/containers/HearingForm/styles";
 import Grid from '@material-ui/core/Grid/Grid';
 import CourtHearingDate from "app/components/HearingDateContainer/HearingDateContainer";
-import CourtHearingCalendar from "app/components/HearingTimeTable/HearingTimeTable";
 import CourtParticipants from "app/components/CourtParticipants/CourtParticipants";
 import RootContainer from "app/components/Container/RootContainer";
 import Button from "../../../../node_modules/@material-ui/core/Button/Button";
-import HearingCalendar from "app/components/HearingCalender/HearingCalendar";
 import {inject, observer} from "mobx-react";
 import HearingStore from "app/stores/HearingStore";
 import {RouteComponentProps} from "react-router";
@@ -69,17 +67,11 @@ class HearingForm extends React.Component<HearingFormProps> {
                                     <Button variant="contained" color="primary" className={classes.hearingHeaderButton} onClick={this.toClaims}>Cancel</Button>
                                 </div>
                             </Grid>
-                            <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
+                            <Grid item xs={12}>
                                 <CourtHearingDate />
                             </Grid>
-                            <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
-                                <HearingCalendar />
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={7} lg={7} xl={7}>
+                            <Grid item xs={12}>
                                 <CourtParticipants />
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
-                                <CourtHearingCalendar />
                             </Grid>
                         </Grid>
                     </div>

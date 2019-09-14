@@ -1,7 +1,7 @@
 import * as React from 'react';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import { inject, observer } from 'mobx-react';
-import { courtParticipantsStyles } from './styles';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
+import {inject, observer} from 'mobx-react';
+import {courtParticipantsStyles} from './styles';
 import Table from '../../../../node_modules/@material-ui/core/Table/Table';
 import TableHead from '../../../../node_modules/@material-ui/core/TableHead/TableHead';
 import TableRow from '../../../../node_modules/@material-ui/core/TableRow/TableRow';
@@ -13,7 +13,7 @@ import Button from '../../../../node_modules/@material-ui/core/Button/Button';
 import HearingStore from 'app/stores/HearingStore';
 import Modal from '../../../../node_modules/@material-ui/core/Modal/Modal';
 import Typography from '../../../../node_modules/@material-ui/core/Typography/Typography';
-import { PersonResponse } from 'app/model/NewClaim';
+import {PersonResponse} from 'app/model/NewClaim';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
@@ -61,8 +61,6 @@ class CourtParticipants extends React.Component<CourtParticipantsProps> {
     const { hearingStore } = this.props;
     let persons = await hearingStore.getChooseableParticipants();
     hearingStore.setChooseableParticipants(persons);
-
-    console.log(hearingStore.chooseableParticipants);
 
     this.props.hearingStore.setIsParticipantsModalOpen(true);
   };

@@ -1,4 +1,4 @@
-import { Theme } from '@material-ui/core';
+import {Theme} from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 
 export const courtHearingDateStyles = (theme: Theme) => createStyles({
@@ -46,7 +46,6 @@ export const courtHearingDateStyles = (theme: Theme) => createStyles({
         marginTop: '15px',
     },
     dateContainer: {
-      height: '200px',
         paddingBottom: '20px',
         paddingTop: '20px',
         paddingLeft: '20px',

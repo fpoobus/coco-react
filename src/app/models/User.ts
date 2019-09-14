@@ -10,7 +10,11 @@ export default class User {
     lastName?: string;
     personalCode: string;
     password?: string;
-    role: string = ROLES.USER;
+    role: string ;
+
+    constructor() {
+        this.role = ROLES.USER;
+    }
 
     userFromRaw(rawUser: RawUser) {
         this.firstName = rawUser.givenName;

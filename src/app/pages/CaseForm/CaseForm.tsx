@@ -1,6 +1,6 @@
 import * as React from 'react';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import { caseFormStyles } from 'app/pages/CaseForm/styles';
+import withStyles, {WithStyles} from '@material-ui/core/styles/withStyles';
+import {caseFormStyles} from 'app/pages/CaseForm/styles';
 import Grid from '@material-ui/core/Grid/Grid';
 import Paper from '@material-ui/core/Paper/Paper';
 import Avatar from '@material-ui/core/Avatar/Avatar';
@@ -11,20 +11,20 @@ import CardContent from '@material-ui/core/CardContent/CardContent';
 import Card from '@material-ui/core/Card/Card';
 import CheckIcon from '@material-ui/icons/Check';
 import EditOutlinedIcon from '@material-ui/icons/Edit';
-import { inject, observer } from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import CaseStore from 'app/stores/CaseStore';
-import { Link } from 'react-router-dom';
-import { action, runInAction } from 'mobx';
-import { DefendantResponse, PersonResponse } from 'app/model/NewClaim';
+import {Link} from 'react-router-dom';
+import {action, runInAction} from 'mobx';
+import {DefendantResponse, PersonResponse} from 'app/model/NewClaim';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { Tooltip } from '@material-ui/core';
+import {Tooltip} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import cocoAxios from 'app/axiosConfig';
-import { ROLES } from 'app/models/User';
+import {ROLES} from 'app/models/User';
 import UserStore from 'app/stores/UserStore';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -364,7 +364,7 @@ class CaseForm extends React.Component<DashboardProps> {
                         <TableCell style={{ width: '50px' }}>
                           <Avatar>
                             {this.state.selectedIndex < 0 &&
-                            <Tooltip title="This judge has a busy time schedule">
+                            <Tooltip title="Case has no judge!">
                               <ErrorOutlineIcon color='error' />
                             </Tooltip>}
                             {this.state.selectedIndex > 0 && <CheckIcon />}
