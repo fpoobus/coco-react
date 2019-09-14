@@ -330,7 +330,10 @@ class CaseForm extends React.Component<DashboardProps> {
                                                         <CheckIcon/>
                                                     </Avatar>
                                                 </TableCell>
-                                                <TableCell><strong>Status:</strong> {courtCase.status}</TableCell>
+                                                <TableCell><strong>Status:</strong> </TableCell>
+                                                <TableCell>
+                                                    {courtCase.status}
+                                                </TableCell>
                                             </TableRow>
                                             <TableRow key={'row2'}>
                                                 <TableCell style={{width: '50px'}}>
@@ -338,7 +341,11 @@ class CaseForm extends React.Component<DashboardProps> {
                                                         <CheckIcon/>
                                                     </Avatar>
                                                 </TableCell>
-                                                <TableCell><strong>Fee:</strong> {courtCase.fee + ' - ' + courtCase.paymentStatus}
+                                                <TableCell>
+                                                    <strong>Fee:</strong>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {courtCase.fee + ' - ' + courtCase.paymentStatus}
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow key={"row3"}>
@@ -358,7 +365,7 @@ class CaseForm extends React.Component<DashboardProps> {
                                                     ))}
                                                 </TableCell>
                                             </TableRow>
-                                            <TableRow key={'row4'}>
+                                            <TableRow key={'row3'}>
                                                 <TableCell style={{width: '50px'}}>
                                                     <Avatar>
                                                         {this.state.selectedIndex < 0 &&
