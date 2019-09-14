@@ -23,9 +23,8 @@ const DefendantFinderModal = (props: Props): ReactElement<any> => {
     return (
       <>
         {props.legalEntities.map((legalEntity) =>
-          <ListItem button>
-            <ListItemText onClick={() => props.onEntityPick(legalEntity.registryCode)}
-                          primary={legalEntity.registryCode + ' - ' + legalEntity.name} />
+          <ListItem button onClick={() => props.onEntityPick(legalEntity.registryCode)}>
+            <ListItemText primary={legalEntity.registryCode + ' - ' + legalEntity.name} />
           </ListItem>
         )}
       </>

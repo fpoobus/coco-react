@@ -7,7 +7,6 @@ import DefendantFinderModal from 'app/components/NewClaim/StepDefendant/Defendan
 import { DefendantResponse } from 'app/model/NewClaim';
 import DefendantOverView from 'app/components/NewClaim/StepDefendant/Defendant/DefendantOverView';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider/Divider';
 
 export interface DefendantProps {
@@ -79,17 +78,11 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
               <Divider light />
               <br />
             </Grid>
-            <Grid item>
-              <Button
-                size="large"
-                variant="contained"
-                onClick={this.getAllLegalEntities}>
-                Select defendant
-              </Button>
-              <br />
-            </Grid>
             <Grid item xs={12}>
-              <DefendantOverView defendant={this.props.newClaimStore.defendantResponse} />
+              <DefendantOverView
+                onModalOpen={this.getAllLegalEntities}
+                defendant={this.props.newClaimStore.defendantResponse}
+              />
             </Grid>
           </Grid>
         </div>
