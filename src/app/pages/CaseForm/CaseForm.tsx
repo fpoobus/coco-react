@@ -18,6 +18,7 @@ import {action, runInAction} from 'mobx';
 import {DefendantResponse, PersonResponse} from 'app/model/NewClaim';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import DescriptionIcon from '@material-ui/icons/Description';
 import {Tooltip} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -262,7 +263,8 @@ class CaseForm extends React.Component<DashboardProps> {
 
     this.handleMissingData(courtCase);
 
-    return (
+    // @ts-ignore
+      return (
       <RootContainer>
         <Grid container spacing={2}>
           <Grid container className={classes.marginBottom}>
@@ -346,7 +348,7 @@ class CaseForm extends React.Component<DashboardProps> {
                       <TableRow key={'row3'}>
                         <TableCell style={{ width: '50px' }}>
                           <Avatar>
-                            <CheckIcon />
+                            <DescriptionIcon/>
                           </Avatar>
                         </TableCell>
                         <TableCell>
