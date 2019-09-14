@@ -68,7 +68,9 @@ class ClaimInformation extends React.Component<ClaimInformationProps, ClaimInfor
   };
 
   componentDidMount(): void {
-    runInAction(() => this.setCaseType({ target: { value: 'bankruptcy' } }))
+    const caseType = this.props.newClaimStore.newClaim.claim.case_type || 'bankruptcy';
+    runInAction(() => this.setCaseType({ target: { value: caseType } }));
+
   }
 
   renderClaimTypes() {
