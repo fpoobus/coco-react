@@ -3,6 +3,7 @@
     "tslint:recommended"
   ],
   "rules": {
-    "quotemark": [true, "single"]
+    "quotemark": [true, "single"],
+    "indent": [true, "tabs", 2]
   }
 }
