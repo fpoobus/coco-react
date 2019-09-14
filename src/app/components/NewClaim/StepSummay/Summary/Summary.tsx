@@ -5,13 +5,13 @@ import Button from "@material-ui/core/Button";
 import {RouteComponentProps} from "react-router";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
-import axios from 'axios';
 import UserStore from "app/stores/UserStore";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
+import cocoAxios from "app/axiosConfig";
 
 export interface SummaryProps extends RouteComponentProps<any> {
     newClaimStore?: NewClaimStore,
@@ -79,7 +79,7 @@ export class Summary extends React.Component<SummaryProps, SummaryState> {
         };
         console.log(data);
 
-        axios.post('http://139.59.148.64/coco-api/cases', data)
+        cocoAxios.post('/coco-api/cases', data)
             .then(res => {
                 this.props.newClaimStore.setSummaryLoading(false);
             })

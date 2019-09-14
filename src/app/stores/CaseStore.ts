@@ -1,6 +1,6 @@
 import { action, computed, observable } from 'mobx';
-import axios from 'axios';
 import { JudgmentForm } from 'app/model/JudgmentForm';
+import cocoAxios from "app/axiosConfig";
 
 export class CaseStore {
   @observable selectedCaseId: number;
@@ -20,7 +20,7 @@ export class CaseStore {
 
   public async loadCases() {
     this.setLoading(true);
-    const response = await axios.get(`http://139.59.148.64/coco-api/cases`,
+    const response = await cocoAxios.get(`/coco-api/cases`,
       { headers: { 'Access-Control-Allow-Origin': '*' } });
     console.log(response);
     this.setCases(response);

@@ -1,7 +1,7 @@
 import {action, observable} from 'mobx';
-import axios from 'axios';
 import User, {RawUser} from "app/models/User";
 import * as moment from 'moment';
+import cocoAxios from "app/axiosConfig";
 
 class UserStore {
 
@@ -62,7 +62,7 @@ class UserStore {
     }
 
     public doLogIn = (params: { identityCode: string, password: string }) => {
-        axios.post(`http://139.59.148.64/coco-api/login`, {
+        cocoAxios.post(`/coco-api/login`, {
             identityCode: params.identityCode,
             password: params.password
         }, {
@@ -81,7 +81,7 @@ class UserStore {
     };
 
     public doSmartIdLogIn = async (identityCode: string) => {
-        await axios.post(`http://139.59.148.64/coco-api/smartid`, {identityCode: identityCode}, {
+        await cocoAxios.post(`/coco-api/smartid`, {identityCode: identityCode}, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
@@ -94,7 +94,7 @@ class UserStore {
     };
 
     public pollSmartId = (sessionId: string) => {
-        axios.post(`http://139.59.148.64/coco-api/poll`, {sessionId: sessionId}, {
+        cocoAxios.post(`/coco-api/poll`, {sessionId: sessionId}, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }

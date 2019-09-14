@@ -2,13 +2,14 @@ import * as React from 'react';
 import { inject, observer } from 'mobx-react';
 import NewClaimStore from 'app/stores/NewClaimStore';
 import { runInAction } from 'mobx';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import DefendantFinderModal from 'app/components/NewClaim/StepDefendant/Defendant/DefendantFinderModal';
 import { DefendantResponse } from 'app/model/NewClaim';
 import DefendantOverView from 'app/components/NewClaim/StepDefendant/Defendant/DefendantOverView';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider/Divider';
+import cocoAxios from "app/axiosConfig";
 
 export interface DefendantProps {
   newClaimStore: NewClaimStore
@@ -39,7 +40,7 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
 
   getDefendantInto = () => {
     const regCode = this.props.newClaimStore.newClaim.defendant.registryCode;
-    axios.get(`http://139.59.148.64/coco-api/legal-entities/${regCode}`, {
+    cocoAxios.get(`/coco-api/legal-entities/${regCode}`, {
       headers: { 'Access-Control-Allow-Origin': '*' }
     }).then((res: AxiosResponse<DefendantResponse>) => this.props.newClaimStore.setDefendant(res.data))
       .catch(() => {
@@ -48,7 +49,7 @@ export class Defendant extends React.Component<DefendantProps, DefendantState> {
   };
 
   getAllLegalEntities = () => {
-    axios.get(`http://139.59.148.64/coco-api/legal-entities`, {
+    cocoAxios.get(`/coco-api/legal-entities`, {
       headers: {}
     }).then(res => this.setState({ open: true, allLegalEntitiesResult: res.data }))
       .catch(() => {

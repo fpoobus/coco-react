@@ -23,13 +23,13 @@ import Menu from '@material-ui/core/Menu/Menu';
 import {inject, observer} from 'mobx-react';
 import CaseStore from 'app/stores/CaseStore';
 import {Link} from 'react-router-dom';
-import axios from "axios";
 import {action, runInAction} from "mobx";
 import {DefendantResponse, PersonResponse} from "app/model/NewClaim";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {Tooltip} from "@material-ui/core";
 import Divider from "@material-ui/core/es/Divider";
+import cocoAxios from "app/axiosConfig";
 
 const judgesList = [
     ['Justice Foster Edward Abner', 49, 'busy'],
@@ -101,7 +101,7 @@ class CaseForm extends React.Component<DashboardProps> {
         const courtCase = getCase(caseStore);
         courtCase.status = "Pre-trial";
         courtCase.judge = judgesList[this.state.selectedIndex][0];
-        axios.post('http://139.59.148.64/coco-api/cases', courtCase, {headers: {'Access-Control-Allow-Origin': '*'}})
+        cocoAxios.post('/coco-api/cases', courtCase, {headers: {'Access-Control-Allow-Origin': '*'}})
             .then(res => {
                 //done
             })
@@ -114,7 +114,7 @@ class CaseForm extends React.Component<DashboardProps> {
     caseLink = (props, id) => <Link to={'/hearing'} {...props} />;
 
     fetchClaimantLegalEntity = (courtCase) => {
-        axios.get(`http://139.59.148.64/coco-api/legal-entities/` + courtCase.claimantId, {
+        cocoAxios.get(`/coco-api/legal-entities/` + courtCase.claimantId, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
@@ -132,7 +132,7 @@ class CaseForm extends React.Component<DashboardProps> {
     };
 
     fetchPersonClaimantInfo = (courtCase) => {
-        axios.get(`http://139.59.148.64/coco-api/persons/` + courtCase.claimantId, {
+        cocoAxios.get(`/coco-api/persons/` + courtCase.claimantId, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }
@@ -151,7 +151,7 @@ class CaseForm extends React.Component<DashboardProps> {
     };
 
     fetchDefendantInfo = (courtCase) => {
-        axios.get(`http://139.59.148.64/coco-api/legal-entities/` + courtCase.defendantId, {
+        cocoAxios.get(`/coco-api/legal-entities/` + courtCase.defendantId, {
             headers: {
                 'Access-Control-Allow-Origin': '*'
             }

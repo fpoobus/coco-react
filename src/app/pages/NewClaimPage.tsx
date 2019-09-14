@@ -25,6 +25,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
 import { createStyles } from '@material-ui/core';
+import cocoAxios from "app/axiosConfig";
 
 const newClaimPageStyles = () => createStyles({
   buttonProgress: {
@@ -134,7 +135,7 @@ class NewClaimPage extends React.Component<NewClaimPageProps, IndexPageState> {
 
   setUser = async (): Promise<void> => {
     this.props.newClaimStore.setLoading(true);
-    axios.get(`http://139.59.148.64/coco-api/persons/` + this.props.userStore.personalCode, {
+    cocoAxios.get(`/coco-api/persons/` + this.props.userStore.personalCode, {
       headers: { 'Access-Control-Allow-Origin': '*' }
     }).then((res: AxiosResponse<PersonResponse>) => {
       this.props.newClaimStore.setPerson(res.data);
