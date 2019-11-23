@@ -55,7 +55,7 @@ class CalendarCard extends React.Component<DashboardProps> {
                     <Calendar
                         selectRange={false}
                         className={classes.root}
-                        calendarType="Arabic"
+                        calendarType="ISO 8601"
                         tileContent={this.returnCalendarTileNotices}
                         onClickDay={this.selectHearingClick}
                         value={hearingsDataStore.userHearingDates.length > 0 ? new Date(moment.now()) : new Date(moment.now())}/>
