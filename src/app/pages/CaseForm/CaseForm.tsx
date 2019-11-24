@@ -463,16 +463,16 @@ class CaseForm extends React.Component<DashboardProps> {
 				</Grid>
 			</Grid>
 			<Grid container item justify="flex-end" alignItems={'flex-end'} alignContent={'flex-end'}>
-				<Grid item>
+                <Grid item>
+                    {this.props.userStore.user.role !== ROLES.USER &&
+                    <Button variant="contained" color="primary" component={this.hearingLink} className={classes.button}>
+                      Hearing
+                    </Button>}
+                </Grid>
+                <Grid item>
 					{this.props.userStore.user.role === ROLES.JUDGE &&
           <Button variant="contained" color="primary" component={this.judgmentFormLink} className={classes.button}>
             Judgment
-          </Button>}
-				</Grid>
-				<Grid item>
-					{this.props.userStore.user.role !== ROLES.USER &&
-          <Button variant="contained" color="primary" component={this.hearingLink} className={classes.button}>
-            Hearing
           </Button>}
 				</Grid>
 				<Grid item>
