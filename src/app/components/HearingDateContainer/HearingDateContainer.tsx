@@ -68,7 +68,6 @@ class HearingDateContainer extends React.Component<CourtHearingDateProps> {
                                 aria-labelledby="alert-dialog-title"
                                 aria-describedby="alert-dialog-description"
                             >
-                                <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
                                 <DialogContent>
                                     <HearingCalendar />
                                 </DialogContent>
