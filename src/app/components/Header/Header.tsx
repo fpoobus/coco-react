@@ -491,7 +491,8 @@ class Header extends React.Component<HeaderProps> {
 								</Tabs>
 								<MenuItem onClick={() => this.handleChooseUser(true)}>
 									<Typography
-										className={classes.typo}>{this.props.userStore.user.personalCode}&nbsp;</Typography>
+										className={classes.typo}>{this.props.userStore.getUserFullName()}&nbsp;
+									</Typography>
 									<img className={classes.logoutIcon} src="../../../assets/icons/cog.svg" alt="No image" />
 								</MenuItem>
 							</Toolbar>
