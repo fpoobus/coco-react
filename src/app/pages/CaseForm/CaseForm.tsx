@@ -237,7 +237,8 @@ class CaseForm extends React.Component<DashboardProps> {
 		});
 
 		if(courtCase.judge) {
-            this.state.selectedIndex = judgesList.findIndex((option,index) => option[0] === courtCase.judge);
+            this.state.selectedIndex = judgesList.findIndex((option) => option[0] === courtCase.judge);
+            this.props.caseStore.setJudge(courtCase.judge);
         }
 
 
