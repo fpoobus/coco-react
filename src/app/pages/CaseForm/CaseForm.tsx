@@ -236,6 +236,11 @@ class CaseForm extends React.Component<DashboardProps> {
 			return c.id === parseInt(caseId);
 		});
 
+		if(courtCase.judge) {
+            this.state.selectedIndex = judgesList.findIndex((option,index) => option[0] === courtCase.judge);
+        }
+
+
 		if (!courtCase) {
 
 			// TODO: Fetch manually

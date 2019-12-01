@@ -66,8 +66,7 @@ class HearingDateContainer extends React.Component<CourtHearingDateProps> {
                                 onClose={() => this.setDateModalOpen(false)}
                                 className={'hearing-dialog'}
                                 aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
-                            >
+                                aria-describedby="alert-dialog-description">
                                 <DialogContent>
                                     <HearingCalendar />
                                 </DialogContent>
