@@ -7,8 +7,10 @@ const DEBUG = false;
 export class CaseStore {
     @observable selectedCaseId: number;
     @observable cases = observable.array<any>();
+    @observable hearings = observable.array<any>();
     @observable judge: string;
     @observable loading: boolean;
+    @observable isRegisteringSuccess: boolean = false;
     @observable judgmentForm: JudgmentForm = {
         type: 'default',
         sanction: -1,
@@ -33,6 +35,15 @@ export class CaseStore {
     public setCases(response) {
         this.cases.replace(response.data);
     }
+
+    @action setHearings(response){
+        this.hearings.replace(response)
+    }
+
+    @action
+    public setIsRegisteringSuccess = (isRegisteringSuccess: boolean) => {
+        this.isRegisteringSuccess = isRegisteringSuccess;
+    };
 
     @action
     public setLoading(loading: boolean): void {

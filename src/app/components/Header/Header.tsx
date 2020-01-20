@@ -406,7 +406,7 @@ class Header extends React.Component<HeaderProps> {
 
 								<img className={classes.headerLogo} src="../../../assets/icons/design-tool-quill-2.svg"
 										 alt="No image" />
-								<Typography className={classes.typo}>COCO</Typography>
+								<Typography className={classes.typo}>e-Court</Typography>
 							</MenuItem>
 							<MenuItem onClick={this.openMobileMenu}
 												aria-owns={this.state.anchorEl ? 'mobile-menu' : undefined}
@@ -470,7 +470,7 @@ class Header extends React.Component<HeaderProps> {
 
 									<img className={classes.headerLogo} src="../../../assets/icons/design-tool-quill-2.svg"
 											 alt="No image" />
-									<Typography className={classes.typo}>COCO</Typography>
+									<Typography variant={"h3"} className={classes.typo}>e-Court</Typography>
 								</MenuItem>
 
 
