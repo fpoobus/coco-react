@@ -569,17 +569,19 @@ class CaseForm extends React.Component<DashboardProps> {
                                 <Table aria-label="simple table">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="left">Date</TableCell>
-                                            <TableCell align="left">Judge</TableCell>
-                                            <TableCell align="left">Participants</TableCell>
+                                            <TableCell align="left">
+                                              <Typography variant={"h6"}>Date</Typography>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                              <Typography variant={"h6"}>Judge</Typography>
+                                            </TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {caseStore.hearings.map(row => (
                                             <TableRow key={row.name}>
-                                                <TableCell align="left">{row.startTime}</TableCell>
+                                                <TableCell align="left">{new Date(row.startTime).toDateString()}</TableCell>
                                                 <TableCell align="left">{row.judge}</TableCell>
-                                                <TableCell align="left">{row.participants.lenght}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
