@@ -40,6 +40,7 @@ import {Link} from 'react-router-dom';
 import HearingStore from "app/stores/HearingStore";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
+import {judgmentSanctions, judgmentTypes} from "app/model/JudgmentForm";
 
 const judgesList = [
     ['Justice Foster Edward Abner', 49, 'busy'],
@@ -165,6 +166,18 @@ class CaseForm extends React.Component<DashboardProps> {
         return courtCase.status == 'CLOSED';
     }
 
+    registerButtonMessage() {
+        if(this.isCaseClosed()){
+            return 'Case is closed'
+        }
+        if (this.isCaseRegistered()) {
+            return 'Case is already registered'
+        }
+        if (this.isJudgeSelected()) {
+            return 'Not authorised to register case'
+        }
+    }
+
     fetchClaimantLegalEntity = (courtCase) => {
         cocoAxios.get(`/coco-api/legal-entities/` + courtCase.claimantId, {
             headers: {
@@ -225,7 +238,7 @@ class CaseForm extends React.Component<DashboardProps> {
             .then(res => {
                 this.props.caseStore.setHearings(res);
             }).catch(e => {
-                console.error(e);
+            console.error(e);
         });
     };
 
@@ -471,16 +484,21 @@ class CaseForm extends React.Component<DashboardProps> {
                         </Grid>
                     </Grid>
                     {this.renderHearings()}
+                    {this.renderJudgement(courtCase)}
                     <Grid container spacing={10}>
                         <Grid item xs={12}>
-                            <Button disabled={!this.isJudgeSelected() || this.isCaseRegistered()}
-                                    variant="contained" color="primary"
-                                    className={classes.button}
-                                    onClick={this.registerCase}
-                                    component={props => this.caseLink(props, caseStore.selectedCaseId)}>
-                                Register
-                                <Send className={classes.rightIcon}/>
-                            </Button>
+                            <Tooltip title={this.registerButtonMessage()}>
+                                <span>
+                                <Button disabled={!this.isJudgeSelected() || this.isCaseRegistered()}
+                                        variant="contained" color="primary"
+                                        className={classes.button}
+                                        onClick={this.registerCase}
+                                        component={props => this.caseLink(props, caseStore.selectedCaseId)}>
+                                    Register
+                                    <Send className={classes.rightIcon}/>
+                                </Button>
+                                </span>
+                            </Tooltip>
                             <Button variant="contained" color="secondary" className={classes.button}>
                                 Return to claimant
                                 <SettingsBackupRestore/>
@@ -509,24 +527,32 @@ class CaseForm extends React.Component<DashboardProps> {
             </Grid>
             <Grid container item justify="flex-end" alignItems={'flex-end'} alignContent={'flex-end'}>
                 <Grid item>
+                    <Tooltip title={this.isCaseClosed()? "Case is closed": ''}>
+                        <span>
                     {this.props.userStore.user.role !== ROLES.USER &&
                     <Button variant="contained"
-                            disabled={this.isCaseClosed()}
+                            disabled={this.isCaseClosed() || !this.isCaseRegistered()}
                             color="primary"
                             component={props => this.hearingLink(props, this.props.caseStore.selectedCaseId)}
                             className={classes.button}>
                       Hearing
                     </Button>}
+                        </span>
+                    </Tooltip>
                 </Grid>
                 <Grid item>
+                    <Tooltip title={this.isCaseClosed()? "Case is closed": ''}>
+                        <span>
                     {this.props.userStore.user.role === ROLES.JUDGE &&
                     <Button variant="contained"
-                            //disabled={this.isCaseClosed()}
+                            disabled={this.isCaseClosed() || !this.isCaseRegistered()}
                             color="primary"
                             component={this.judgmentFormLink}
                             className={classes.button}>
                       Judgment
                     </Button>}
+                        </span>
+                    </Tooltip>
                 </Grid>
                 <Grid item>
                     <Button variant="contained" color="primary" className={classes.button} onClick={() => window.print()}>
@@ -544,7 +570,7 @@ class CaseForm extends React.Component<DashboardProps> {
         }, 5000);
         return (
             <Snackbar open={this.props.caseStore.isRegisteringSuccess}
-                      anchorOrigin={{ horizontal: 'center', vertical: 'top' }}>
+                      anchorOrigin={{horizontal: 'center', vertical: 'top'}}>
                 <SnackbarContent
                     className={"error"}
                     aria-describedby="client-snackbar"
@@ -557,7 +583,7 @@ class CaseForm extends React.Component<DashboardProps> {
     renderHearings() {
         const {classes, caseStore} = this.props;
         return (
-            <Grid container >
+            <Grid container>
                 <Grid style={padding} item xs={12}>
                     <Card>
                         {caseStore.hearings.length != 0 &&
@@ -566,31 +592,73 @@ class CaseForm extends React.Component<DashboardProps> {
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
                               Hearings
                             </Typography>}
-                                <Table aria-label="simple table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell align="left">
-                                              <Typography variant={"h6"}>Date</Typography>
-                                            </TableCell>
-                                            <TableCell align="left">
-                                              <Typography variant={"h6"}>Judge</Typography>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {caseStore.hearings.map(row => (
-                                            <TableRow key={row.name}>
-                                                <TableCell align="left">{new Date(row.startTime).toDateString()}</TableCell>
-                                                <TableCell align="left">{row.judge}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
+                          <Table aria-label="simple table">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell align="left">
+                                  <Typography variant={"h6"}>Date</Typography>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography variant={"h6"}>Judge</Typography>
+                                </TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {caseStore.hearings.map(row => (
+                                    <TableRow key={row.name}>
+                                        <TableCell align="left">{new Date(row.startTime).toDateString()}</TableCell>
+                                        <TableCell align="left">{row.judge}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                          </Table>
                         </CardContent>}
                     </Card>
                 </Grid>
             </Grid>
         )
+    }
+
+    renderJudgement(courtCase: any) {
+        const {classes} = this.props;
+        if (this.isCaseClosed()) {
+            return (
+                <Grid container>
+                    <Grid style={padding} item xs={12}>
+                        <Card>
+                            <CardContent>
+                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                    Judgement
+                                </Typography>
+                                <Table aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell align="left">
+                                                <Typography variant={"h6"}>Judgement type</Typography>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <Typography variant={"h6"}>Sanctions</Typography>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <Typography variant={"h6"}>Judgement summary</Typography>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell align="left">{judgmentTypes.find(s => s.type == courtCase.judgmentFormType).label}</TableCell>
+                                            <TableCell align="left">{judgmentSanctions.find(s => s.type == courtCase.sanction).label}</TableCell>
+                                            <TableCell align="left">{courtCase.judgmentDescription}</TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+            )
+        }
+
     }
 }
 
