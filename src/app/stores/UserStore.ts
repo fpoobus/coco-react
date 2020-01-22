@@ -150,6 +150,12 @@ class UserStore {
         this.verificationCode = 0;
         this.sessionId = "";
         this.loginError = false;
+    };
+
+    public getUserFullName () {
+        if (this.user.middleName)
+            return this.user.firstName + ' ' + this.user.middleName + ' ' + this.user.lastName;
+        else return this.user.firstName + ' ' + this.user.lastName
     }
 }
 

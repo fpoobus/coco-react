@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from '@material-ui/core';
 
 export interface FooterProps {
 }
@@ -28,7 +29,6 @@ const footerContent = {
     marginTop: '0.6rem',
     fontSize: '14px'
 } as React.CSSProperties;
-
 
 const footersMobile = {
     bottom: 0,
@@ -72,10 +72,14 @@ export class Footer extends React.Component<FooterProps, FooterState> {
         if (window.innerWidth < 835) {
             return <footer style={footersMobile}>
                 <div style={footerContentMobile}>
-                    <div style={mobileContentSpacer}><img width="30px"
-                                                          src="../../assets/img/itl_logo.svg"></img> Infotehnoloogia ja
-                        Telekommunikatsiooni Liit
-                    </div>
+                    <Link href="https://e-estoniax.com/" color="inherit">
+                        {'color="inherit"'}
+                        <div style={mobileContentSpacer}><img width="30px"
+                                                              src="../../assets/img/itl_logo.svg"></img>
+                            Estonian ICT Cluster
+
+                        </div>
+                    </Link>
                     <div style={mobileContentSpacer}>Lõõtsa 6, 11415 Tallinn</div>
                     <div style={mobileContentSpacer}>6177 145</div>
                     <div style={mobileContentSpacer}>info@itl.ee</div>
@@ -83,13 +87,16 @@ export class Footer extends React.Component<FooterProps, FooterState> {
                         <img style={estoniaImg} src="../../assets/img/edc-logo-300.png"></img></div>
                 </div>
             </footer>
-        } else {
+        }
+        else {
             return (
                 <footer style={footers}>
                     <div style={footerContent}>
-                        <div><img width="20px" src="../../assets/img/itl_logo.svg"></img> Infotehnoloogia ja
-                            Telekommunikatsiooni Liit
-                        </div>
+                        <Link href="https://e-estoniax.com/" color="inherit">
+                            <div><img width="20px" src="../../assets/img/itl_logo.svg"></img>
+                                Estonian ICT Cluster
+                            </div>
+                        </Link>
                         <div>Lõõtsa 6, 11415 Tallinn</div>
                         <div>6177 145</div>
                         <div>info@itl.ee</div>

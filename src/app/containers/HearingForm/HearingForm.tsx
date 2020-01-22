@@ -11,12 +11,22 @@ import HearingStore from "app/stores/HearingStore";
 import {RouteComponentProps} from "react-router";
 import Snackbar from '@material-ui/core/Snackbar/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent/SnackbarContent';
+import CaseStore from "app/stores/CaseStore";
 
 interface HearingFormProps extends WithStyles<typeof hearingFormStyles>, RouteComponentProps<any> {
     hearingStore?: HearingStore
+    caseStore?: CaseStore
 }
 
-@inject('hearingStore')
+function getCase(caseStore: CaseStore) {
+    let caseId = new URLSearchParams(window.location.search).get('id');
+    caseStore.setSelectedCaseId(+caseId);
+    return caseStore.casesData.find(c => {
+        return c.id === parseInt(caseId);
+    });
+}
+
+@inject('hearingStore', 'caseStore')
 @observer
 class HearingForm extends React.Component<HearingFormProps> {
 
@@ -31,6 +41,9 @@ class HearingForm extends React.Component<HearingFormProps> {
         const { hearingStore } = this.props;
 
         const hearing = hearingStore.createPayload();
+        const { caseStore } = this.props;
+        const courtCase = getCase(caseStore);
+        hearing.caseNumber = courtCase.caseNumber;
         if(hearingStore.isHearingFormCompleted(hearing) && hearingStore.activeTime){
             await this.props.hearingStore.createHearing(hearing);
             this.props.history.push('/');
@@ -46,6 +59,7 @@ class HearingForm extends React.Component<HearingFormProps> {
 
     render() {
         const { classes } = this.props;
+
 
         return (
             <React.Fragment>

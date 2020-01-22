@@ -35,7 +35,8 @@ class ClientCases extends React.Component<ClientCasesProps> {
 
         if (this.props.userStore.user.role === ROLES.USER) {
             let code = this.props.userStore.user.personalCode;
-            caseData = caseData.filter(caseItem => caseItem.claimantId === code || caseItem.defendantId === code);
+            //values stands for person who made the claim (important in case of showing cases for legal entities)
+            caseData = caseData.filter(caseItem => caseItem.claimantId === code || caseItem.value === code || caseItem.defendantId === code);
         }
 
         return (
