@@ -1,6 +1,7 @@
 import {action, computed, observable} from 'mobx';
 import {JudgmentForm} from 'app/model/JudgmentForm';
 import cocoAxios from "app/axiosConfig";
+import {ROLES} from "app/models/User";
 
 const DEBUG = false;
 
@@ -102,11 +103,17 @@ export class CaseStore {
             })
     };
 
-    public async loadUserCases(personId: string)  {
+    public async loadUserCases(personId: string, role: string)  {
         this.setLoadingUser(true);
-        const response = await cocoAxios.get(`/coco-api/cases/byPerson/${personId}`,
-            { headers: { 'Access-Control-Allow-Origin': '*' } });
-        this.userCases = response.data;
+        if (role == ROLES.JUDGE || role == ROLES.CLERK) {
+            const response = await cocoAxios.get(`/coco-api/cases`,
+                { headers: { 'Access-Control-Allow-Origin': '*' } });
+            this.userCases = response.data;
+        }else{
+            const response = await cocoAxios.get(`/coco-api/cases/byPerson/${personId}`,
+                { headers: { 'Access-Control-Allow-Origin': '*' } });
+            this.userCases = response.data;
+        }
         this.setLoadingUser(false);
     }
 }

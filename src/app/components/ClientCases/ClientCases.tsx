@@ -94,7 +94,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
     constructor(props: ClientCasesProps) {
         super(props);
         this.props.caseStore.loadCases();
-       this.props.caseStore.loadUserCases(this.props.userStore.user.personalCode);
+        this.props.caseStore.loadUserCases(this.props.userStore.user.personalCode, this.props.userStore.user.role);
     }
 
     render() {
