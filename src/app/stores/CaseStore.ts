@@ -90,6 +90,11 @@ export class CaseStore {
         this.selectedCaseId = id;
     }
 
+    @action.bound
+    public getSelectedCaseId() {
+        return this.selectedCaseId;
+    }
+
     public updateCase() {
         const data = this.casesData.find(c => {
             return c.id === this.selectedCaseId;

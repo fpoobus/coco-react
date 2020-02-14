@@ -79,13 +79,38 @@ class HearingStore {
         this.chooseableParticipants = persons;
     }
 
-    async getChooseableParticipants() {
-        let allPersons = await this.getPersons();
-        return this.mapPersonsToUsers(allPersons);
+    async getChooseableParticipants(courtCase: any): Promise<User[]> {
+        let allPersons: PersonResponse[];
+        if (courtCase.claimantId == courtCase.value) {
+            return Promise.all([
+                this.getPersons(),
+                this.getEntityPersons(courtCase.defendantId)
+            ]).then(value => {
+                allPersons = value[0].filter(person => person.personId == courtCase.claimantId);
+                allPersons = allPersons.concat(value[1]);
+                return this.mapPersonsToUsers(allPersons);
+            });
+        }
+        else {
+            return await Promise.all([
+                this.getEntityPersons(courtCase.claimantId),
+                this.getEntityPersons(courtCase.defendantId)
+            ]).then(value => {
+                allPersons = value[0];
+                allPersons = allPersons.concat(value[1]);
+                return this.mapPersonsToUsers(allPersons);
+            })
+        }
     }
 
     async getPersons(): Promise<Array<PersonResponse>> {
         const response = await cocoAxios.get(`/coco-api/persons`,
+            {headers: {'Access-Control-Allow-Origin': '*'}});
+        return response.data;
+    };
+
+    async getEntityPersons(entityId: string): Promise<Array<PersonResponse>> {
+        const response = await cocoAxios.get(`/coco-api/persons/byCompanyCode/${entityId}`,
             {headers: {'Access-Control-Allow-Origin': '*'}});
         return response.data;
     };
