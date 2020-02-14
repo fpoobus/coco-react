@@ -26,176 +26,180 @@ import CaseStore from 'app/stores/CaseStore';
 
 
 interface CourtParticipantsProps extends WithStyles<typeof courtParticipantsStyles> {
-  hearingStore?: HearingStore;
-  caseStore?: CaseStore
-  chooseableParticipants?: PersonResponse[];
+    hearingStore?: HearingStore;
+    caseStore?: CaseStore
+    chooseableParticipants?: PersonResponse[];
 }
 
 function getModalStyle() {
-  const top = 50;
-  const left = 50;
+    const top = 50;
+    const left = 50;
 
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
+    return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+    };
 }
 
 @inject('hearingStore', 'caseStore')
 @observer
 class CourtParticipants extends React.Component<CourtParticipantsProps> {
 
-  componentDidMount() {
-    this.props.hearingStore.emptyParticipants();
-    this.props.hearingStore.setJudge(this.props.caseStore.judge);
-  }
+    componentDidMount() {
+        this.props.hearingStore.emptyParticipants();
+        this.props.hearingStore.setJudge(this.props.caseStore.judge);
+    }
 
-  componentWillUnmount() {
-    this.props.hearingStore.clearJudge();
-  }
+    componentWillUnmount() {
+        this.props.hearingStore.clearJudge();
+    }
 
-  handleOpen = async () => {
-    this.props.hearingStore.setParticipantsLoading(true);
-    this.stopLoading();
-    const { hearingStore } = this.props;
-    let persons = await hearingStore.getChooseableParticipants();
-    hearingStore.setChooseableParticipants(persons);
+    handleOpen = async () => {
+        this.props.hearingStore.setParticipantsLoading(true);
+        this.stopLoading();
+        const {hearingStore, caseStore} = this.props;
+        const caseId = caseStore.getSelectedCaseId();
+        let courtCase = caseStore.casesData.find(c => {
+            return c.id === parseInt(caseId.toString());
+        });
+        let persons = await hearingStore.getChooseableParticipants(courtCase);
+        hearingStore.setChooseableParticipants(persons);
 
-    this.props.hearingStore.setIsParticipantsModalOpen(true);
-  };
+        this.props.hearingStore.setIsParticipantsModalOpen(true);
+    };
 
-  handleClose = () => {
-    this.props.hearingStore.setIsParticipantsModalOpen(false)
-  };
+    handleClose = () => {
+        this.props.hearingStore.setIsParticipantsModalOpen(false)
+    };
 
-  stopLoading = () => {
-    setTimeout(() => {
-      this.props.hearingStore.setParticipantsLoading(false);
-    }, 2000)
-  };
+    stopLoading = () => {
+        setTimeout(() => {
+            this.props.hearingStore.setParticipantsLoading(false);
+        }, 3000)
+    };
 
-  renderParticipantChoiceLine = (user: User): JSX.Element => {
-    const { hearingStore } = this.props;
+    renderParticipantChoiceLine = (user: User): JSX.Element => {
+        const {hearingStore} = this.props;
 
-    return (
-      <ListItem button onClick={() => hearingStore.toggleParticipant(user)}>
-        <ListItemText primary={`${user.firstName} ${user.lastName}`} />
-        <ListItemSecondaryAction>
-          <Checkbox
-            checked={hearingStore.participantExists(user)}
-            onClick={() => hearingStore.toggleParticipant(user)}
-          />
-        </ListItemSecondaryAction>
-      </ListItem>
-    );
-  };
+        return (
+            <ListItem button onClick={() => hearingStore.toggleParticipant(user)}>
+                <ListItemText primary={`${user.firstName} ${user.lastName}`}/>
+                <ListItemSecondaryAction>
+                    <Checkbox
+                        checked={hearingStore.participantExists(user)}
+                        onClick={() => hearingStore.toggleParticipant(user)}
+                    />
+                </ListItemSecondaryAction>
+            </ListItem>
+        );
+    };
 
-  renderParticipantChoices = () => {
-    return (
-      <List dense>
-        {this.props.hearingStore.chooseableParticipants.map((person) => this.renderParticipantChoiceLine(person))}
-      </List>
-    );
-  };
+    renderParticipantChoices = () => {
+        return (
+            <List dense>
+                {this.props.hearingStore.chooseableParticipants.map((person) => this.renderParticipantChoiceLine(person))}
+            </List>
+        );
+    };
 
-  renderLoaderParticipants() {
-    this.stopLoading();
-    return this.props.hearingStore.participantsLoading && <>
-      <Grid container justify="center">
-        <Grid item>
+    renderLoaderParticipants() {
+        this.stopLoading();
+        return this.props.hearingStore.participantsLoading && <>
+          <Grid container justify="center">
+            <Grid item>
 
-          <CircularProgress size={50} />
+              <CircularProgress size={50}/>
 
-        </Grid>
-      </Grid>
-    </>;
-  }
+            </Grid>
+          </Grid>
+        </>;
+    }
 
-  renderModal = () => {
-    const { classes } = this.props;
+    renderModal = () => {
+        const {classes} = this.props;
 
-    return (
-      <>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.props.hearingStore.isParticipantsModalOpen ? this.props.hearingStore.isParticipantsModalOpen : false}
-          onClose={this.handleClose}
-        >
-          <div style={getModalStyle()} className={classes.paper}>
-            {this.renderLoaderParticipants()}
-            {!this.props.hearingStore.participantsLoading && this.renderModalTableData()}
-          </div>
-        </Modal>
-      </>
-    );
-  };
-  renderModalTableData = () => {
-    const { classes } = this.props;
-    return (
-      <>
-        <Typography variant="h6" id="modal-title">
-          Choose participants
-        </Typography>
-        {this.renderParticipantChoices()}
-        <Button className={classes.saveParticipants} color="primary" variant="contained"
-                onClick={this.handleClose}>Continue</Button>
-      </>
-    );
-  };
+        return (
+            <>
+                <Modal
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    open={this.props.hearingStore.isParticipantsModalOpen ? this.props.hearingStore.isParticipantsModalOpen : false}
+                    onClose={this.handleClose}
+                >
+                    <div style={getModalStyle()} className={classes.paper}>
+                        {this.renderLoaderParticipants()}
+                        {!this.props.hearingStore.participantsLoading && this.renderModalTableData()}
+                    </div>
+                </Modal>
+            </>
+        );
+    };
+    renderModalTableData = () => {
+        const {classes} = this.props;
+        return (
+            <>
+                <Typography variant="h6" id="modal-title">
+                    Choose participants
+                </Typography>
+                {this.renderParticipantChoices()}
+                <Button className={classes.saveParticipants} color="primary" variant="contained"
+                        onClick={this.handleClose}>Continue</Button>
+            </>
+        );
+    };
 
-  render() {
-    const { classes, hearingStore } = this.props;
+    render() {
+        const {classes, hearingStore} = this.props;
 
-    return (
-      <>
-        {this.renderModal()}
-        <Paper>
-          <div>
-            <p className={classes.heading}>Participants</p>
-            <Button variant="contained" color="primary" className={classes.addParticipants}
-                    onClick={this.handleOpen}>+ Add participants</Button>
-          </div>
-          <Divider />
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Full name</TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Send summon</TableCell>
-                <TableCell>Attend hearing</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.props.caseStore.judge &&
-              <TableRow key={'judge'}>
-                <TableCell component="th" scope="row">
-                  {this.props.caseStore.judge}
-                </TableCell>
-                <TableCell>Judge</TableCell>
-                <TableCell>Yes</TableCell>
-                <TableCell>Yes</TableCell>
-              </TableRow>
-              }
-              {hearingStore.participants.map(participant => {
-                return (
-                  <TableRow key={participant.personalCode}>
-                    <TableCell component="th" scope="row">
-                      {participant.firstName} {participant.lastName}
-                    </TableCell>
-                    <TableCell>Claimant</TableCell>
-                    <TableCell>Yes</TableCell>
-                    <TableCell>Yes</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
-      </>
-    );
-  }
+        return (
+            <>
+                {this.renderModal()}
+                <Paper>
+                    <div>
+                        <p className={classes.heading}>Participants</p>
+                        <Button variant="contained" color="primary" className={classes.addParticipants}
+                                onClick={this.handleOpen}>+ Add participants</Button>
+                    </div>
+                    <Divider/>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Full name</TableCell>
+                                <TableCell>Type</TableCell>
+                                <TableCell>Send summon</TableCell>
+                                <TableCell>Attend hearing</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.props.caseStore.judge &&
+                            <TableRow key={'judge'}>
+                              <TableCell component="th" scope="row">
+                                  {this.props.caseStore.judge}
+                              </TableCell>
+                              <TableCell>Judge</TableCell>
+                              <TableCell>Yes</TableCell>
+                              <TableCell>Yes</TableCell>
+                            </TableRow>
+                            }
+                            {hearingStore.participants.map(participant => {
+                                return (
+                                    <TableRow key={participant.personalCode}>
+                                        <TableCell component="th" scope="row">
+                                            {participant.firstName} {participant.lastName}
+                                        </TableCell>
+                                        <TableCell>Claimant</TableCell>
+                                        <TableCell>Yes</TableCell>
+                                        <TableCell>Yes</TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            </>
+        );
+    }
 }
 
 export default withStyles(courtParticipantsStyles)(CourtParticipants);

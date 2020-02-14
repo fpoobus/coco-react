@@ -28,15 +28,17 @@ interface ClientCasesProps extends WithStyles<typeof clientCasesStyles> {
 class ClientCases extends React.Component<ClientCasesProps> {
     newClaimLink = (props, id) => <Link to={'/case?id=' + id} {...props} />;
 
+
+
     renderTableBody = () => {
         const {caseStore} = this.props;
 
-        let caseData = caseStore.casesData;
+        let caseData = caseStore.userCasesData;
 
         if (this.props.userStore.user.role === ROLES.USER) {
-            let code = this.props.userStore.user.personalCode;
+            //let code = this.props.userStore.user.personalCode;
             //values stands for person who made the claim (important in case of showing cases for legal entities)
-            caseData = caseData.filter(caseItem => caseItem.claimantId === code || caseItem.value === code || caseItem.defendantId === code);
+            //caseData = caseData.filter(caseItem => caseItem.claimantId === code || caseItem.value === code || caseItem.defendantId === code);
         }
 
         return (
@@ -60,13 +62,15 @@ class ClientCases extends React.Component<ClientCasesProps> {
     };
 
     renderCaseTable() {
+        console.log('got here');
         const {caseStore, classes} = this.props;
         let noCasesTitle = "No cases found";
         let caseData = caseStore.casesData;
         if (this.props.userStore.user.role === ROLES.USER) {
-            let code = this.props.userStore.user.personalCode;
+            //let code = this.props.userStore.user.personalCode;
+            caseData = caseStore.userCases;
             noCasesTitle = "You have no associated cases";
-            caseData = caseData.filter(caseItem => caseItem.claimantId === code || caseItem.defendantId === code);
+            // caseData = caseData.filter(caseItem => caseItem.claimantId === code || caseItem.defendantId === code);
         }
         if (caseData.length === 0) {
             return (<>
@@ -90,6 +94,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
     constructor(props: ClientCasesProps) {
         super(props);
         this.props.caseStore.loadCases();
+        this.props.caseStore.loadUserCases(this.props.userStore.user.personalCode, this.props.userStore.user.role);
     }
 
     render() {
@@ -103,7 +108,7 @@ class ClientCases extends React.Component<ClientCasesProps> {
         return (
             <Paper className={classes.root}>
                 <Typography variant="h5" gutterBottom className={classes.title}>{title}</Typography>
-                {this.props.caseStore.loading ? <>
+                {this.props.caseStore.loadingUser ? <>
                     <br/>
                     <Grid container justify="center">
                         <Grid item>

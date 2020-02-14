@@ -1,15 +1,18 @@
 import {action, computed, observable} from 'mobx';
 import {JudgmentForm} from 'app/model/JudgmentForm';
 import cocoAxios from "app/axiosConfig";
+import {ROLES} from "app/models/User";
 
 const DEBUG = false;
 
 export class CaseStore {
     @observable selectedCaseId: number;
     @observable cases = observable.array<any>();
+    @observable userCases = observable.array<any>();
     @observable hearings = observable.array<any>();
     @observable judge: string;
     @observable loading: boolean;
+    @observable loadingUser: boolean;
     @observable isRegisteringSuccess: boolean = false;
     @observable judgmentForm: JudgmentForm = {
         type: 'default',
@@ -20,6 +23,11 @@ export class CaseStore {
     @computed
     get casesData(): any[] {
         return Array.from(this.cases.values());
+    }
+
+    @computed
+    get userCasesData(): any[] {
+        return Array.from(this.userCases.values());
     }
 
     public async loadCases() {
@@ -51,6 +59,11 @@ export class CaseStore {
     }
 
     @action
+    public setLoadingUser(loading: boolean): void {
+        this.loadingUser = loading;
+    }
+
+    @action
     public setJudge(judge: string) {
         if (DEBUG) { console.log('Setting judge' + judge); }
         this.judge = judge;
@@ -77,6 +90,11 @@ export class CaseStore {
         this.selectedCaseId = id;
     }
 
+    @action.bound
+    public getSelectedCaseId() {
+        return this.selectedCaseId;
+    }
+
     public updateCase() {
         const data = this.casesData.find(c => {
             return c.id === this.selectedCaseId;
@@ -90,6 +108,19 @@ export class CaseStore {
             })
     };
 
+    public async loadUserCases(personId: string, role: string)  {
+        this.setLoadingUser(true);
+        if (role == ROLES.JUDGE || role == ROLES.CLERK) {
+            const response = await cocoAxios.get(`/coco-api/cases`,
+                { headers: { 'Access-Control-Allow-Origin': '*' } });
+            this.userCases = response.data;
+        }else{
+            const response = await cocoAxios.get(`/coco-api/cases/byPerson/${personId}`,
+                { headers: { 'Access-Control-Allow-Origin': '*' } });
+            this.userCases = response.data;
+        }
+        this.setLoadingUser(false);
+    }
 }
 
 export default CaseStore;
