@@ -22,6 +22,12 @@ class UserStore {
     public user: User;
 
     @observable
+    public allUsers: User[];
+
+    @observable
+    public allUserIds: string[];
+
+    @observable
     public personalCode: string;
 
     @observable
@@ -48,6 +54,14 @@ class UserStore {
         this.user = new User().userFromPersonResponse(personResponse);
         this.personalCode = personResponse.personId;
         this.loginWithUser(this.user);
+    }
+
+    @action
+    public setUsersFromPersonResponse(personResponses: PersonResponse[]) {
+        this.allUsers = personResponses.map(personResponse => {
+            return new User().userFromPersonResponse(personResponse);
+        });
+        this.allUserIds = this.allUsers.map(user => user.personalCode);
     }
 
     @action
