@@ -157,7 +157,6 @@ class Header extends React.Component<HeaderProps> {
 		cocoAxios.get(`/coco-api/persons`)
 			.then((res: AxiosResponse<PersonResponse[]>) => {
 				runInAction(() => {
-				    this.props.userStore.setUsersFromPersonResponse(res.data);
 					this.setState({ chooseUserLoading: false, allUsers: res.data });
 				});
 			}).catch(e => {
