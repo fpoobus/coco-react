@@ -50,26 +50,37 @@ export class AdminFormProperties {
 
     constructor() {
 
+        let min = Math.ceil(10000);
+        let max = Math.floor(19999);
+        let id = (Math.floor(Math.random() * (max - min)) + min).toString();
+
         this.father = new AdminPersonProperties();
         this.father.gender = "MALE";
         this.father.dateOfBirth = "1980-05-09T21:00:00.00";
+        this.father.addressId = id;
         this.mother = new AdminPersonProperties();
         this.mother.gender = "FEMALE";
         this.mother.dateOfBirth = "1980-05-09T21:00:00.00";
+        this.mother.addressId = id;
         this.child1 = new AdminPersonProperties();
         this.child1.gender = "MALE";
         this.child1.dateOfBirth = "2011-05-05T11:01:00";
         this.child1.day = "2011-05-05T21:00:00.00";
+        this.child1.addressId = id;
         this.child2 = new AdminPersonProperties();
         this.child2.gender = "MALE";
         this.child2.dateOfBirth = "2000-05-05T11:01:00";
         this.child2.day = "2000-05-05T21:00:00.00";
+        this.child2.addressId = id;
         this.toMarry = new AdminPersonProperties();
         this.toMarry.gender = "FEMALE";
         this.toMarry.dateOfBirth = "1980-05-09T21:00:00.00";
+        this.toMarry.addressId = id;
         this.toCompany = new AdminPersonProperties();
         this.toCompany.gender = "MALE";
         this.toCompany.dateOfBirth = "1980-05-09T21:00:00.00";
+        this.toCompany.addressId = id;
+
     }
 
 }

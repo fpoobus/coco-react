@@ -13,24 +13,44 @@ import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {Paper} from "@material-ui/core";
 import cocoAxios from "app/axiosConfig";
+import UserStore from "app/stores/UserStore";
+import {AxiosResponse} from "axios";
+import {PersonResponse} from "app/model/NewClaim";
 
 
 interface AdminMultiFormProps extends WithStyles<typeof loginStyles> {
     adminStore?: AdminStore
+    userStore?: UserStore
 }
 
 
-@inject('adminStore')
+@inject('adminStore', 'userStore')
 @observer
 class AdminMultiForm extends React.Component<AdminMultiFormProps> {
+
+    state = {
+        name: 0,
+        defaultAddress: this.getRandomInt(10000,20000).toString,
+        loadingUsers: false
+    };
 
 
     handleChange = (who, value) => event => {
         console.log(who + " " + value + " " + event.target.value);
         console.log(event);
-        runInAction(() => {
+        runInAction(async () => {
             this.props.adminStore.formProps[who][value] = event.target.value;
-        });
+            if (!this.props.adminStore.formProps[who]['personId'] && value != 'personId') {
+                if (!this.props.userStore.allUserIds && !this.state.loadingUsers) {
+                    this.setState({loadingUsers: true});
+                    await this.getUserList();
+                }
+                this.props.adminStore.formProps[who]['personId'] = this.generatePersonId(who);
+            }
+        })
+            .then(() => {
+                this.setState({name : value})
+            });
 
 
     };
@@ -244,7 +264,7 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
             day: "2018-05-13T21:00:00.000Z",
             prenuptial: "JOINT",
             surnameType: "TAKE_HUSBAND"
-        }
+        };
         await this.registerMarriage(marriageData);
 
         await this.addChild7();
@@ -253,6 +273,39 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
         await this.addToCreateCompanyWith();
 
         this.props.adminStore.setLoading(false);
+    };
+
+    generatePersonId(sex): number {
+        let id;
+        switch (sex) {
+            case 'mother' :
+                id = this.getRandomInt(80000000000, 89999999999);
+                break;
+            case 'father' :
+                id = this.getRandomInt(70000000000, 79999999999);
+                break;
+        }
+        if (this.props.userStore.allUserIds.includes(id.toString())) {
+            id = this.generatePersonId(sex);
+        }
+        return id;
+    }
+
+    getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+    }
+
+    getUserList = async () => {
+        await cocoAxios.get(`/coco-api/persons`)
+            .then((res: AxiosResponse<PersonResponse[]>) => {
+                runInAction(() => {
+                    this.props.userStore.setUsersFromPersonResponse(res.data);
+                    this.setState({loadingUsers: false})
+                });
+            }).catch(e => {
+            });
     };
 
     renderLoading() {
@@ -284,14 +337,14 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
                     <Grid container justify="center" spacing={8}>
                         <Grid item xs={6}>
                             <Paper style={{padding: "10px"}}>
-                                {this.props.adminStore.formProps[who]['personId']}
                                 {!exclude.personId &&
                                 <TextField
-                                    label="Person ID"
-                                    fullWidth
-                                    margin="normal"
-                                    defaultValue={this.props.adminStore.formProps[who]['personId']}
-                                    onChange={this.handleChange(who, 'personId')}
+                                  label="Person ID"
+                                  fullWidth
+                                  margin="normal"
+                                  value={this.props.adminStore.formProps[who]['personId']}
+                                  defaultValue={this.props.adminStore.formProps[who]['personId']}
+                                  onChange={this.handleChange(who, 'personId')}
                                 />
                                 }
                                 <TextField
@@ -331,11 +384,11 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
                                 />
                                 {!exclude.day &&
                                 <TextField
-                                    label="Day"
-                                    fullWidth
-                                    margin="normal"
-                                    defaultValue={this.props.adminStore.formProps[who]['day']}
-                                    onChange={this.handleChange(who, 'day')}
+                                  label="Day"
+                                  fullWidth
+                                  margin="normal"
+                                  defaultValue={this.props.adminStore.formProps[who]['day']}
+                                  onChange={this.handleChange(who, 'day')}
                                 />
                                 }
                                 <TextField
@@ -361,51 +414,51 @@ class AdminMultiForm extends React.Component<AdminMultiFormProps> {
         return (
             <React.Fragment>
                 <div style={{margin: "30px"}}>
-                <Grid container spacing={8}>
-                    <Grid item xs={12}>
-                        <Grid container justify="center" spacing={8}>
-
-                            {this.renderLoading()}
-
+                    <Grid container spacing={8}>
+                        <Grid item xs={12}>
                             <Grid container justify="center" spacing={8}>
-                            <h1>Demo data set creator utility</h1>
 
-                            </Grid>
+                                {this.renderLoading()}
 
-                            <h1>Father</h1>
-                            {this.renderFormFields('father', {day: true})}
+                                <Grid container justify="center" spacing={8}>
+                                    <h1>Demo data set creator utility</h1>
 
-                            <h1>Mother</h1>
-                            {this.renderFormFields('mother', {day: true})}
+                                </Grid>
 
+                                <h1>Father</h1>
+                                {this.renderFormFields('father', {day: true})}
 
-                            <h1>Child #1</h1>
-                            {this.renderFormFields('child1', {personId: true})}
-
-
-                            <h1>Child #2</h1>
-                            {this.renderFormFields('child2', {personId: true})}
+                                <h1>Mother</h1>
+                                {this.renderFormFields('mother', {day: true})}
 
 
-                            <h1>Person to marry with</h1>
-                            {this.renderFormFields('toMarry', {day: true})}
+                                <h1>Child #1</h1>
+                                {this.renderFormFields('child1', {personId: true})}
 
 
-                            <h1>Person to create company with</h1>
-                            {this.renderFormFields('toCompany', {day: true})}
+                                <h1>Child #2</h1>
+                                {this.renderFormFields('child2', {personId: true})}
 
-                            <Grid item xs={12}>
-                            <div style={{height: "30px"}}/>
-                            <Button
-                                variant="contained"
-                                onClick={this.createPersonSet}>
-                                Create person set
-                            </Button>
-                            <div style={{height: "30px"}}/>
+
+                                <h1>Person to marry with</h1>
+                                {this.renderFormFields('toMarry', {day: true})}
+
+
+                                <h1>Person to create company with</h1>
+                                {this.renderFormFields('toCompany', {day: true})}
+
+                                <Grid item xs={12}>
+                                    <div style={{height: "30px"}}/>
+                                    <Button
+                                        variant="contained"
+                                        onClick={this.createPersonSet}>
+                                        Create person set
+                                    </Button>
+                                    <div style={{height: "30px"}}/>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
                 </div>
             </React.Fragment>
         );
