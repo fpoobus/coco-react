@@ -109,6 +109,9 @@ module.exports = {
     historyApiFallback: {
       disableDotRule: true
     },
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+    },
     stats: 'normal'
   },
   devtool: 'source-map',
