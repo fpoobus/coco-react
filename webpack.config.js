@@ -104,6 +104,7 @@ module.exports = {
   devServer: {
     contentBase: sourcePath,
     hot: true,
+    disableHostCheck: true,
     inline: true,
     historyApiFallback: {
       disableDotRule: true
